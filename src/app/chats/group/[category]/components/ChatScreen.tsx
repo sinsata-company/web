@@ -10,11 +10,14 @@ export default function ChatScreen({
   myId: string
 }) {
   return (
-    <div className="inline-flex flex-col py-5 px-5 gap-2.5 w-full">
+    <div
+      style={{
+        marginTop: 15,
+        height: 'calc(100% - 120px)',
+      }}
+      className="inline-flex flex-col py-5 px-5 gap-2.5 w-full overflow-y-auto"
+    >
       {messages.map((item, idx) => {
-        console.log(myId)
-        console.log(item.authorId)
-        console.log(item.authorId == myId)
         return item.authorId == myId ? (
           <MyChat key={idx} {...item} />
         ) : (

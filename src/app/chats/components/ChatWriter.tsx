@@ -16,7 +16,14 @@ export default function ChatWriter({
           value={message}
           onChange={(e) => {
             const text = e.target.value
+
             setMessage(text)
+          }}
+          onKeyUp={(e) => {
+            if (e.key == 'Enter') {
+              sendMessage()
+              setMessage('')
+            }
           }}
           placeholder="메세지 입력"
           className="w-full bg-zinc-100 text-zinc-400 text-base font-normal font-['Pretendard'] leading-normal"
