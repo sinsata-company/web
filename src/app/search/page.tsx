@@ -1,5 +1,7 @@
 import BTB from '@/components/common/Btb'
+import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import MainAppbar from '@/components/common/MainAppbar'
+import Image from 'next/image'
 
 export default function SearchPage() {
   return (
@@ -12,7 +14,12 @@ export default function SearchPage() {
             <br />더 정확한 상담이 가능합니다
           </div>
           <div className="p-2 bg-red-600/10 rounded-full justify-center items-center gap-1 inline-flex">
-            <div className="w-4 h-4 relative" />
+            <Image
+              src={'/images/ic_mic.svg'}
+              width={16}
+              height={16}
+              alt="mic"
+            />
             <div className="text-red-600 text-base font-bold font-['Pretendard Variable'] leading-tight">
               음성 녹음해서 보내기
             </div>
@@ -28,11 +35,7 @@ export default function SearchPage() {
             0/1000
           </div>
         </div>
-        <div className="self-stretch h-12 px-3 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-xl justify-center items-center gap-1 inline-flex">
-          <div className="text-center text-white text-base font-bold font-['Pretendard Variable']">
-            찾기
-          </div>
-        </div>
+        <Button buttonType={BUTTON_TYPE.primary} label="찾기" />
       </div>
       <BTB />
     </div>

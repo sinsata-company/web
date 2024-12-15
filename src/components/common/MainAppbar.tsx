@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function MainAppbar() {
   return (
@@ -9,12 +10,14 @@ export default function MainAppbar() {
         height={28}
         alt="lgoo"
       />
-      <Image
-        src={'/images/ic_coupon.svg'}
-        width={24}
-        height={24}
-        alt="coupon"
-      />
+      <Link href={'/my/cash'}>
+        <Image
+          src={'/images/ic_coupon.svg'}
+          width={24}
+          height={24}
+          alt="coupon"
+        />
+      </Link>
     </div>
   )
 }

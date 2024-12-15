@@ -1,7 +1,7 @@
 import BTB from '@/components/common/Btb'
 import MainAppbar from '@/components/common/MainAppbar'
 import CashSummary from './components/CashSummary'
-import MyAdvisor from './components/MyAdvisor'
+import MyTabContainer from './components/MyTabContainer'
 
 export default function MyPage() {
   return (
@@ -9,7 +9,7 @@ export default function MyPage() {
       <MainAppbar />
       <CashSummary />
       <div className="h-4"></div>
-      <MyAdvisor />
+      <MyTabContainer />
       <BTB />
     </div>
   )

@@ -1,0 +1,8 @@
+.rangeStart,
+.rangeStart:hover {
+  background: linear-gradient(to right, white 50%, #e8faf8 50%);
+}
+.rangeEnd:hover,
+.rangeEnd {
+  background: linear-gradient(to left, white 50%, #e8faf8 50%);
+}

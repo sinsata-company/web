@@ -1,0 +1,95 @@
+'use client'
+
+import { AdvisorItem } from '@/app/home/components/AdvisorList'
+import clsx from 'clsx'
+import { useState } from 'react'
+import CouponInput from './CouponInput'
+
+export default function MyTabContainer() {
+  const [tab, setTab] = useState<number>(0)
+  const selectTab = (idx: number) => {
+    setTab(idx)
+  }
+  return (
+    <div>
+      <div className=" w-full h-7 flex-col justify-start items-start gap-2.5 inline-flex">
+        <div className="w-full grid grid-cols-3">
+          <MyTabItem
+            onClick={selectTab}
+            label="캐시 내역"
+            selected={tab == 0}
+            idx={0}
+          />
+          <MyTabItem
+            onClick={selectTab}
+            label="나의 이용권 내역"
+            selected={tab == 1}
+            idx={1}
+          />
+          <MyTabItem
+            onClick={selectTab}
+            label="쿠폰 등록"
+            selected={tab == 2}
+            idx={2}
+          />
+        </div>
+      </div>
+      <div className="h-4"></div>
+      <div className="w-full h-96 px-5 flex-col justify-start items-start gap-4 inline-flex">
+        <div className="text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+          {tab == 0 ? '캐시내역' : tab == 1 ? '최근 본 선생님' : '쿠폰 등록'}
+        </div>
+        {tab == 1 && (
+          <>
+            <AdvisorItem />
+            <AdvisorItem />
+            <AdvisorItem />
+          </>
+        )}
+        {tab == 2 && <CouponInput />}
+      </div>
+    </div>
+  )
+}
+
+const MyTabItem = ({
+  label,
+  selected,
+  onClick,
+  idx,
+}: {
+  label: string
+  selected: boolean
+  onClick: Function
+  idx: number
+}) => {
+  return (
+    <div
+      onClick={() => {
+        onClick(idx)
+      }}
+    >
+      <div
+        className={clsx(
+          "grow shrink basis-0 text-center  text-sm font-bold font-['Pretendard Variable']",
+          selected ? 'text-yellow-400' : 'text-zinc-400'
+        )}
+      >
+        {label}
+      </div>
+      <div
+        className="self-stretch h-0.5"
+        style={{
+          marginTop: 10,
+        }}
+      >
+        <div
+          className={clsx(
+            'w-full h-px  rounded-full',
+            selected ? 'bg-gradient' : 'bg-zinc-100'
+          )}
+        />
+      </div>
+    </div>
+  )
+}

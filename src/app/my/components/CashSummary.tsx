@@ -1,4 +1,9 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+
 export default function CashSummary() {
+  const router = useRouter()
   return (
     <div className="w-full h-44 px-5 flex-col justify-center items-center gap-2.5 inline-flex">
       <div className="self-stretch h-44 px-4 pt-6 pb-5 bg-red-600/10 rounded-2xl flex-col justify-start items-start gap-4 flex">
@@ -9,7 +14,12 @@ export default function CashSummary() {
           </div>
           <div className="w-8 h-8 p-2.5 opacity-0 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-full" />
         </div>
-        <div className="self-stretch h-14 px-3 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-xl justify-center items-center gap-1 inline-flex">
+        <div
+          onClick={() => {
+            router.push('/my/cash')
+          }}
+          className="self-stretch h-14 px-3 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-xl justify-center items-center gap-1 inline-flex"
+        >
           <div className="text-center text-white text-base font-bold font-['Pretendard Variable']">
             충전하기
           </div>

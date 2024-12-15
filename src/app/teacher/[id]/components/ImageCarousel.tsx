@@ -10,7 +10,7 @@ export default function ImageCarousel({
   imageList,
   showImageModal,
 }: {
-  imageList: string[]
+  imageList: string[] | null
   showImageModal: Function
 }) {
   var settings = {
@@ -26,7 +26,7 @@ export default function ImageCarousel({
   }
   return (
     <Slider {...settings}>
-      {imageList.map((item, idx) => (
+      {imageList?.map((item, idx) => (
         <div key={idx} style={{ width: 54, height: 240 }}>
           <Image
             onClick={() => {
@@ -35,7 +35,7 @@ export default function ImageCarousel({
             unoptimized
             className="w-full h-60 bg-gray-200 rounded-2xl"
             // src={item}
-            src={'/images/sample-teacher.png'}
+            src={item}
             width={54}
             height={240}
             alt="thumb"

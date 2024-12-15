@@ -1,7 +1,9 @@
 'use client'
 
+import clsx from 'clsx'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import path from 'path'
 
 export default function BTB() {
   return (
@@ -16,6 +18,9 @@ export default function BTB() {
 
 const BTBItem = ({ name, image }: { name: string; image: string }) => {
   const router = useRouter()
+  const pathname = usePathname()
+  const selected = pathname.replace('/', '') == image
+  console.log()
   return (
     <div
       onClick={() => {
@@ -24,12 +29,17 @@ const BTBItem = ({ name, image }: { name: string; image: string }) => {
       className="grow shrink basis-0 self-stretch flex-col justify-start items-center gap-1.5 inline-flex"
     >
       <Image
-        src={`/images/btb_${image}.svg`}
+        src={`/images/btb_${image}${selected ? '_selected' : ''}.svg`}
         height={24}
         width={24}
         alt="btb"
       />
-      <div className="self-stretch h-4 text-center text-zinc-400 text-xs font-normal font-['Pretendard']">
+      <div
+        className={clsx(
+          "self-stretch h-4 text-center text-zinc-400 text-xs font-normal font-['Pretendard']",
+          selected ? 'text-gradient' : ''
+        )}
+      >
         {name}
       </div>
     </div>
