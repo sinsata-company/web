@@ -7,6 +7,7 @@ import GroupChatItem from './components/GroupChatItem'
 import AdvisorSort from './components/AdvisorSort'
 import AdvisorList from './components/AdvisorList'
 import FindMyAdvisor from './components/FindMyAdvisor'
+import HomeCategory from './components/HomeCategory'
 
 export default function HomePage() {
   return (
@@ -18,7 +19,8 @@ export default function HomePage() {
         <GroupChatItem />
       </div>
       <div className="h-6"></div>
-      <CategoryContainer />
+      <HomeCategory />
+
       <div className="h-6"></div>
       <div className="px-5">
         <AdvisorSort />
