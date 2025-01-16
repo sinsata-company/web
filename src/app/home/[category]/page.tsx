@@ -21,7 +21,7 @@ export default function CategoryAdvisorList() {
       <BackAppbar />
       <div className="px-5 inline-flex gap-2.5 w-full flex-col">
         {advisors.map((item) => (
-          <AdvisorItem {...item} />
+          <AdvisorItem key={item.id} {...item} />
         ))}
       </div>
     </div>
