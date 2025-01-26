@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import { useEffect } from 'react'
 
-export default function KakaoRedirect() {
+export default function NaverRedirect() {
   const router = useRouter()
   function getMachineId() {
     let machineId = localStorage.getItem('MachineId')
@@ -19,13 +19,17 @@ export default function KakaoRedirect() {
   }
   useEffect(() => {
     const fetchToken = async () => {
-      const code = new URL(window.location.href).searchParams.get('code')
+      const code = new URL(window.location.href).searchParams.get('code') || ''
+      const state =
+        new URL(window.location.href).searchParams.get('state') || ''
 
       try {
+        // google 에서 id token 을 받아서 서버로 전송
+
         const response = await axios.post(
           'http://localhost:8080/api/v1/users/join',
           {
-            loginType: 'KAKAO',
+            loginType: 'NAVER',
             accessToken: code,
             deviceId: getMachineId(),
             deviceInfo: 'Chrome',

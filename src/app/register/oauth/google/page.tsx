@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import { useEffect } from 'react'
 
-export default function KakaoRedirect() {
+export default function GoogleRedirect() {
   const router = useRouter()
   function getMachineId() {
     let machineId = localStorage.getItem('MachineId')
@@ -22,11 +22,30 @@ export default function KakaoRedirect() {
       const code = new URL(window.location.href).searchParams.get('code')
 
       try {
+        // google 에서 id token 을 받아서 서버로 전송
+        const tokenResponse = await fetch(
+          'https://oauth2.googleapis.com/token',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              client_id:
+                '387467142815-acmspfmbq3mhjf55eqa3a03ervu2g0ig.apps.googleusercontent.com',
+              client_secret: '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',
+              code,
+              redirect_uri: 'http://localhost:3000/register/oauth/google',
+              grant_type: 'authorization_code',
+            }),
+          }
+        )
+        const tokenData = await tokenResponse.json()
+        console.log(tokenData)
+
         const response = await axios.post(
           'http://localhost:8080/api/v1/users/join',
           {
-            loginType: 'KAKAO',
-            accessToken: code,
+            loginType: 'GOOGLE',
+            accessToken: tokenData.id_token,
             deviceId: getMachineId(),
             deviceInfo: 'Chrome',
             deviceType: 'Android',

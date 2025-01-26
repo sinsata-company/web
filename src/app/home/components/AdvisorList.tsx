@@ -6,12 +6,19 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { getTeacherList, SearchType } from '@/api/teacher'
+import { TeacherListDto } from '@/api/data'
+
 export default function AdvisorList() {
-  const [advisorList, setAdvisorList] = useState<IAdvisor[]>([])
+  const [advisorList, setAdvisorList] = useState<TeacherListDto[]>([])
+
   useEffect(() => {
-    const advsor = getAllAdvisor()
-    setAdvisorList(advsor)
+    getTeacherList(SearchType.NEW).then((data) => {
+      console.log(data.content)
+      setAdvisorList(data.content)
+    })
   }, [])
+
   return (
     <div className="inline-flex flex-col gap-2.5 w-full">
       {advisorList.map((item, idx) => (
@@ -24,12 +31,13 @@ export default function AdvisorList() {
 }
 
 export function AdvisorItem({
-  introduction,
+  summary,
   name,
-  type,
+  teacherType,
   id,
-  profileImage,
-}: IAdvisor) {
+  hashtag,
+  thumbnail,
+}: TeacherListDto) {
   const nav = useRouter()
   return (
     <div
@@ -43,7 +51,7 @@ export function AdvisorItem({
           objectFit: 'cover',
         }}
         className=" rounded-xl w-20 h-20"
-        src={profileImage[0]}
+        src={thumbnail}
         width={80}
         height={80}
         alt="profile"
@@ -51,12 +59,12 @@ export function AdvisorItem({
       <div className="flex-col justify-center items-start gap-2 inline-flex">
         <div className="w-56 text-zinc-900 text-base font-bold font-['Pretendard Variable']">
           {name}
-          <br />#{type == 'taro' ? '타로' : '신점'}
+          <br />#{teacherType == 'taro' ? '타로' : '신점'}
         </div>
         <div className="justify-start items-center gap-1 inline-flex">
           {/* <div className="w-4 h-4 relative" /> */}
           <div className="text-yellow-400 text-sm font-bold font-['Pretendard Variable'] leading-tight">
-            {introduction?.substring(0, 20)}
+            {summary}
           </div>
         </div>
       </div>

@@ -16,6 +16,29 @@ export default function RegisterPage() {
       redirectUri: 'http://localhost:3000/register/oauth/kakao',
     })
   }
+  const loginWithGoogle = () => {
+    const clientId =
+      '387467142815-acmspfmbq3mhjf55eqa3a03ervu2g0ig.apps.googleusercontent.com'
+
+    const reidrectUri = 'http://localhost:3000/register/oauth/google'
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${reidrectUri}&response_type=code&scope=email+profile`
+    window.location.href = googleAuthUrl
+  }
+
+  const loginWithNaver = () => {
+    const clientId = 'jhsF1FFbQfwtnFulzCl4'
+    const redirectUri = 'http://localhost:3000/register/oauth/naver'
+    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=STATE_STRING`
+    window.location.href = naverAuthUrl
+  }
+
+  const loginWithApple = () => {
+    const clientId = 'com.sst.web'
+    const redirectUri = 'http://localhost:3000/register/oauth/apple'
+    const appleAuthUrl = `https://appleid.apple.com/auth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=STATE_STRING`
+    window.location.href = appleAuthUrl
+  }
+
   const nav = useRouter()
   return (
     <div className="h-full w-full flex flex-col  bg-zinc-900">
@@ -25,17 +48,20 @@ export default function RegisterPage() {
         <SocialLoginButton
           image="google"
           name="구글"
-          onClick={() => {
-            nav.push('/home')
-          }}
+          onClick={loginWithGoogle}
         />
-        <SocialLoginButton image="apple" name="애플" onClick={() => {}} />
+        <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} />
         <SocialLoginButton
           image="kakao"
           name="카카오"
           onClick={loginWithKakao}
         />
-        <SocialLoginButton image="naver" name="네이버" onClick={() => {}} />
+
+        <SocialLoginButton
+          image="naver"
+          name="네이버"
+          onClick={loginWithNaver}
+        />
       </div>
     </div>
   )

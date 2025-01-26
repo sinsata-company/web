@@ -1,6 +1,6 @@
 import MainAppbar from '@/components/common/MainAppbar'
 import AdCarousel from './components/AdCarousel'
-import CategoryContainer from './components/CategoryContainer'
+
 import BTB from '@/components/common/Btb'
 import GroupChatItem from './components/GroupChatItem'
 
