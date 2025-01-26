@@ -8,6 +8,7 @@ import AdvisorSort from './components/AdvisorSort'
 import AdvisorList from './components/AdvisorList'
 import FindMyAdvisor from './components/FindMyAdvisor'
 import HomeCategory from './components/HomeCategory'
+import AdvisorContainer from './components/AdvisorContainer'
 
 export default function HomePage() {
   return (
@@ -22,13 +23,7 @@ export default function HomePage() {
       <HomeCategory />
 
       <div className="h-6"></div>
-      <div className="px-5">
-        <AdvisorSort />
-      </div>
-      <div className="h-6"></div>
-      <div className="px-5">
-        <AdvisorList />
-      </div>
+      <AdvisorContainer />
       <FindMyAdvisor />
       <BTB />
     </div>

@@ -12,24 +12,31 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { IAdvisor } from '@/dummy/dummyTeacher'
 import { getAdvisorInfo } from '@/services/advisor'
+import { getTeacherDetail } from '@/api/teacher'
+import { TeacherDetailDto } from '@/api/data'
+import TeacherNotice from './components/TeacherNotice'
 
 export default function TeacherPage() {
-  const [advisor, setAdvisor] = useState<IAdvisor | null>(null)
+  const [advisor, setAdvisor] = useState<TeacherDetailDto | null>(null)
   const router = useRouter()
   const param = useParams()
+  const teacherId = String(param.id)
 
   useEffect(() => {
-    console.log(param.id)
-    const advisor = getAdvisorInfo(Number(param.id))
-    setAdvisor(advisor ?? null)
-    // const advisor =
+    getInfo()
   }, [])
+
+  const getInfo = async () => {
+    const response = await getTeacherDetail(teacherId)
+    setAdvisor(response)
+  }
+
   return (
     <div>
       <BackAppbar />
       <div className="px-5">
         <ImageCarousel
-          imageList={advisor?.profileImage}
+          imageList={advisor?.images || []}
           showImageModal={() => {}}
         />
         <div className="h-6"></div>
@@ -37,7 +44,7 @@ export default function TeacherPage() {
         <div className="h-6"></div>
         <Button
           onClick={() => {
-            router.push('/teacher/' + 1 + '/reserve')
+            router.push('/teacher/' + teacherId + '/reserve')
           }}
           buttonType={BUTTON_TYPE.primary}
           label="예약하기"
@@ -46,7 +53,10 @@ export default function TeacherPage() {
       </div>
       <div className="h-2 bg-zinc-100" />
       <div className="px-5 py-6">
-        <TeacherAdvance />
+        <TeacherAdvance advisor={advisor} />
+      </div>
+      <div className="px-5 py-6">
+        <TeacherNotice advisor={advisor} />
       </div>
       <div className="px-5 py-6">
         <TeacherReview />

@@ -9,16 +9,11 @@ import { useEffect, useState } from 'react'
 import { getTeacherList, SearchType } from '@/api/teacher'
 import { TeacherListDto } from '@/api/data'
 
-export default function AdvisorList() {
-  const [advisorList, setAdvisorList] = useState<TeacherListDto[]>([])
-
-  useEffect(() => {
-    getTeacherList(SearchType.NEW).then((data) => {
-      console.log(data.content)
-      setAdvisorList(data.content)
-    })
-  }, [])
-
+export default function AdvisorList({
+  advisorList,
+}: {
+  advisorList: TeacherListDto[]
+}) {
   return (
     <div className="inline-flex flex-col gap-2.5 w-full">
       {advisorList.map((item, idx) => (

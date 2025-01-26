@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { basicGet } from './base'
 import { PageRes } from './type'
-import { TeacherListDto } from './data'
+import { TeacherDetailDto, TeacherListDto } from './data'
 
 export enum SearchType {
   NEW = 'NEW',
@@ -13,5 +13,11 @@ export enum SearchType {
 export const getTeacherList = async (searchType: SearchType) => {
   const response = await basicGet(`/teachers?method=${searchType}`)
   const data = response as PageRes<TeacherListDto>
+  return data
+}
+
+export const getTeacherDetail = async (teacherId: String) => {
+  const response = await basicGet(`/teachers/${teacherId}`)
+  const data = response as TeacherDetailDto
   return data
 }
