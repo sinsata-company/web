@@ -12,8 +12,8 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { IAdvisor } from '@/dummy/dummyTeacher'
 import { getAdvisorInfo } from '@/services/advisor'
-import { getTeacherDetail } from '@/api/teacher'
-import { TeacherDetailDto } from '@/api/data'
+import { getTeacherDetail } from '@/app/api/teacher'
+import { TeacherDetailDto } from '@/app/api/data'
 import TeacherNotice from './components/TeacherNotice'
 
 export default function TeacherPage() {

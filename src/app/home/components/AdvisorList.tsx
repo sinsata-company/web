@@ -6,8 +6,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { getTeacherList, SearchType } from '@/api/teacher'
-import { TeacherListDto } from '@/api/data'
+import { getTeacherList, SearchType } from '@/app/api/teacher'
+import { TeacherListDto } from '@/app/api/data'
 
 export default function AdvisorList({
   advisorList,

@@ -1,4 +1,4 @@
-import { TeacherDetailDto } from '@/api/data'
+import { TeacherDetailDto } from '@/app/api/data'
 import { IAdvisor } from '@/dummy/dummyTeacher'
 import Image from 'next/image'
 

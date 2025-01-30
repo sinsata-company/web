@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { SearchType } from '@/api/teacher'
+import { SearchType } from '@/app/api/teacher'
 
 const tabs = [
   { name: '신규순', active: true, query: SearchType.NEW },

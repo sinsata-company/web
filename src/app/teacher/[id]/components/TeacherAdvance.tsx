@@ -1,4 +1,4 @@
-import { TeacherDetailDto } from '@/api/data'
+import { TeacherDetailDto } from '@/app/api/data'
 
 export default function TeacherAdvance({
   advisor,

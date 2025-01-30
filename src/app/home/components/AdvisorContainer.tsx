@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import AdvisorList from './AdvisorList'
 import AdvisorSort from './AdvisorSort'
-import { TeacherListDto } from '@/api/data'
-import { getTeacherList, SearchType } from '@/api/teacher'
+import { TeacherListDto } from '@/app/api/data'
+import { getTeacherList, SearchType } from '@/app/api/teacher'
 
 export default function AdvisorContainer() {
   const [advisorList, setAdvisorList] = useState<TeacherListDto[]>([])
