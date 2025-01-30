@@ -1,6 +1,6 @@
 interface InputProps {
   placeholder?: string
-  name: string
+  name?: string
   value: string
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -27,9 +27,11 @@ export default function Input({
 }: InputProps) {
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex ">
-      <div className="self-stretch text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
-        {name}
-      </div>
+      {name && (
+        <div className="self-stretch text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+          {name}
+        </div>
+      )}
       <div className="self-stretch justify-start items-start gap-3 inline-flex">
         <div className="grow p-4 rounded-xl border border-zinc-400 justify-start items-center gap-3 flex">
           {textarea ? (
