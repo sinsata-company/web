@@ -15,6 +15,7 @@ export default function ImageInput({
   images,
   count,
   onDelete,
+
   onUploadedImage,
 }: ImageInputProps) {
   const ref = useRef<HTMLInputElement>(null)
