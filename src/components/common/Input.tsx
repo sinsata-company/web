@@ -11,6 +11,8 @@ interface InputProps {
   lines?: number
   useCounter?: boolean
   maxLength?: number
+  type?: string
+  error?: string
 }
 
 export default function Input({
@@ -24,6 +26,8 @@ export default function Input({
   lines,
   useCounter,
   maxLength,
+  type,
+  error,
 }: InputProps) {
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex ">
@@ -54,6 +58,7 @@ export default function Input({
                 border: 'none',
                 outline: 'none',
               }}
+              type={type}
               placeholder={placeholder}
               value={value}
               onChange={onChange}
@@ -74,6 +79,12 @@ export default function Input({
       {useCounter && (
         <div className="text-zinc-400 text-sm font-['Pretendard Variable']">
           {value.length} / {maxLength}
+        </div>
+      )}
+
+      {error && (
+        <div className="text-red-600 text-sm font-['Pretendard Variable']">
+          {error}
         </div>
       )}
     </div>

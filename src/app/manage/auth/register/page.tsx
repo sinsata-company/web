@@ -1,14 +1,19 @@
 'use client'
 
+import { applyTeacher } from '@/api/teacher'
 import { uploadImageToS3 } from '@/app/api/s3'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import ImageInput from '@/components/common/ImageInput'
 import Input from '@/components/common/Input'
 import Selector from '@/components/common/Selector'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function RegisterPage() {
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [name, setName] = useState('')
   const [field, setField] = useState('')
   const [strengthField, setStrengthField] = useState('')
@@ -18,13 +23,52 @@ export default function RegisterPage() {
   const [images, setImages] = useState<string[]>([])
 
   const router = useRouter()
+
+  const validate = () => {
+    if (password !== passwordConfirm) {
+      setPasswordError('비밀번호가 일치하지 않습니다.')
+      return false
+    }
+    setPasswordError('')
+    return true
+  }
+
+  useEffect(() => {
+    validate()
+  }, [password, passwordConfirm])
+
   return (
     <div className="inline-flex flex-col gap-8 w-full">
+      <Input
+        name="비밀번호"
+        value={password}
+        onChange={(e) => {
+          setPassword(e.target.value)
+        }}
+        placeholder="비밀번호를 입력해주세요"
+        type="password"
+      />
+      <Input
+        name="비밀번호 확인"
+        value={passwordConfirm}
+        onChange={(e) => {
+          setPasswordConfirm(e.target.value)
+        }}
+        error={passwordError}
+        placeholder="비밀번호를 다시 입력해주세요"
+        type="password"
+      />
       <Input
         name="이름"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="이름을 입력해주세요"
+      />
+      <Input
+        name="전화번호"
+        value={phoneNumber}
+        onChange={(e) => setPhoneNumber(e.target.value)}
+        placeholder="전화번호를 입력해주세요"
       />
       <Selector
         placeholder="신점/사주/타로/심리 중 선택해주세요."
@@ -89,8 +133,26 @@ export default function RegisterPage() {
       <Button
         buttonType={BUTTON_TYPE.primary}
         label="선생님 등록 신청하기"
-        onClick={() => {
-          router.replace('/manage/auth/register/complete')
+        onClick={async () => {
+          try {
+            if (!validate()) {
+              return
+            }
+
+            await applyTeacher({
+              password,
+              name,
+              phoneNumber,
+              imageList: images,
+              hashtag: hashTags.join(','),
+              introduction,
+              teacherType: field,
+              strongField: strengthField,
+            })
+            router.replace('/manage/auth/register/complete')
+          } catch (e) {
+            console.log(e)
+          }
         }}
       />
     </div>

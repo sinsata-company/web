@@ -4,7 +4,6 @@ import BackAppbar from '@/components/common/BackAppbar'
 import { IAdvisor } from '@/dummy/dummyTeacher'
 import { useEffect, useState } from 'react'
 import { AdvisorItem } from '../components/AdvisorList'
-import { getCategoryAdvisor } from '@/services/advisor'
 import { useParams } from 'next/navigation'
 
 export default function CategoryAdvisorList() {
@@ -13,8 +12,8 @@ export default function CategoryAdvisorList() {
   const param = useParams()
 
   useEffect(() => {
-    const adv = getCategoryAdvisor(param.category?.toString() ?? '')
-    setAdvisors(adv)
+    // const adv = getCategoryAdvisor(param.category?.toString() ?? '')
+    // setAdvisors(adv)
   }, [])
   return (
     <div>
