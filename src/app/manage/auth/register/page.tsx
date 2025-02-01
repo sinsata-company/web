@@ -1,7 +1,6 @@
 'use client'
 
 import { applyTeacher } from '@/api/teacher'
-import { uploadImageToS3 } from '@/app/api/s3'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import ImageInput from '@/components/common/ImageInput'
 import Input from '@/components/common/Input'
