@@ -12,7 +12,8 @@ const tabs = [
 ]
 
 export default function AdvisorSort(props: {
-  getTeachers: (query: SearchType) => void
+  getTeachers: (query: SearchType, page: number) => void
+  page: number
 }) {
   const [activeTab, setActiveTab] = useState(0)
 
@@ -25,7 +26,7 @@ export default function AdvisorSort(props: {
             activeTab === index ? 'bg-white shadow' : ''
           }`}
           onClick={() => {
-            props.getTeachers(tabs[index].query)
+            props.getTeachers(tabs[index].query, props.page)
             setActiveTab(index)
           }}
         >

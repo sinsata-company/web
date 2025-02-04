@@ -10,8 +10,8 @@ export enum SearchType {
   RECENT = 'RECENT',
 }
 
-export const getTeacherList = async (searchType: SearchType) => {
-  const response = await basicGet(`/teachers?method=${searchType}`)
+export const getTeacherList = async (searchType: SearchType, page: number) => {
+  const response = await basicGet(`/teachers?method=${searchType}&page=${page}`)
   const data = response as PageRes<TeacherListDto>
   return data
 }

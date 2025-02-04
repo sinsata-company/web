@@ -4,8 +4,6 @@ import AdCarousel from './components/AdCarousel'
 import BTB from '@/components/common/Btb'
 import GroupChatItem from './components/GroupChatItem'
 
-import AdvisorSort from './components/AdvisorSort'
-import AdvisorList from './components/AdvisorList'
 import FindMyAdvisor from './components/FindMyAdvisor'
 import HomeCategory from './components/HomeCategory'
 import AdvisorContainer from './components/AdvisorContainer'

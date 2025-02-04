@@ -1,6 +1,5 @@
 'use client'
 
-import { uploadImageToS3 } from '@/app/api/s3'
 import { uploadToS3 } from '@/app/api/upload/awsS3'
 import { useRef } from 'react'
 
