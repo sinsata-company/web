@@ -16,6 +16,18 @@ export const getTeacherList = async (searchType: SearchType, page: number) => {
   return data
 }
 
+export const getTeachersByCategory = async (
+  searchType: SearchType,
+  page: number,
+  category: string
+) => {
+  const response = await basicGet(
+    `/teachers/category?method=${searchType}&page=${page}&type=${category}`
+  )
+  const data = response as PageRes<TeacherListDto>
+  return data
+}
+
 export const getTeacherDetail = async (teacherId: String) => {
   const response = await basicGet(`/teachers/${teacherId}`)
   const data = response as TeacherDetailDto
