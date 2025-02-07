@@ -1,8 +1,8 @@
 import { ApiResponse } from '@/types/api'
 import axios from 'axios'
 
-// const BASE_URL = 'http://localhost:8080/api/v1'
-const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
+const BASE_URL = 'http://localhost:8080/api/v1'
+// const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
 
 export let token: string = ''
 
@@ -11,17 +11,17 @@ export const setToken = (tk: string) => {
 }
 
 function getAccessToken() {
-  return window.localStorage.getItem('ik-access-token')
+  return window.localStorage.getItem('sst-access-token')
 }
 
-export async function basicUnpagedGet<T>(route: string) {
+export async function basicUnpagedGet<T>(route: string): Promise<T> {
   const url = `${BASE_URL}${route}`
 
   // TODO jwt 갱신하거나 로그아웃 하는 방안
   const accessToken = getAccessToken()
   const response = await axios.get(url, {
     headers: {
-      'IK-ACCESS-TOKEN': `${accessToken}`,
+      'SST-ACCESS-TOKEN': `${accessToken}`,
     },
   })
 
@@ -40,7 +40,7 @@ export async function basicGet<T>(route: string): Promise<ApiResponse<T>> {
   const accessToken = getAccessToken()
   const response = await axios.get(url, {
     headers: {
-      'IK-ACCESS-TOKEN': `${accessToken}`,
+      'SST-ACCESS-TOKEN': `${accessToken}`,
     },
   })
 
@@ -61,7 +61,7 @@ export async function basicPost<T>(
   const accessToken = getAccessToken()
   const response = await axios.post(url, body, {
     headers: {
-      'IK-ACCESS-TOKEN': `${accessToken}`,
+      'SST-ACCESS-TOKEN': `${accessToken}`,
     },
   })
 
@@ -82,7 +82,7 @@ export async function basicPut<T>(
   const accessToken = getAccessToken()
   const response = await axios.put(url, body, {
     headers: {
-      'IK-ACCESS-TOKEN': `${accessToken}`,
+      'SST-ACCESS-TOKEN': `${accessToken}`,
     },
   })
 
@@ -103,7 +103,7 @@ export async function basicDelete<T>(route: string): Promise<ApiResponse<T>> {
   const accessToken = getAccessToken()
   const response = await axios.delete(url, {
     headers: {
-      'IK-ACCESS-TOKEN': `${accessToken}`,
+      'SST-ACCESS-TOKEN': `${accessToken}`,
     },
   })
 
