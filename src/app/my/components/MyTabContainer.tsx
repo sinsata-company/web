@@ -4,9 +4,14 @@ import { AdvisorItem } from '@/app/home/components/AdvisorList'
 import clsx from 'clsx'
 import { useState } from 'react'
 import CouponInput from './CouponInput'
+import Input from '@/components/common/Input'
+import Modal from '@/components/common/Modal'
+import { Button, BUTTON_TYPE } from '@/components/common/Button'
 
 export default function MyTabContainer() {
   const [tab, setTab] = useState<number>(0)
+  const [coupon, setCoupon] = useState<string>('')
+  const [openModal, setOpenModal] = useState<boolean>(false)
   const selectTab = (idx: number) => {
     setTab(idx)
   }
@@ -38,17 +43,44 @@ export default function MyTabContainer() {
       <div className="h-4"></div>
       <div className="w-full h-96 px-5 flex-col justify-start items-start gap-4 inline-flex">
         <div className="text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
-          {tab == 0 ? '캐시내역' : tab == 1 ? '최근 본 선생님' : '쿠폰 등록'}
+          {tab == 0
+            ? '캐시내역'
+            : tab == 1
+            ? '나와 상담한 선생님'
+            : '쿠폰 등록'}
         </div>
         {tab == 1 && (
           <>
+            {/* <AdvisorItem />
             <AdvisorItem />
-            <AdvisorItem />
-            <AdvisorItem />
+            <AdvisorItem /> */}
           </>
         )}
-        {tab == 2 && <CouponInput />}
+        {tab == 2 && (
+          <Input
+            value={coupon}
+            onChange={(e) => setCoupon(e.target.value)}
+            useSuffix
+            placeholder="쿠폰 코드를 입력해주세요."
+            onClickSuffix={() => {
+              setCoupon('')
+              setOpenModal(true)
+            }}
+          />
+        )}
       </div>
+      <Modal
+        isOpen={openModal}
+        title="등록 실패"
+        content="쿠폰 등록에 실패하였습니다. 유효한 쿠폰 번호인지 확인해주세요."
+        onClose={() => setOpenModal(false)}
+      >
+        <Button
+          buttonType={BUTTON_TYPE.primary}
+          label="확인"
+          onClick={() => setOpenModal(false)}
+        />
+      </Modal>
     </div>
   )
 }

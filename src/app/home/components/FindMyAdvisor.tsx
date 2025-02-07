@@ -1,6 +1,10 @@
+'use client'
+
 import { clsx } from 'clsx'
+import { useRouter } from 'next/navigation'
 
 export default function FindMyAdvisor() {
+  const router = useRouter()
   return (
     <div className={clsx('bottom-20 left-0 fixed  w-full px-5')}>
       <div
@@ -15,8 +19,11 @@ export default function FindMyAdvisor() {
           className={clsx(
             "text-base text-white font-bold font-['Pretendard Variable'] leading-tight"
           )}
+          onClick={() => {
+            router.push('/search')
+          }}
         >
-          내가 맞는 선생님 찾기
+          내게 맞는 선생님 찾기
         </div>
       </div>
     </div>
