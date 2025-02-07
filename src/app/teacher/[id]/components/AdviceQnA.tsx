@@ -2,29 +2,16 @@ import { useState } from 'react'
 
 const faqs = [
   {
-    question: '상담은 어떻게 진행되나요?',
-    answer:
-      '상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게',
+    question: '상담시 내담자가 어떤 정보를 드려야 하나요?',
+    answer: '선생님께 본인의상황을 설명해주시면 됩니다',
   },
   {
-    question: '상담은 어떻게 진행되나요?',
-    answer:
-      '상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게',
+    question: '선생님과 상담 받을때  주의 해야 할점이 있나요?',
+    answer: '선생님께 예의를 지켜주시고 거짓없는 대화를 해주심 됩니다',
   },
   {
-    question: '상담은 어떻게 진행되나요?',
-    answer:
-      '상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게',
-  },
-  {
-    question: '상담은 어떻게 진행되나요?',
-    answer:
-      '상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게',
-  },
-  {
-    question: '상담은 어떻게 진행되나요?',
-    answer:
-      '상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게 진행됩니다. 상담은 이렇게',
+    question: '선생님의 자신있는 상담분야는 무엇인가요?',
+    answer: '연애관련부분에 있어서 디테일하게 풀어드립니다',
   },
 ]
 
@@ -36,7 +23,7 @@ export default function AdviceQnA() {
   }
 
   return (
-    <div className="flex-col justify-start items-start gap-4 inline-flex">
+    <div className="flex-col justify-start items-start gap-4 inline-flex w-full">
       <div className="self-stretch text-yellow-400 text-base font-bold font-['Pretendard Variable']">
         자주 묻는 질문
       </div>

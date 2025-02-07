@@ -1,8 +1,8 @@
 import { ApiResponse } from '@/types/api'
 import axios from 'axios'
 
-const BASE_URL = 'http://localhost:8080/api/v1'
-// const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
+// const BASE_URL = 'http://localhost:8080/api/v1'
+const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
 
 export let token: string = ''
 
