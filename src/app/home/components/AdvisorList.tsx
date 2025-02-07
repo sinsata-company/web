@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { TeacherListDto } from '@/app/api/data'
+import { TeacherDetailDto, TeacherListDto } from '@/app/api/data'
 import { forwardRef, useEffect, useRef } from 'react'
 
 export default function AdvisorList({
@@ -10,7 +10,7 @@ export default function AdvisorList({
   lastAdvisorElementRef,
 }: {
   advisorList: TeacherListDto[]
-  lastAdvisorElementRef: (node: HTMLDivElement | null) => void
+  lastAdvisorElementRef?: (node: HTMLDivElement | null) => void
 }) {
   return (
     <div className="inline-flex flex-col gap-2.5 w-full">
@@ -39,7 +39,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, TeacherListDto>(
         onClick={() => {
           nav.push('/teacher/' + id)
         }}
-        className="grow h-28 p-4 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-center gap-3 inline-flex"
+        className="w-full grow h-28 p-4 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-center gap-3 inline-flex"
       >
         <Image
           style={{

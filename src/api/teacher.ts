@@ -9,6 +9,7 @@ interface ApplyTeacherProps {
   introduction: string
   teacherType: string
   strongField: string
+  reviews: []
 }
 const teacherTypeMap: { [key: string]: string } = {
   신점: 'SINJEOM',

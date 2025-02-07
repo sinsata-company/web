@@ -26,6 +26,21 @@ export default function ImageCarousel({
   }
   return (
     <Slider {...settings}>
+      {imageList?.length == 0 && (
+        <Image
+          unoptimized
+          className="w-full h-60 bg-gray-200 rounded-2xl object-contain"
+          // src={item}
+          src={'/logo.jpg'}
+          width={54}
+          height={240}
+          alt="thumb"
+          // fill
+          style={{
+            objectFit: 'contain',
+          }}
+        />
+      )}
       {imageList?.map((item, idx) => (
         <div key={idx} style={{ width: 54, height: 240 }}>
           <Image

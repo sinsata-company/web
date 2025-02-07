@@ -1,8 +1,5 @@
 import BTB from '@/components/common/Btb'
-import { Button, BUTTON_TYPE } from '@/components/common/Button'
-import Input from '@/components/common/Input'
 import MainAppbar from '@/components/common/MainAppbar'
-import Image from 'next/image'
 import AdviseContent from './components/AdviseContent'
 
 export default function SearchPage() {

@@ -11,7 +11,7 @@ import AdviceQnA from './components/AdviceQnA'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { IAdvisor } from '@/dummy/dummyTeacher'
-import { getAdvisorInfo } from '@/services/advisor'
+
 import { getTeacherDetail } from '@/app/api/teacher'
 import { TeacherDetailDto } from '@/app/api/data'
 import TeacherNotice from './components/TeacherNotice'
@@ -55,12 +55,16 @@ export default function TeacherPage() {
       <div className="px-5 py-6">
         <TeacherAdvance advisor={advisor} />
       </div>
-      <div className="px-5 py-6">
-        <TeacherNotice advisor={advisor} />
-      </div>
-      <div className="px-5 py-6">
-        <TeacherReview />
-      </div>
+      {advisor?.notice && (
+        <div className="px-5 py-6">
+          <TeacherNotice advisor={advisor} />
+        </div>
+      )}
+      {advisor?.reviews.length > 0 && (
+        <div className="px-5 py-6">
+          <TeacherReview />
+        </div>
+      )}
       <div className="px-5 py-6">
         <TeacherIntroduciton introduction={advisor?.introduction} />
       </div>
