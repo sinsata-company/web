@@ -1,5 +1,6 @@
 'use client'
 
+import { BASE_URL } from '@/api/base'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
@@ -23,7 +24,7 @@ export default function KakaoRedirect() {
 
       try {
         const response = await axios.post(
-          'http://localhost:8080/api/v1/users/join',
+          BASE_URL + '/users/join',
           {
             loginType: 'KAKAO',
             accessToken: code,

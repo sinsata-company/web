@@ -1,5 +1,6 @@
 'use client'
 
+import { BASE_URL } from '@/api/base'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
@@ -27,7 +28,7 @@ export default function NaverRedirect() {
         // google 에서 id token 을 받아서 서버로 전송
 
         const response = await axios.post(
-          'http://localhost:8080/api/v1/users/join',
+          BASE_URL + '/users/join',
           {
             loginType: 'NAVER',
             accessToken: code,

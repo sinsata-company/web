@@ -1,5 +1,6 @@
 'use client'
 
+import { BASE_URL } from '@/api/base'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
@@ -42,7 +43,7 @@ export default function GoogleRedirect() {
         console.log(tokenData)
 
         const response = await axios.post(
-          'http://localhost:8080/api/v1/users/join',
+          BASE_URL + '/users/join',
           {
             loginType: 'GOOGLE',
             accessToken: tokenData.id_token,
