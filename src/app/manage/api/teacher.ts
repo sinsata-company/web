@@ -1,4 +1,5 @@
 import { basicPost } from '../../../api/base'
+import { basicTeacherGet, basicTeacherPost } from './base'
 
 interface ApplyTeacherProps {
   password: string
@@ -29,4 +30,16 @@ export const applyTeacher = async (request: ApplyTeacherProps) => {
     teacherType: convertedTeacherType,
   })
   return result
+}
+
+export const getCanStatus = async () => {
+  const result = await basicTeacherGet('/manage/home/can')
+  return result
+}
+
+export const updateCanStatus = async (can: boolean, type: 'call' | 'chat') => {
+  const result = await basicTeacherPost('/manage/home/can', {
+    can,
+    type,
+  })
 }

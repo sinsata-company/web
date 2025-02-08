@@ -7,18 +7,16 @@ import moment, { Moment } from 'moment'
 
 const AdvisorReserves = () => {
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
-  const [selectedTime, setSelectedTime] = useState<string>('')
-  const timeClick = (time: string) => {
-    setSelectedTime(time)
-  }
+  const [now, setNow] = useState<Moment>(moment())
+
   useEffect(() => {
     setSelectedDate(moment())
   }, [])
   return (
     <div className="px-5">
       <IWCalendar
-        year={2025}
-        month={1}
+        year={now.year()}
+        month={now.month() + 1}
         selectedDate={selectedDate}
         onDateSelect={(date) => {
           setSelectedDate(date)

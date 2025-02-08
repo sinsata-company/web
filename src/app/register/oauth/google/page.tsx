@@ -34,7 +34,7 @@ export default function GoogleRedirect() {
                 '387467142815-acmspfmbq3mhjf55eqa3a03ervu2g0ig.apps.googleusercontent.com',
               client_secret: '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',
               code,
-              redirect_uri: 'http://localhost:3000/register/oauth/google',
+              redirect_uri: BASE_URL + '/register/oauth/google',
               grant_type: 'authorization_code',
             }),
           }
