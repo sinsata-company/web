@@ -1,6 +1,6 @@
 'use client'
 
-import { BASE_URL } from '@/api/base'
+import { BASE_URL, BASE_WEB } from '@/api/base'
 import LandingLogo from '@/components/logins/LandingLogo'
 import SocialLoginButton from '@/components/logins/SocialLoginButton'
 import { useRouter } from 'next/navigation'
@@ -14,28 +14,28 @@ export default function RegisterPage() {
 
   const loginWithKakao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: BASE_URL + '/register/oauth/kakao',
+      redirectUri: BASE_WEB + '/register/oauth/kakao',
     })
   }
   const loginWithGoogle = () => {
     const clientId =
       '387467142815-acmspfmbq3mhjf55eqa3a03ervu2g0ig.apps.googleusercontent.com'
 
-    const reidrectUri = BASE_URL + '/register/oauth/google'
+    const reidrectUri = BASE_WEB + '/register/oauth/google'
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${reidrectUri}&response_type=code&scope=email+profile`
     window.location.href = googleAuthUrl
   }
 
   const loginWithNaver = () => {
     const clientId = 'jhsF1FFbQfwtnFulzCl4'
-    const redirectUri = BASE_URL + '/register/oauth/naver'
+    const redirectUri = BASE_WEB + '/register/oauth/naver'
     const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=STATE_STRING`
     window.location.href = naverAuthUrl
   }
 
   const loginWithApple = () => {
     const clientId = 'com.sst.web'
-    const redirectUri = BASE_URL + '/register/oauth/apple'
+    const redirectUri = BASE_WEB + '/register/oauth/apple'
     const appleAuthUrl = `https://appleid.apple.com/auth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=STATE_STRING`
     window.location.href = appleAuthUrl
   }
