@@ -21,9 +21,11 @@ export default function RegisterPage() {
     const clientId =
       '387467142815-acmspfmbq3mhjf55eqa3a03ervu2g0ig.apps.googleusercontent.com'
 
-    const reidrectUri = BASE_WEB + '/register/oauth/google'
+    const redirectUri = BASE_WEB + '/register/oauth/google'
+    console.log(redirectUri)
 
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${reidrectUri}&response_type=code&scope=email+profile`
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email+profile`
+    console.log(googleAuthUrl)
     window.location.href = googleAuthUrl
   }
 

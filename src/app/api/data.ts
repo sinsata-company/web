@@ -21,4 +21,5 @@ export interface TeacherDetailDto {
   noticeImgURI: string
   menu: string
   reviews: any[]
+  pinNumber: string
 }

@@ -1,3 +1,4 @@
+import { BASE_WEB } from '@/api/base'
 import { useCallback, useEffect } from 'react'
 
 const useNaverInit = () => {
@@ -5,7 +6,7 @@ const useNaverInit = () => {
     const naver = window.naver
     const naverLogin = new naver.LoginWithNaverId({
       clientId: 'jhsF1FFbQfwtnFulzCl4', //ClientID
-      callbackUrl: 'http://localhost:3000/register/oauth/naver', // Callback URL
+      callbackUrl: BASE_WEB + '/register/oauth/naver', // Callback URL
       callbackHandle: true,
       isPopup: false, // 팝업 형태로 인증 여부
       loginButton: {

@@ -2,6 +2,7 @@ import { ApiResponse } from '@/types/api'
 import axios from 'axios'
 
 // export const BASE_URL = 'http://localhost:8080/api/v1'
+// export const BASE_WEB = 'http://localhost:3000'
 export const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
 export const BASE_WEB = 'https://www.sinsata.co.kr'
 

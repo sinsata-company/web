@@ -5,6 +5,14 @@ import { useState } from 'react'
 import TimeProductItem from './TimeProductItem'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 
+export interface MenuItemProps {
+  label: string
+  type: 'chat' | 'phone'
+  minute: number
+  method: 'direct' | 'cash'
+  price: number
+}
+
 export default function TimeTabs() {
   const [tab, setTab] = useState<number>(0)
   const selectTab = (idx: number) => {
