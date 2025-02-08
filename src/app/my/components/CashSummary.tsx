@@ -1,6 +1,6 @@
 'use client'
 
-import { getMyCash } from '@/api/cash'
+import { getMyCash } from '@/app/api/cash'
 import { formatNumberWithCommas } from '@/utils/numberFormatter'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'

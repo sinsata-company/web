@@ -1,5 +1,5 @@
 import { cashDto } from '@/types/cashTables'
-import { basicUnpagedGet } from './base'
+import { basicUnpagedGet } from '../../api/base'
 
 export const getMenus = async () => {
   const result = await basicUnpagedGet<cashDto[]>('/cash/tables')

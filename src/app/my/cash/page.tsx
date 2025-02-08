@@ -1,7 +1,7 @@
 'use client'
 
-import { getMenus, getMyCash, requestPayment } from '@/api/cash'
-import { getPayURL } from '@/api/http/mtn'
+import { getMenus, getMyCash, requestPayment } from '@/app/api/cash'
+import { getPayURL } from '@/app/api/http/mtn'
 import BackAppbar from '@/components/common/BackAppbar'
 import { cashDto } from '@/types/cashTables'
 import { formatNumberWithCommas } from '@/utils/numberFormatter'

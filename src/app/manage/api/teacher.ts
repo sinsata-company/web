@@ -1,4 +1,4 @@
-import { basicPost } from './base'
+import { basicPost } from '../../../api/base'
 
 interface ApplyTeacherProps {
   password: string

@@ -45,15 +45,12 @@ export default function NaverRedirect() {
 
         const data = response.data
         const header = response.headers
-        console.log(header)
+
         const accessToken = header['sst-access-token']
         const accessTokenExpireAt = header['sst-access-token-expire-at']
         const refreshToken = header['sst-refresh-token']
         const refreshTokenExpireAt = header['sst-refresh-token-expire-at']
-        console.log('Access Token:', accessToken)
-        console.log('Refresh Token:', refreshToken)
-        console.log('Access Token Expire At:', accessTokenExpireAt)
-        console.log('Refresh Token Expire At:', refreshTokenExpireAt)
+
         localStorage.setItem('sst-access-token', accessToken)
         localStorage.setItem('sst-access-token-expire-at', accessTokenExpireAt)
         localStorage.setItem('sst-refresh-token', refreshToken)

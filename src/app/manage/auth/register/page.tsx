@@ -1,6 +1,6 @@
 'use client'
 
-import { applyTeacher } from '@/api/teacher'
+import { applyTeacher } from '@/app/manage/api/teacher'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import ImageInput from '@/components/common/ImageInput'
 import Input from '@/components/common/Input'
@@ -147,6 +147,7 @@ export default function RegisterPage() {
               introduction,
               teacherType: field,
               strongField: strengthField,
+              reviews: [],
             })
             router.replace('/manage/auth/register/complete')
           } catch (e) {
