@@ -42,9 +42,9 @@ export default function HomeBanner({
             height={240}
             alt="thumb"
             // fill
-            style={{
-              objectFit: 'cover',
-            }}
+            // style={{
+            //   objectFit: 'fill',
+            // }}
           />
         </div>
       ))}
