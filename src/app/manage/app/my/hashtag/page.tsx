@@ -63,7 +63,7 @@ export default function Page() {
   )
 }
 
-const InfoItem = ({ text }: { text: string }) => {
+export const InfoItem = ({ text }: { text: string }) => {
   return (
     <div className=" items-center inline-flex">
       <img src="/images/ic_notification.svg" className="mr-1" />

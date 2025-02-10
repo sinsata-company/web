@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import TimeProductItem from './TimeProductItem'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
+import { InfoItem } from '../../hashtag/page'
 
 export interface MenuItemProps {
   label: string
@@ -48,18 +49,42 @@ export default function TimeTabs() {
       <div className="w-full  flex-col justify-start items-start gap-4 inline-flex mb-12">
         {tab == 0 && (
           <>
-            <TimeProductItem />
-            <TimeProductItem />
+            <TimeProductItem
+              price={25000}
+              label="15분 채팅 상담"
+              type="chat"
+              minute={10}
+              method="direct"
+            />
+            <TimeProductItem
+              price={40000}
+              label="30분 채팅 상담"
+              type="chat"
+              minute={10}
+              method="direct"
+            />
+            <TimeProductItem
+              price={90000}
+              label="60분 채팅 상담"
+              type="chat"
+              minute={10}
+              method="direct"
+            />
           </>
         )}
         {tab == 1 && (
           <>
-            <TimeProductItem />
-            <TimeProductItem />
+            <TimeProductItem
+              label="10초 당 단위금액"
+              type="phone"
+              minute={10}
+              method="direct"
+              price={1400}
+            />
           </>
         )}
       </div>
-      <Button buttonType={BUTTON_TYPE.primary} label="추가하기" />
+      {/* <Button buttonType={BUTTON_TYPE.primary} label="추가하기" /> */}
     </div>
   )
 }
