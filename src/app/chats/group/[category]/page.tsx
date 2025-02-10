@@ -80,9 +80,9 @@ export default function GroupChat() {
     const connect = () => {
       console.log('Connecting...')
       client.current = new StompJs.Client({
-        brokerURL: 'ws://localhost:8080/chat/inbox',
+        // brokerURL: 'ws://localhost:8080/chat/inbox',
         // brokerURL: 'ws://15.165.5.202:8080/chat/inbox',
-        // brokerURL: 'wss://api.sinsata.co.kr/chat/inbox',
+        brokerURL: 'wss://api.sinsata.co.kr/chat/inbox',
         reconnectDelay: 200,
         onConnect: () => {
           console.log('connected')
