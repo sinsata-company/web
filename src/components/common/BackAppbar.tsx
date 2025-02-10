@@ -3,14 +3,18 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-export default function BackAppbar() {
+export default function BackAppbar({ onClick }: { onClick?: () => void }) {
   const router = useRouter()
   return (
     <div className="w-96 h-14 px-5 justify-between items-center inline-flex">
       <div className="h-6 justify-start items-center gap-1 flex">
         <Image
           onClick={() => {
-            router.back()
+            if (onClick) {
+              onClick && onClick()
+            } else {
+              router.back()
+            }
           }}
           src={'/images/ic_back.svg'}
           width={8}

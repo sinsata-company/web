@@ -1,5 +1,6 @@
 import { cashDto } from '@/types/cashTables'
 import { basicUnpagedGet } from '../../api/base'
+import { CashHistoryDto } from './data'
 
 export const getMenus = async () => {
   const result = await basicUnpagedGet<cashDto[]>('/cash/tables')
@@ -8,6 +9,11 @@ export const getMenus = async () => {
 
 export const getMyCash = async () => {
   const result = await basicUnpagedGet<number>('/cash/users/cash')
+  return result
+}
+
+export const getChargeHistory = async () => {
+  const result = await basicUnpagedGet<CashHistoryDto>('/cash/users/history')
   return result
 }
 

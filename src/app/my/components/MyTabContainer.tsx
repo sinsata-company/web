@@ -2,19 +2,33 @@
 
 import { AdvisorItem } from '@/app/home/components/AdvisorList'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CouponInput from './CouponInput'
 import Input from '@/components/common/Input'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
+import { getChargeHistory } from '@/app/api/cash'
+import { CashHistoryDto } from '@/app/api/data'
+import ChargeHistoryItem from './ChargeHistoryItem'
 
 export default function MyTabContainer() {
   const [tab, setTab] = useState<number>(0)
   const [coupon, setCoupon] = useState<string>('')
   const [openModal, setOpenModal] = useState<boolean>(false)
+  const [histories, setHistories] = useState<CashHistoryDto[]>([])
   const selectTab = (idx: number) => {
     setTab(idx)
   }
+
+  useEffect(() => {
+    getChargeHistory().then((res) => {
+      if (Array.isArray(res)) {
+        setHistories(res)
+      } else {
+        console.error('Expected an array of CashHistoryDto')
+      }
+    })
+  }, [])
 
   return (
     <div>
@@ -49,13 +63,16 @@ export default function MyTabContainer() {
             ? '나와 상담한 선생님'
             : '쿠폰 등록'}
         </div>
-        {tab == 1 && (
+        {tab == 0 && (
           <>
-            {/* <AdvisorItem />
-            <AdvisorItem />
-            <AdvisorItem /> */}
+            {histories.map((history, idx) => {
+              if (history.createdAt) {
+                return <ChargeHistoryItem key={idx} {...history} />
+              }
+            })}
           </>
         )}
+        {tab == 1 && <></>}
         {tab == 2 && (
           <Input
             value={coupon}

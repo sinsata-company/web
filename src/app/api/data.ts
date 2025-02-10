@@ -23,3 +23,9 @@ export interface TeacherDetailDto {
   reviews: any[]
   pinNumber: string
 }
+
+export interface CashHistoryDto {
+  price: number
+  coin: number
+  createdAt: string
+}

@@ -5,6 +5,7 @@ import { getPayURL } from '@/app/api/http/mtn'
 import BackAppbar from '@/components/common/BackAppbar'
 import { cashDto } from '@/types/cashTables'
 import { formatNumberWithCommas } from '@/utils/numberFormatter'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function CashChargePage() {
@@ -32,10 +33,15 @@ export default function CashChargePage() {
     const result = await getMyCash()
     setMyCash(result)
   }
+  const router = useRouter()
 
   return (
     <div>
-      <BackAppbar />
+      <BackAppbar
+        onClick={() => {
+          router.replace('/my')
+        }}
+      />
 
       <div className="w-full px-5 flex-col justify-start items-start gap-6 inline-flex">
         <div className="self-stretch h-14 p-4 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-xl justify-between items-center inline-flex">
@@ -51,6 +57,12 @@ export default function CashChargePage() {
             캐시 충전
           </div>
           <div className="self-stretch p-4 rounded-2xl border-2 border-yellow-400 flex-col justify-start items-start gap-4 flex">
+            <CashItem
+              key={'0152'}
+              payAmt={100}
+              cashAmt={100}
+              onClickCharge={onClickCharge}
+            />
             {menus.map((item, index) => (
               <CashItem key={index} {...item} onClickCharge={onClickCharge} />
             ))}
