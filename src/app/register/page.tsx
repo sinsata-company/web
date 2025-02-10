@@ -8,8 +8,23 @@ import { useEffect } from 'react'
 
 export default function RegisterPage() {
   useEffect(() => {
+    const interval = setInterval(() => {
+      window.location.reload()
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+  useEffect(() => {
     window.Kakao.init('74ef3f945bb5ca2ca7eb71e76a56eda8') // 카카오 JavaScript 키로 초기화
-    console.log(window.Kakao.isInitialized())
+    const accessKey = localStorage.getItem('sst-access-key')
+    const tokenExpireAt = localStorage.getItem('sst-access-token-expire-at')
+
+    if (accessKey && tokenExpireAt) {
+      const expireAt = new Date(parseInt(tokenExpireAt, 10))
+      if (expireAt > new Date()) {
+        nav.push('/home')
+      }
+    }
   }, [])
 
   const loginWithKakao = () => {
