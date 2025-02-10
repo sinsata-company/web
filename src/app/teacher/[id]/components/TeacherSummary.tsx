@@ -21,7 +21,7 @@ export default function TeacherSummary({
             상담사명
           </div>
         </div>
-        <div className="p-2 bg-red-600/10 rounded-full flex justify-center items-center gap-1">
+        {/* <div className="p-2 bg-red-600/10 rounded-full flex justify-center items-center gap-1">
           <Image
             src={'/images/ic_chat.svg'}
             width={20}
@@ -31,7 +31,7 @@ export default function TeacherSummary({
           <div className="text-red-600 text-base font-bold font-['Pretendard Variable'] leading-tight">
             채팅하기
           </div>
-        </div>
+        </div> */}
         <div
           onClick={() => setIsPhoneModalOpen(true)}
           className="p-2 bg-red-600/10 rounded-full flex justify-center items-center gap-1"

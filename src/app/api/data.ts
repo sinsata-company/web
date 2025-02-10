@@ -38,4 +38,5 @@ export interface ReserveDto {
   endAt: string
   reserveType: string
   thumbnail: any
+  teacherPin: string
 }

@@ -1,17 +1,16 @@
 'use client'
 
-import { AdvisorItem } from '@/app/home/components/AdvisorList'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
-import CouponInput from './CouponInput'
 import Input from '@/components/common/Input'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { getChargeHistory } from '@/app/api/cash'
-import { CashHistoryDto, ReserveDto } from '@/app/api/data'
+import { CashHistoryDto, ReserveDto, TeacherListDto } from '@/app/api/data'
 import ChargeHistoryItem from './ChargeHistoryItem'
 import { myReserves } from '@/app/api/reserve'
 import ReserveItem from './ReserveItem'
+import moment from 'moment'
 
 export default function MyTabContainer() {
   const [tab, setTab] = useState<number>(0)
@@ -19,8 +18,19 @@ export default function MyTabContainer() {
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [histories, setHistories] = useState<CashHistoryDto[]>([])
   const [myPayHistory, setMyPayHistory] = useState<ReserveDto[]>([])
+  const [showReserveModal, setShowReserveModal] = useState<boolean>(false)
+  const [selectedReserve, setSelectedReserve] = useState<ReserveDto | null>(
+    null
+  )
+
   const selectTab = (idx: number) => {
     setTab(idx)
+  }
+
+  const onClickReservation = (teachers: ReserveDto) => {
+    console.log('예약하기')
+    setSelectedReserve(teachers)
+    setShowReserveModal(true)
   }
 
   useEffect(() => {
@@ -81,7 +91,13 @@ export default function MyTabContainer() {
         {tab == 1 && (
           <>
             {myPayHistory.map((history, idx) => {
-              return <ReserveItem {...history} key={idx} />
+              return (
+                <ReserveItem
+                  {...history}
+                  onClick={onClickReservation}
+                  key={idx}
+                />
+              )
             })}
           </>
         )}
@@ -110,6 +126,38 @@ export default function MyTabContainer() {
           onClick={() => setOpenModal(false)}
         />
       </Modal>
+      <Modal
+        isOpen={showReserveModal ?? false}
+        onClose={() => {
+          setShowReserveModal && setShowReserveModal(false)
+        }}
+        title="선불 상담 안내"
+        content={`${moment(selectedReserve?.startAt).format(
+          'yyyy-MM-DD hh:mm'
+        )}부터 상담이 시작됩니다. 30분 전부터 상담 버튼이 팝업에 생성됩니다.`}
+      >
+        <div className="inline-flex flex-col gap-2 w-full">
+          {moment(selectedReserve?.startAt)
+            .subtract(30, 'minutes')
+            .isBefore(moment()) && (
+            <Button
+              label="상담 시작"
+              buttonType={BUTTON_TYPE.primary}
+              onClick={() => {
+                // 상담 시작 로직을 여기에 추가하세요
+              }}
+            />
+          )}
+          <Button
+            label="닫기"
+            buttonType={BUTTON_TYPE.secondary}
+            onClick={() => {
+              setShowReserveModal(false)
+              setSelectedReserve(null)
+            }}
+          />
+        </div>
+      </Modal>
     </div>
   )
 }
@@ -124,6 +172,9 @@ const MyTabItem = ({
   selected: boolean
   onClick: Function
   idx: number
+
+  showReserveModal?: boolean
+  setShowReserveModal?: Function
 }) => {
   return (
     <div

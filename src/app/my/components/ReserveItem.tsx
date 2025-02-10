@@ -3,19 +3,25 @@ import moment from 'moment'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-const ReserveItem = ({
-  teacherId,
-  thumbnail,
-  userName,
-  startAt,
-  endAt,
-  reserveType,
-}: ReserveDto) => {
+export interface IReserveItem extends ReserveDto {
+  onClick: (teacher: ReserveDto) => void
+}
+
+const ReserveItem = (reserve: IReserveItem) => {
   const nav = useRouter()
+  const {
+    teacherId,
+    thumbnail,
+    userName,
+    startAt,
+    endAt,
+    reserveType,
+    onClick,
+  } = reserve
   return (
     <div
       onClick={() => {
-        nav.push('/teacher/' + teacherId)
+        onClick(reserve)
       }}
       className="w-full grow h-28 p-4 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-center gap-3 inline-flex"
     >

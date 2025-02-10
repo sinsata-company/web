@@ -22,7 +22,7 @@ const AdvisorReserves = () => {
           setSelectedDate(date)
         }}
       />
-      <ReserveList reserves={['']} />
+      <ReserveList reserves={[]} />
     </div>
   )
 }
