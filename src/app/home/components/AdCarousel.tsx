@@ -13,8 +13,8 @@ export default function AdCarousel() {
             '/images/banners/sst-banner-3.jpeg',
             '/images/banners/sst-banner-4.jpeg',
             '/images/banners/sst-banner-5.jpeg',
-            '/images/banners/sst-banner-6.jpeg',
-            '/images/banners/sst-banner-7.jpeg',
+            // '/images/banners/sst-banner-6.jpeg',
+            // '/images/banners/sst-banner-7.jpeg',
           ]}
           showImageModal={() => {}}
         />
