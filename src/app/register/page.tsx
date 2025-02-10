@@ -26,7 +26,9 @@ export default function RegisterPage() {
 
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email+profile`
     console.log(googleAuthUrl)
-    window.location.href = googleAuthUrl
+    window.open(googleAuthUrl, '_blank', 'width=500,height=600')
+
+    // window.location.href = googleAuthUrl
   }
 
   const loginWithNaver = () => {
