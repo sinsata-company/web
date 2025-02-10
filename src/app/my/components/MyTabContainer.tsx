@@ -8,14 +8,17 @@ import Input from '@/components/common/Input'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { getChargeHistory } from '@/app/api/cash'
-import { CashHistoryDto } from '@/app/api/data'
+import { CashHistoryDto, ReserveDto } from '@/app/api/data'
 import ChargeHistoryItem from './ChargeHistoryItem'
+import { myReserves } from '@/app/api/reserve'
+import ReserveItem from './ReserveItem'
 
 export default function MyTabContainer() {
   const [tab, setTab] = useState<number>(0)
   const [coupon, setCoupon] = useState<string>('')
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [histories, setHistories] = useState<CashHistoryDto[]>([])
+  const [myPayHistory, setMyPayHistory] = useState<ReserveDto[]>([])
   const selectTab = (idx: number) => {
     setTab(idx)
   }
@@ -26,6 +29,13 @@ export default function MyTabContainer() {
         setHistories(res)
       } else {
         console.error('Expected an array of CashHistoryDto')
+      }
+    })
+    myReserves().then((res) => {
+      if (Array.isArray(res)) {
+        setMyPayHistory(res)
+      } else {
+        console.error('Expected an array of ReserveDto')
       }
     })
   }, [])
@@ -57,11 +67,7 @@ export default function MyTabContainer() {
       <div className="h-4"></div>
       <div className="w-full h-96 px-5 flex-col justify-start items-start gap-4 inline-flex">
         <div className="text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
-          {tab == 0
-            ? '캐시내역'
-            : tab == 1
-            ? '나와 상담한 선생님'
-            : '쿠폰 등록'}
+          {tab == 0 ? '캐시내역' : tab == 1 ? '나의 예약' : '쿠폰 등록'}
         </div>
         {tab == 0 && (
           <>
@@ -72,7 +78,13 @@ export default function MyTabContainer() {
             })}
           </>
         )}
-        {tab == 1 && <></>}
+        {tab == 1 && (
+          <>
+            {myPayHistory.map((history, idx) => {
+              return <ReserveItem {...history} key={idx} />
+            })}
+          </>
+        )}
         {tab == 2 && (
           <Input
             value={coupon}

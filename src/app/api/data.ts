@@ -29,3 +29,13 @@ export interface CashHistoryDto {
   coin: number
   createdAt: string
 }
+
+export interface ReserveDto {
+  id: number
+  teacherId: string
+  userName: string
+  startAt: string
+  endAt: string
+  reserveType: string
+  thumbnail: any
+}

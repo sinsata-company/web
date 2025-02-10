@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/api/base'
 import { getMyInfo } from '../user'
 
 export const getPayURL = async (
@@ -14,9 +15,7 @@ export const getPayURL = async (
           &membnm=${user.name}
           &item=신사타 코인 ${amount}원
           &oid=${timestamp}
-          &returnurl=http://localhost:8080/api/v1/cash/returnUrl
-          &formurl=http://localhost:8080/api/v1/mtn/complete`
-  // &returnurl=https://api.sinsata.co.kr/api/v1/cash/returnUrl
-  // &formurl=https://www.sinsata.co.kr/my/cash`
+          &returnurl=${BASE_URL}/cash/returnUrl
+          &formurl=${BASE_URL}/mtn/complete`
   return mtonetUrl.replace(/\s/g, '')
 }
