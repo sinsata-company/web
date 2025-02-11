@@ -1,6 +1,11 @@
 'use client'
 
-import { getIntro, updateInrtro, updateNotice } from '@/app/manage/api/mypage'
+import {
+  getStrong,
+  updateInrtro,
+  updateNotice,
+  updateStrong,
+} from '@/app/manage/api/mypage'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import ImageInput from '@/components/common/ImageInput'
 import Input from '@/components/common/Input'
@@ -11,8 +16,9 @@ export default function Page() {
   const [value, setValue] = useState('')
 
   const router = useRouter()
+
   useEffect(() => {
-    getIntro().then((st) => {
+    getStrong().then((st) => {
       setValue(st)
     })
   }, [])
@@ -20,7 +26,7 @@ export default function Page() {
   return (
     <div className="inline-flex flex-col gap-8 w-full">
       <Input
-        name="내 소개 수정하기"
+        name="잘하는 분야 수정하기"
         value={value}
         onChange={(e) => {
           setValue(e.target.value)
@@ -35,7 +41,7 @@ export default function Page() {
         buttonType={BUTTON_TYPE.primary}
         label="저장하기"
         onClick={async () => {
-          await updateInrtro(value)
+          await updateStrong(value)
           router.back()
         }}
       />

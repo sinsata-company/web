@@ -25,8 +25,23 @@ export const updateNotice = async (notice: string, noticeURL: string) => {
   })
 }
 
+export const getIntro = async (): Promise<string> => {
+  const result = await basicTeacherGet('/manage/my/intro')
+  return result
+}
+
 export const updateInrtro = async (introduction: string) => {
   const result = await basicTeacherPost('/manage/my/intro', {
     introduction,
+  })
+}
+
+export const getStrong = async (): Promise<string> => {
+  const result = await basicTeacherGet('/manage/my/strong')
+  return result
+}
+export const updateStrong = async (strongField: string) => {
+  const result = await basicTeacherPost('/manage/my/strong', {
+    strongField,
   })
 }

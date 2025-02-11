@@ -35,6 +35,7 @@ export interface ReserveDto {
   teacherId: string
   userName: string
   startAt: string
+  customerName: string
   endAt: string
   reserveType: string
   thumbnail: any

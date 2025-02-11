@@ -84,12 +84,12 @@ export default function IWCalendar({
             style={{
               margin: '5px 0px',
             }}
-            onClick={() => !isPastDate(day) && onDateSelect(day)} // 날짜 선택 이벤트 트리거
+            onClick={() => onDateSelect(day)} // 날짜 선택 이벤트 트리거
             className={`${
               day.isSame(currentDate, 'month')
                 ? 'text-black'
                 : 'text-neutral-400 '
-            }  ${isPastDate(day) && 'line-through '}
+            }  
             
              h-5 text-center text-xs font-medium font-montserrat leading-none cursor-pointer flex items-center justify-center`}
           >

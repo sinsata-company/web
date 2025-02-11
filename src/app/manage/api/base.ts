@@ -5,7 +5,7 @@ function getAccessToken() {
   return window.localStorage.getItem('sst-teacher-token')
 }
 
-export async function basicTeacherGet(route: string) {
+export async function basicTeacherGet<T>(route: string) {
   const url = `${BASE_URL}${route}`
 
   // TODO jwt 갱신하거나 로그아웃 하는 방안
@@ -18,7 +18,7 @@ export async function basicTeacherGet(route: string) {
 
   if (response.status == 200) {
     const data = response.data
-    return data
+    return data as T
   } else {
     throw '에러 발생'
   }

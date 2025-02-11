@@ -23,6 +23,10 @@ const ProfileMenu = () => {
       route: 'intro',
       title: '내 소개 수정',
     },
+    {
+      route: 'strength',
+      title: '잘하는 분야 수정',
+    },
   ]
   return (
     <div>
