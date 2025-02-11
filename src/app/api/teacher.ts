@@ -8,6 +8,7 @@ export enum SearchType {
   POPULAR = 'POPULAR',
   VIEW = 'VIEW',
   RECENT = 'RECENT',
+  REVIEW = 'REVIEW',
 }
 
 export const getTeacherList = async (searchType: SearchType, page: number) => {

@@ -19,6 +19,10 @@ const ProfileMenu = () => {
       route: 'notice',
       title: '공지사항 작성',
     },
+    {
+      route: 'intro',
+      title: '내 소개 수정',
+    },
   ]
   return (
     <div>

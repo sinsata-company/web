@@ -24,3 +24,9 @@ export const updateNotice = async (notice: string, noticeURL: string) => {
     noticeURL,
   })
 }
+
+export const updateInrtro = async (introduction: string) => {
+  const result = await basicTeacherPost('/manage/my/intro', {
+    introduction,
+  })
+}

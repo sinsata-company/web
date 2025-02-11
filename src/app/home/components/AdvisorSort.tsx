@@ -8,7 +8,7 @@ const tabs = [
   { name: '신규순', active: true, query: SearchType.NEW },
   { name: '인기순', active: false, query: SearchType.POPULAR },
   { name: '조회순', active: false, query: SearchType.VIEW },
-  { name: '최근 조회', active: false, query: SearchType.RECENT },
+  { name: '리뷰순', active: false, query: SearchType.REVIEW },
 ]
 
 export default function AdvisorSort(props: {
