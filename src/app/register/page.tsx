@@ -8,7 +8,15 @@ import { useEffect } from 'react'
 
 export default function RegisterPage() {
   useEffect(() => {
-    window.Kakao.init('74ef3f945bb5ca2ca7eb71e76a56eda8') // 카카오 JavaScript 키로 초기화
+    const isKakaoInApp = /KAKAOTALK/i.test(navigator.userAgent)
+
+    if (isKakaoInApp) {
+      alert(
+        '로그인이 원활하지 않을 수 있습니다.\n크롬 또는 사파리에서 열어주세요.'
+      )
+      window.location.href = 'googlechrome://www.sinsata.co.kr' // 크롬에서 열도록 유도
+    }
+    // window.Kakao.init('74ef3f945bb5ca2ca7eb71e76a56eda8') // 카카오 JavaScript 키로 초기화
     const accessKey = localStorage.getItem('sst-access-key')
     const tokenExpireAt = localStorage.getItem('sst-access-token-expire-at')
     localStorage.removeItem('theme') // 테마 설정 삭제
@@ -38,17 +46,20 @@ export default function RegisterPage() {
     const newWindow = window.open(
       googleAuthUrl,
       '_blank',
-      'noopener,noreferrer'
+      'width=500,height=600'
     )
     // 부모 창에서 메시지 수신 대기
     window.addEventListener('message', (event) => {
-      const { accessToken } = event.data
+      console.log('메세지 수신 : ' + event.data)
 
-      if (accessToken) {
+      const { accessToken, origin } = event.data
+
+      if (origin == 'sst' && accessToken) {
         newWindow?.close()
-        window.location.reload() // 로그인 후 새로고침
+        nav.push('/home')
+        // window.location.reload() // 로그인 후 새로고침
+        window.removeEventListener('message', () => {})
       }
-      nav.push('/home')
     })
 
     // window.location.href = googleAuthUrl

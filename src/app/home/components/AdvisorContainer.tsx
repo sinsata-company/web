@@ -9,15 +9,17 @@ import { getTeacherList, SearchType } from '@/app/api/teacher'
 export default function AdvisorContainer() {
   const [advisorList, setAdvisorList] = useState<TeacherListDto[]>([])
   const [page, setPage] = useState<number>(0)
+  const [sort, setSort] = useState<SearchType>(SearchType.NEW)
   const [hasMore, setHasMore] = useState(true)
   const observer = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
     getTeachers(SearchType.NEW, page)
-  }, [page])
+  }, [page, sort])
 
   const getTeachers = async (query: SearchType, page: number) => {
     const response = await getTeacherList(query, page)
+
     setAdvisorList((prev) => [...prev, ...response.content])
     setHasMore(!response.last)
   }
@@ -38,7 +40,15 @@ export default function AdvisorContainer() {
   return (
     <div>
       <div className="px-5">
-        <AdvisorSort getTeachers={getTeachers} page={page} />
+        <AdvisorSort
+          getTeachers={async (sort, page) => {
+            setPage(0)
+            setAdvisorList([])
+            setSort(sort)
+            await getTeachers(SearchType.NEW, page)
+          }}
+          page={page}
+        />
       </div>
       <div className="h-6"></div>
       <div className="px-5">

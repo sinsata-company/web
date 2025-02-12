@@ -12,7 +12,7 @@ export default function GlobalError({
   const router = useRouter()
 
   useEffect(() => {
-    router.replace('/register') // 에러 발생 시 /register로 이동
+    router.replace('/home') // 에러 발생 시 /register로 이동
   }, [])
 
   return null // 아무것도 렌더링하지 않음
