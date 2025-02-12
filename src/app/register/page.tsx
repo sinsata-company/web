@@ -1,10 +1,12 @@
 'use client'
 
 import { BASE_URL, BASE_WEB } from '@/api/base'
+import { signInWithGoogle } from '@/api/firebase'
 import LandingLogo from '@/components/logins/LandingLogo'
 import SocialLoginButton from '@/components/logins/SocialLoginButton'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { loginAndJoin } from '../api/user'
 
 export default function RegisterPage() {
   useEffect(() => {
@@ -35,6 +37,15 @@ export default function RegisterPage() {
       redirectUri: BASE_WEB + '/register/oauth/kakao',
     })
   }
+
+  const firebaseGoogleLogin = async () => {
+    const result = await signInWithGoogle()
+    if (result) {
+      loginAndJoin(result, 'GOOGLE')
+      nav.push('/home')
+    }
+  }
+
   const loginWithGoogle = () => {
     const clientId =
       '387467142815-acmspfmbq3mhjf55eqa3a03ervu2g0ig.apps.googleusercontent.com'
@@ -89,7 +100,7 @@ export default function RegisterPage() {
         <SocialLoginButton
           image="google"
           name="구글"
-          onClick={loginWithGoogle}
+          onClick={firebaseGoogleLogin}
         />
         {/* <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} /> */}
         {/* <SocialLoginButton
