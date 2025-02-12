@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function MainAppbar() {
   return (
-    <div className="w-full h-14 px-5 justify-between items-center inline-flex">
+    <div className="w-full mt-3 h-14 px-5 justify-between items-center inline-flex">
       <Image
         src={'/images/sinsata_appbar_logo.svg'}
         width={120}
