@@ -57,10 +57,10 @@ export default function TeacherReservePage() {
           onClick={async () => {
             const payamt =
               selectedHour == 15 ? 25000 : selectedHour == 30 ? 40000 : 90000
-            // if (payamt > myCash) {
-            //   router.push('/my/cash')
-            //   return
-            // }
+            if (payamt > myCash) {
+              router.push('/my/cash')
+              return
+            }
             const path = param.id
             await makeReserve(
               {
@@ -76,7 +76,12 @@ export default function TeacherReservePage() {
             setReserveComplete(true)
           }}
           buttonType={BUTTON_TYPE.primary}
-          label="예약하기"
+          label={
+            (selectedHour == 15 ? 25000 : selectedHour == 30 ? 40000 : 90000) >
+            myCash
+              ? '캐시 충전하러 가기'
+              : '예약하기'
+          }
         />
       </div>
       <Modal

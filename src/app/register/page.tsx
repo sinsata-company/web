@@ -82,7 +82,7 @@ export default function RegisterPage() {
 
   const nav = useRouter()
   return (
-    <div className="h-full w-full flex flex-col  bg-zinc-900">
+    <div className="h-screen w-full flex flex-col  bg-zinc-900">
       <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
       <LandingLogo />
       <div className="w-full px-5 py-10 shadow-inner flex-col justify-center items-center gap-3 inline-flex">

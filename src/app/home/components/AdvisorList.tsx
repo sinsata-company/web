@@ -45,11 +45,11 @@ const AdvisorItem = forwardRef<HTMLDivElement, TeacherListDto>(
           style={{
             objectFit: 'cover',
           }}
-          className=" rounded-xl w-20 h-20"
+          className=" rounded-xl w-30 h-20"
           src={thumbnail || '/logo.jpg'}
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==" // 추가
-          width={80}
+          width={120}
           height={80}
           alt="profile"
         />

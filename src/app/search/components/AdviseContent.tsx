@@ -4,12 +4,14 @@ import { TeacherDetailDto, TeacherListDto } from '@/app/api/data'
 import { requestRecommendation } from '@/app/api/teacher'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Input from '@/components/common/Input'
+import Loading from '@/components/common/Loading'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 const AdviseContent = () => {
   const [contents, setContents] = useState<string>('')
+  const [isLoaing, setIsLoading] = useState<boolean>(false)
 
   const getRecommendation = async () => {
     const result = await requestRecommendation(contents)
@@ -40,10 +42,14 @@ const AdviseContent = () => {
         buttonType={BUTTON_TYPE.primary}
         label="찾기"
         onClick={async () => {
+          setIsLoading(true)
           const result = await getRecommendation()
+          setIsLoading(false)
           router.push(`/search/result?requestId=${result}`)
         }}
       />
+      {isLoaing && <Loading />}
+      {/* <Loading /> */}
     </div>
   )
 }
