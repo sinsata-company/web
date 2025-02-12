@@ -8,6 +8,7 @@ export interface TeacherListDto {
   canChat: boolean
   canCall: boolean
   status: number
+  pinNumber: string
 }
 
 export interface TeacherDetailDto {
