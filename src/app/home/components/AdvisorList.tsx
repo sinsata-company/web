@@ -127,7 +127,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             </div>
             <p className="text-sm text-primary leading-tight">
               {' '}
-              | {teacherTypeConverter(teacherType.toLowerCase())}
+              | {teacherTypeConverter(teacherType?.toLowerCase())}
             </p>
           </div>
           <div className="inline-flex gap-2">
