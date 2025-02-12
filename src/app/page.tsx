@@ -8,6 +8,14 @@ import { useEffect } from 'react'
 
 export default function RegisterPage() {
   useEffect(() => {
+    const isKakaoInApp = /KAKAOTALK/i.test(navigator.userAgent)
+
+    if (isKakaoInApp) {
+      alert(
+        '로그인이 원활하지 않을 수 있습니다.\n크롬 또는 사파리에서 열어주세요.'
+      )
+      window.location.href = 'googlechrome://www.sinsata.co.kr' // 크롬에서 열도록 유도
+    }
     // window.Kakao.init('74ef3f945bb5ca2ca7eb71e76a56eda8') // 카카오 JavaScript 키로 초기화
     const accessKey = localStorage.getItem('sst-access-key')
     const tokenExpireAt = localStorage.getItem('sst-access-token-expire-at')
