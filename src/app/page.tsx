@@ -8,14 +8,7 @@ import { useEffect } from 'react'
 
 export default function RegisterPage() {
   useEffect(() => {
-    const interval = setInterval(() => {
-      window.location.reload()
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [])
-  useEffect(() => {
-    window.Kakao.init('74ef3f945bb5ca2ca7eb71e76a56eda8') // 카카오 JavaScript 키로 초기화
+    // window.Kakao.init('74ef3f945bb5ca2ca7eb71e76a56eda8') // 카카오 JavaScript 키로 초기화
     const accessKey = localStorage.getItem('sst-access-key')
     const tokenExpireAt = localStorage.getItem('sst-access-token-expire-at')
     localStorage.removeItem('theme') // 테마 설정 삭제
@@ -42,7 +35,24 @@ export default function RegisterPage() {
 
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email+profile`
 
-    window.open(googleAuthUrl, '_blank', 'width=500,height=600')
+    const newWindow = window.open(
+      googleAuthUrl,
+      '_blank',
+      'width=500,height=600'
+    )
+    // 부모 창에서 메시지 수신 대기
+    window.addEventListener('message', (event) => {
+      console.log('메세지 수신 : ' + event.data)
+
+      const { accessToken, origin } = event.data
+
+      if (origin == 'sst' && accessToken) {
+        newWindow?.close()
+        nav.push('/home')
+        // window.location.reload() // 로그인 후 새로고침
+        window.removeEventListener('message', () => {})
+      }
+    })
 
     // window.location.href = googleAuthUrl
   }

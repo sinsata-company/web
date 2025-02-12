@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+
   rewrites: async () => [
     {
       source: '/v1/nid/me', // url이 source에 해당될 경우

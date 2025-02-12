@@ -40,7 +40,6 @@ export default function GoogleRedirect() {
           }
         )
         const tokenData = await tokenResponse.json()
-        console.log(tokenData)
 
         const response = await axios.post(
           BASE_URL + '/users/join',
@@ -60,15 +59,12 @@ export default function GoogleRedirect() {
 
         const data = response.data
         const header = response.headers
-        console.log(header)
+
         const accessToken = header['sst-access-token']
         const accessTokenExpireAt = header['sst-access-token-expire-at']
         const refreshToken = header['sst-refresh-token']
         const refreshTokenExpireAt = header['sst-refresh-token-expire-at']
-        console.log('Access Token:', accessToken)
-        console.log('Refresh Token:', refreshToken)
-        console.log('Access Token Expire At:', accessTokenExpireAt)
-        console.log('Refresh Token Expire At:', refreshTokenExpireAt)
+
         localStorage.setItem('sst-access-token', accessToken)
         localStorage.setItem('sst-access-token-expire-at', accessTokenExpireAt)
         localStorage.setItem('sst-refresh-token', refreshToken)
@@ -76,7 +72,21 @@ export default function GoogleRedirect() {
           'sst-refresh-token-expire-at',
           refreshTokenExpireAt
         )
-        router.push('/home')
+
+        if (accessToken) {
+          if (window.opener) {
+            // 부모 창(원래 창)에 메시지 전송
+            window.opener.postMessage(
+              { accessToken: accessToken, origin: 'sst' },
+              BASE_WEB
+            )
+
+            // 새 창 닫기
+            window.close()
+          } else {
+            console.error('No opener window found.')
+          }
+        }
       } catch (error) {
         console.error('Error fetching token:', error)
       }
