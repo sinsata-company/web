@@ -29,9 +29,9 @@ export default function RootLayout({
         content="d5cbe4cc3ead7ff00b35d193bfa3ef45a1b08e87"
       />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-full`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative w-full h-full max-w-[550px] mx-auto`}
       >
-        {children}
+        <div className="relative">{children}</div>
       </body>
     </html>
   )

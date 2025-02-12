@@ -51,6 +51,7 @@ export default function RegisterPage() {
     // 부모 창에서 메시지 수신 대기
     window.addEventListener('message', (event) => {
       console.log('메세지 수신 : ' + event.data)
+      console.log(event.data)
 
       const { accessToken, origin } = event.data
 
