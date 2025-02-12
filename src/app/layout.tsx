@@ -71,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="w-full h-full">
+    <html lang="en" className="w-full h-screen">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative w-full h-full max-w-[550px] mx-auto`}
       >
