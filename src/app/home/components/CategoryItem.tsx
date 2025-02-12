@@ -28,7 +28,7 @@ export default function CategoryItem({
       )}
     >
       <Image
-        src={`/images/category_${image}.svg`}
+        src={`/images/category_${image}.png`}
         width={24}
         height={24}
         alt="category"
@@ -39,6 +39,9 @@ export default function CategoryItem({
           "text-base font-bold font-['Pretendard Variable'] leading-tight",
           textColor
         )}
+        style={{
+          color: '#685c41',
+        }}
       >
         {label}
       </div>

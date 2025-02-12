@@ -5,6 +5,9 @@ export interface TeacherListDto {
   teacherType: string
   hashtag: string
   thumbnail: string
+  canChat: boolean
+  canCall: boolean
+  status: number
 }
 
 export interface TeacherDetailDto {

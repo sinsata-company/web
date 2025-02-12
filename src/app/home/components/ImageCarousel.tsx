@@ -20,7 +20,7 @@ export default function HomeBanner({
     infinite: false,
     // fade: true,
 
-    waitForAnimate: false,
+    waitForAnimate: true,
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -29,22 +29,20 @@ export default function HomeBanner({
   return (
     <Slider {...settings}>
       {imageList?.map((item, idx) => (
-        <div key={idx} style={{ width: 54, height: 240 }}>
+        <div
+          key={idx}
+          style={{ width: 54, height: 240, filter: 'grayscale(100%)' }}
+        >
           <Image
             onClick={() => {
               showImageModal(item, idx)
             }}
             unoptimized
             className="w-full h-60 bg-gray-200 rounded-2xl"
-            // src={item}
             src={item}
             width={54}
             height={240}
             alt="thumb"
-            // fill
-            // style={{
-            //   objectFit: 'fill',
-            // }}
           />
         </div>
       ))}
