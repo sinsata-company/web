@@ -97,7 +97,7 @@ export default function RegisterPage() {
           onClick={firebaseGoogleLogin}
         />
         {/* <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} /> */}
-        {/* <SocialLoginButton
+        <SocialLoginButton
           image="kakao"
           name="카카오"
           onClick={loginWithKakao}
@@ -106,7 +106,7 @@ export default function RegisterPage() {
           image="naver"
           name="네이버"
           onClick={loginWithNaver}
-        /> */}
+        />
       </div>
     </div>
   )
