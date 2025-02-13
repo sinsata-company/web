@@ -23,7 +23,7 @@ export default function CategoryItem({
         onClick && onClick(image)
       }}
       className={clsx(
-        'grow  px-2 py-3 bg-red-600/10 rounded-xl flex-col justify-center items-center gap-1 inline-flex',
+        'cursor-pointer grow  px-2 py-3 bg-red-600/10 rounded-xl flex-col justify-center items-center gap-1 inline-flex',
         color
       )}
     >

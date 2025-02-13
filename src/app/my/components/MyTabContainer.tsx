@@ -181,6 +181,7 @@ const MyTabItem = ({
       onClick={() => {
         onClick(idx)
       }}
+      className="cursor-pointer"
     >
       <div
         className={clsx(

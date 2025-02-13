@@ -1,31 +1,24 @@
 'use client'
 
+import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { clsx } from 'clsx'
 import { useRouter } from 'next/navigation'
 
 export default function FindMyAdvisor() {
   const router = useRouter()
   return (
-    <div className={clsx('bottom-20 left-0 fixed  w-full px-5')}>
-      <div
-        className="px-2 py-3 rounded-xl flex-col justify-center items-center gap-1 flex grow"
-        style={{
-          borderRadius: 12,
-          background:
-            'var(--Gradient-1, linear-gradient(121deg, #F9C00F 3.88%, #E62419 59.99%, #21499C 115.85%))',
+    <div
+      className={clsx(
+        'bottom-20 left-1/2 transform -translate-x-1/2 fixed w-full max-w-[550px] px-5'
+      )}
+    >
+      <Button
+        buttonType={BUTTON_TYPE.primary}
+        label="내게 맞는 선생님 찾기"
+        onClick={() => {
+          router.push('/search')
         }}
-      >
-        <div
-          className={clsx(
-            "text-base text-white font-bold font-['Pretendard Variable'] leading-tight"
-          )}
-          onClick={() => {
-            router.push('/search')
-          }}
-        >
-          내게 맞는 선생님 찾기
-        </div>
-      </div>
+      />
     </div>
   )
 }

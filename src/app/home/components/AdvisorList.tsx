@@ -158,7 +158,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 e.stopPropagation()
                 onClickPhone(advisor)
               }}
-              className="rounded-xl  bg-primary-red flex py-2 px-3 items-center"
+              className="cursor-pointer rounded-xl  bg-primary-red flex py-2 px-3 items-center"
               style={{
                 height: 'auto',
                 maxHeight: '2.5rem',

@@ -19,13 +19,13 @@ const BTBItem = ({ name, image }: { name: string; image: string }) => {
   const router = useRouter()
   const pathname = usePathname()
   const selected = pathname.replace('/', '') == image
-  console.log()
+
   return (
     <div
       onClick={() => {
         router.push('/' + image)
       }}
-      className="grow flex-col justify-start items-center gap-1.5 inline-flex max-w-[550px] mx-auto"
+      className="cursor-pointer grow flex-col justify-start items-center gap-1.5 inline-flex max-w-[550px] mx-auto"
     >
       <Image
         src={`/images/btb_${image}${selected ? '_selected' : ''}.svg`}

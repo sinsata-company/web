@@ -42,7 +42,7 @@ export function Button({ className, buttonType, label, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={clsx(
-        'w-full px-2 py-4 rounded-xl flex-col justify-center items-center gap-1 inline-flex',
+        'w-full px-2 py-4 rounded-xl flex-col justify-center items-center gap-1 inline-flex cursor-pointer',
         buttonStyle[buttonType].background
       )}
     >

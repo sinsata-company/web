@@ -6,9 +6,14 @@ import CashSummary from './components/CashSummary'
 import MyTabContainer from './components/MyTabContainer'
 import { useEffect, useState } from 'react'
 import SuggestLogin from '@/components/common/SuggestLogin'
+import Modal from '@/components/common/Modal'
+import { Button, BUTTON_TYPE } from '@/components/common/Button'
+import { withdraw } from '../api/user'
+import { useRouter } from 'next/navigation'
 
 export default function MyPage() {
   const [isLogin, setIsLogin] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('sst-access-token')
@@ -16,6 +21,8 @@ export default function MyPage() {
       setIsLogin(false)
     }
   }, [])
+
+  const router = useRouter()
 
   return (
     <div>
@@ -29,6 +36,45 @@ export default function MyPage() {
           <CashSummary />
           <div className="h-4"></div>
           <MyTabContainer />
+          <div className="flex justify-end px-4">
+            <button
+              className=" text-gray-400 text-sm py-2 px-4 rounded"
+              onClick={() => {
+                // Handle 회원탈퇴 logic here
+                setIsModalOpen(true)
+              }}
+            >
+              회원탈퇴
+            </button>
+          </div>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            title="회원탈퇴"
+            content="회원탈퇴를 하시겠습니까?"
+          >
+            <div className="flex justify-end gap-4">
+              <Button
+                label="취소"
+                onClick={() => {
+                  // Handle 회원탈퇴 logic here
+                  setIsModalOpen(false)
+                }}
+                buttonType={BUTTON_TYPE.primary}
+              />
+              <Button
+                label="회원탈퇴"
+                onClick={async () => {
+                  // Handle 회원탈퇴 logic here
+                  await withdraw()
+                  setIsModalOpen(false)
+                  localStorage.clear()
+                  router.push('/register')
+                }}
+                buttonType={BUTTON_TYPE.secondary}
+              />
+            </div>
+          </Modal>
         </>
       )}
 

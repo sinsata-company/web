@@ -3,6 +3,7 @@ import { BASE_URL, basicUnpagedGet } from '../../api/base'
 import axios from 'axios'
 import { UserCredential } from 'firebase/auth'
 import { isMobileDevice } from '@/utils/device'
+import { basicDelete } from './base'
 
 export const getMyInfo = async () => {
   const result = await basicUnpagedGet<UserDto>('/users/me')
@@ -126,4 +127,8 @@ function getMachineId() {
   }
 
   return machineId
+}
+
+export const withdraw = async () => {
+  await basicDelete('/users/withdraw')
 }

@@ -32,7 +32,7 @@ export default function CashSummary() {
           }}
           className="self-stretch h-14 px-3 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-xl justify-center items-center gap-1 inline-flex"
         >
-          <div className="text-center text-white text-base font-bold font-['Pretendard Variable']">
+          <div className="cursor-pointer text-center text-white text-base font-bold font-['Pretendard Variable']">
             충전하기
           </div>
         </div>

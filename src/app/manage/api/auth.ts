@@ -1,5 +1,6 @@
 import { BASE_URL, basicPost } from '@/api/base'
 import axios from 'axios'
+import { basicTeacherDelete } from './base'
 
 export const loginTeacher = async (pinNumber: string, password: string) => {
   const response = await axios.post(
@@ -22,4 +23,8 @@ export const loginTeacher = async (pinNumber: string, password: string) => {
 
   localStorage.setItem('sst-teacher-token', accessToken)
   localStorage.setItem('sst-teacher-token-expire-at', accessTokenExpireAt)
+}
+
+export const withdraw = async () => {
+  await basicTeacherDelete(BASE_URL + '/manage/auth/withdraw')
 }
