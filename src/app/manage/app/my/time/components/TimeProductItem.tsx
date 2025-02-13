@@ -10,7 +10,7 @@ const TimeProductItem = ({ price, label, method }: MenuItemProps) => {
           {label}{' '}
           {
             <span className="text-red-600 text-xs font-bold">
-              {method === 'direct' ? '[선불결제]' : '[후불결제]'}
+              {method === 'cash' ? '[선불결제]' : '[후불결제]'}
             </span>
           }
         </div>

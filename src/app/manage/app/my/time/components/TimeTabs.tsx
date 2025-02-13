@@ -1,10 +1,13 @@
 'use client'
 
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TimeProductItem from './TimeProductItem'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { InfoItem } from '../../hashtag/page'
+import { GreyDivider } from '@/components/common/Divider'
+import Modal from '@/components/common/Modal'
+import Input from '@/components/common/Input'
 
 export interface MenuItemProps {
   label: string
@@ -16,9 +19,14 @@ export interface MenuItemProps {
 
 export default function TimeTabs() {
   const [tab, setTab] = useState<number>(0)
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [unitPrice, setUnitPrice] = useState<number>(1400)
+  const [unitTime, setUnitTime] = useState<number>(10)
   const selectTab = (idx: number) => {
     setTab(idx)
   }
+
+  useEffect(() => {}, [])
 
   return (
     <div>
@@ -54,21 +62,21 @@ export default function TimeTabs() {
               label="15분 채팅 상담"
               type="chat"
               minute={10}
-              method="direct"
+              method="cash"
             />
             <TimeProductItem
               price={40000}
               label="30분 채팅 상담"
               type="chat"
               minute={10}
-              method="direct"
+              method="cash"
             />
             <TimeProductItem
               price={90000}
               label="60분 채팅 상담"
               type="chat"
               minute={10}
-              method="direct"
+              method="cash"
             />
           </>
         )}
@@ -81,10 +89,50 @@ export default function TimeTabs() {
               method="direct"
               price={1400}
             />
+            <Button
+              buttonType={BUTTON_TYPE.primary}
+              label="후불 시간 수정하기"
+              onClick={() => setShowModal(true)}
+            />
+            <GreyDivider />
+            <TimeProductItem
+              price={25000}
+              label="15분 채팅 상담"
+              type="chat"
+              minute={10}
+              method="cash"
+            />
+            <TimeProductItem
+              price={40000}
+              label="30분 채팅 상담"
+              type="chat"
+              minute={10}
+              method="cash"
+            />
+            <TimeProductItem
+              price={90000}
+              label="60분 채팅 상담"
+              type="chat"
+              minute={10}
+              method="cash"
+            />
           </>
         )}
       </div>
-      {/* <Button buttonType={BUTTON_TYPE.primary} label="추가하기" /> */}
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="후불 시간 수정"
+        content="후불 시간 수정을 10초 당 금액을 수정하신 후 확인을 눌러주세요."
+      >
+        <Input
+          value={unitPrice.toString()}
+          onChange={(e) => setUnitPrice(Number(e.target.value))}
+          name="10초 당 금액(원)"
+        />
+        <div className="h-4"></div>
+        <Button buttonType={BUTTON_TYPE.primary} label="수정하기" />
+      </Modal>
     </div>
   )
 }

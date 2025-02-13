@@ -92,16 +92,24 @@ export default function RegisterPage() {
       <LandingLogo />
       <div className="w-full px-5 py-10 shadow-inner flex-col justify-center items-center gap-3 inline-flex">
         <SocialLoginButton
+          image=""
+          name="이메일"
+          onClick={() => {
+            nav.push('/register/oauth/email')
+          }}
+        />
+        {/* <SocialLoginButton
           image="google"
           name="구글"
-          onClick={firebaseGoogleLogin}
-        />
+          onClick={loginWithGoogle}
+        /> */}
         {/* <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} /> */}
         <SocialLoginButton
           image="kakao"
           name="카카오"
           onClick={loginWithKakao}
         />
+
         <SocialLoginButton
           image="naver"
           name="네이버"
