@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Noto_Sans } from 'next/font/google'
 import './globals.css'
 import KakaoScript from '@/components/common/KakaoScript'
+import { UsageFooter } from '@/components/common/BizFooter'
 
 const notoSans = Noto_Sans({
   subsets: ['latin'], // 서브셋 설정
@@ -73,6 +74,7 @@ export default function RootLayout({
         className={`${notoSans.className} antialiased relative w-full h-full max-w-[550px] mx-auto`}
       >
         <div className="relative">{children}</div>
+        <UsageFooter />
       </body>
       <KakaoScript />
     </html>

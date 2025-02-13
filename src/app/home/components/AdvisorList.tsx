@@ -2,9 +2,8 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { TeacherDetailDto, TeacherListDto } from '@/app/api/data'
-import { forwardRef, useEffect, useRef, useState } from 'react'
-import { teacherTypeConverter } from '@/utils/teacherTypeConverter'
+import { TeacherListDto } from '@/app/api/data'
+import { forwardRef, useState } from 'react'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 
@@ -97,8 +96,7 @@ interface AdvisorItemProps extends TeacherListDto {
 
 const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
   function AdvisorItem(advisor, ref) {
-    const { id, name, thumbnail, hashtag, status, teacherType, onClickPhone } =
-      advisor
+    const { id, name, thumbnail, hashtag, summary, onClickPhone } = advisor
     const nav = useRouter()
     return (
       <div
@@ -106,67 +104,91 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         onClick={() => {
           nav.push('/teacher/' + id)
         }}
-        className="w-full grow h-28 p-4 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-center gap-3 inline-flex"
+        className="w-full items-stretch flex-col p-4 pb-2 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-start  inline-flex"
       >
-        <Image
-          style={{
-            objectFit: 'cover',
-          }}
-          className="rounded-xl w-25 h-18"
-          src={thumbnail || '/logo.jpg'}
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==" // 추가
-          width={100}
-          height={75}
-          alt="profile"
-        />
-        <div className="grow flex-col justify-center items-start gap-2 inline-flex overflow-hidden">
-          <div className="h-2.5 flex gap-2 items-baseline leading-tight">
-            <div className="text-primary leading-tight font-extrabold font-['Pretendard Variable'] leading-none">
-              {name}
+        <div className="flex items-center grow">
+          <Image
+            style={{
+              objectFit: 'cover',
+            }}
+            className="rounded-xl w-30 h-24"
+            src={thumbnail || '/logo.jpg'}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==" // 추가
+            width={120}
+            height={90}
+            alt="profile"
+          />
+
+          <div className="border-b-2 border-primary-red flex  grow items-center">
+            <div className="flex-col grow justify-center items-start gap-2 inline-flex overflow-hidden">
+              <div className="flex-col flex items-baseline leading-tight">
+                <div className=" font-extrabold leading-tight">{name}</div>
+                <p className=" text-xs ">{summary.substring(0, 10)}</p>
+              </div>
+              <div className="flex-col inline-flex justify-between text-black text-sm font-bold ">
+                <div className="flex items-center  ">
+                  <Image
+                    src={'/images/cash_060.png'}
+                    width={24}
+                    height={24}
+                    alt="cash"
+                  />
+                  <div className="flex items-baseline">
+                    <p>1,400원</p>
+                    <p className="font-light text-xs">30초</p>
+                  </div>
+                </div>
+                <div className="flex items-center  ">
+                  <Image
+                    src={'/images/cash_070.png'}
+                    width={24}
+                    height={24}
+                    alt="cash"
+                  />
+                  <div className="flex items-baseline">
+                    <p>25,000원</p>
+                    <p className="font-light text-xs">15분</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="text-sm text-primary leading-tight">
-              {' '}
-              | {teacherTypeConverter(teacherType?.toLowerCase())}
-            </p>
-          </div>
-          <div className="inline-flex gap-2">
-            {hashtag &&
-              hashtag.split('#').map((tag, idx) => {
-                if (tag === '') return null
-                return (
-                  <p
-                    className="leadig-none text-primary"
-                    key={'hash-' + idx}
-                    style={{
-                      fontWeight: 300,
-                    }}
-                  >
-                    #{tag.trim()}{' '}
-                  </p>
-                )
-              })}
-          </div>
-          <div className="inline-flex justify-between text-black text-sm font-bold font-['Pretendard Variable'] w-full overflow-hidden whitespace-nowrap text-ellipsis truncate">
-            <p>선불 1200원</p>
-            <p>15분 25,000원</p>
+            <div
+              onClick={(e) => {
+                e.stopPropagation()
+                onClickPhone(advisor)
+              }}
+              className="rounded-xl  bg-primary-red flex py-2 px-3 items-center"
+              style={{
+                height: 'auto',
+                maxHeight: '2.5rem',
+              }}
+            >
+              <Image
+                src={'/images/button_call.png'}
+                width={24}
+                height={24}
+                alt="call"
+                className="mr-2 w-6 h-6"
+              />
+              <div className="text-white">전화 상담</div>
+            </div>
           </div>
         </div>
-        <Image
-          onClick={(e) => {
-            e.stopPropagation()
-            onClickPhone(advisor)
-          }}
-          className="rounded-xl w-25 h-8"
-          src={`/images/status_${
-            status == 0 ? 'live' : status == 1 ? 'calling' : 'notlive'
-          }.png`}
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==" // 추가
-          width={100}
-          height={28}
-          alt="profile"
-        />
+        <div className="gap-2 text-sm text-primary-red flex justify-start mt-1">
+          {hashtag &&
+            hashtag.split('#').map((tag, idx) => {
+              if (tag === '') return null
+              return (
+                <p
+                  className="leadig-none text-primary-red text-bold font-bold"
+                  key={'hash-' + idx}
+                >
+                  #{tag.trim()}{' '}
+                </p>
+              )
+            })}
+        </div>
       </div>
     )
   }

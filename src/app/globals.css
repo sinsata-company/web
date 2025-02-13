@@ -40,3 +40,11 @@ body {
 .text-primary {
   color: #685c41;
 }
+
+.bg-primary-red {
+  background: #f16a51;
+}
+
+.text-primary-red {
+  color: #f16a51;
+}
