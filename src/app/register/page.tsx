@@ -11,18 +11,17 @@ import { getRedirectResult } from 'firebase/auth'
 
 export default function RegisterPage() {
   useEffect(() => {
-    window.Kakao.init('74ef3f945bb5ca2ca7eb71e76a56eda8') // 카카오 JavaScript 키로 초기화
     const accessKey = localStorage.getItem('sst-access-key')
     const tokenExpireAt = localStorage.getItem('sst-access-token-expire-at')
     localStorage.removeItem('theme') // 테마 설정 삭제
     document.documentElement.classList.remove('dark') // dark 클래스 제거
 
-    if (accessKey && tokenExpireAt) {
-      const expireAt = new Date(parseInt(tokenExpireAt, 10))
-      if (expireAt > new Date()) {
-        nav.push('/home')
-      }
-    }
+    // if (accessKey && tokenExpireAt) {
+    //   const expireAt = new Date(parseInt(tokenExpireAt, 10))
+    //   if (expireAt > new Date()) {
+    //     nav.push('/home')
+    //   }
+    // }
   }, [])
 
   const loginWithKakao = () => {
@@ -88,7 +87,7 @@ export default function RegisterPage() {
   const nav = useRouter()
   return (
     <div className="h-screen w-full flex flex-col  bg-zinc-900">
-      <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+      <script defer src="https://developers.kakao.com/sdk/js/kakao.js"></script>
       <LandingLogo />
       <div className="w-full px-5 py-10 shadow-inner flex-col justify-center items-center gap-3 inline-flex">
         <SocialLoginButton
