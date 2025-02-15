@@ -8,25 +8,104 @@ import { InfoItem } from '../../hashtag/page'
 import { GreyDivider } from '@/components/common/Divider'
 import Modal from '@/components/common/Modal'
 import Input from '@/components/common/Input'
+import { getMenu, updateMenu } from '@/app/manage/api/mypage'
 
 export interface MenuItemProps {
-  label: string
+  id: number
+
   type: 'chat' | 'phone'
   minute: number
   method: 'direct' | 'cash'
   price: number
 }
 
+const initialMenu: MenuItemProps[] = [
+  {
+    id: 1,
+
+    type: 'chat',
+    minute: 15,
+    method: 'cash',
+    price: 25000,
+  },
+  {
+    id: 2,
+
+    type: 'chat',
+    minute: 30,
+    method: 'cash',
+    price: 40000,
+  },
+  {
+    id: 3,
+
+    type: 'chat',
+    minute: 60,
+    method: 'cash',
+    price: 90000,
+  },
+  {
+    id: 4,
+
+    type: 'phone',
+    minute: 15,
+    method: 'cash',
+    price: 25000,
+  },
+  {
+    id: 5,
+
+    type: 'phone',
+    minute: 30,
+    method: 'cash',
+    price: 40000,
+  },
+  {
+    id: 6,
+
+    type: 'phone',
+    minute: 60,
+    method: 'cash',
+    price: 90000,
+  },
+]
+
 export default function TimeTabs() {
   const [tab, setTab] = useState<number>(0)
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [unitPrice, setUnitPrice] = useState<number>(1400)
-  const [unitTime, setUnitTime] = useState<number>(10)
+  const [menu, setMenu] = useState<MenuItemProps[]>(initialMenu)
+  const [selectedMenu, setSelectedMenu] = useState<MenuItemProps | null>(null)
+
   const selectTab = (idx: number) => {
     setTab(idx)
   }
 
-  useEffect(() => {}, [])
+  const updateMenuList = () => {
+    if (!selectedMenu) return
+    const newMenu = menu.map((m) =>
+      m.id == selectedMenu.id
+        ? { ...m, price: selectedMenu.price, minute: selectedMenu.minute }
+        : m
+    )
+    setMenu(newMenu)
+    updateMenu(JSON.stringify(newMenu))
+  }
+
+  const onClickMenu = (menu: MenuItemProps) => {
+    setSelectedMenu(menu)
+    setShowModal(true)
+  }
+
+  useEffect(() => {
+    getMenu('menu').then((res) => {
+      console.log(typeof res == 'object')
+      if (res.length != 6) {
+        return
+      } else {
+        setMenu(res)
+      }
+    })
+  }, [])
 
   return (
     <div>
@@ -57,76 +136,80 @@ export default function TimeTabs() {
       <div className="w-full  flex-col justify-start items-start gap-4 inline-flex mb-12">
         {tab == 0 && (
           <>
-            <TimeProductItem
-              price={25000}
-              label="15분 채팅 상담"
-              type="chat"
-              minute={10}
-              method="cash"
-            />
-            <TimeProductItem
-              price={40000}
-              label="30분 채팅 상담"
-              type="chat"
-              minute={10}
-              method="cash"
-            />
-            <TimeProductItem
-              price={90000}
-              label="60분 채팅 상담"
-              type="chat"
-              minute={10}
-              method="cash"
-            />
+            {menu.map((m, idx) => {
+              if (m.type == 'chat') {
+                return (
+                  <TimeProductItem onClick={onClickMenu} key={m.id} {...m} />
+                )
+              }
+            })}
           </>
         )}
         {tab == 1 && (
           <>
             <TimeProductItem
-              label="30초 당 단위금액"
               type="phone"
               minute={30}
               method="direct"
               price={1400}
+              id={9}
+              onClick={onClickMenu}
             />
             <GreyDivider />
-            <TimeProductItem
-              price={25000}
-              label="15분 채팅 상담"
-              type="chat"
-              minute={10}
-              method="cash"
-            />
-            <TimeProductItem
-              price={40000}
-              label="30분 채팅 상담"
-              type="chat"
-              minute={10}
-              method="cash"
-            />
-            <TimeProductItem
-              price={90000}
-              label="60분 채팅 상담"
-              type="chat"
-              minute={10}
-              method="cash"
-            />
+            {menu.map((m, idx) => {
+              if (m.type == 'phone') {
+                return <TimeProductItem {...m} key={m.id} onClick={(t) => {}} />
+              }
+            })}
           </>
         )}
       </div>
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title="후불 시간 수정"
-        content="후불 시간 수정을 10초 당 금액을 수정하신 후 확인을 눌러주세요."
+        title="상품 목록 수정"
+        content="선택하신 상품의 가격을 수정하시고 수정하기 버튼을 눌러주세요."
       >
         <Input
-          value={unitPrice.toString()}
-          onChange={(e) => setUnitPrice(Number(e.target.value))}
-          name="10초 당 금액(원)"
+          type="number"
+          value={selectedMenu?.minute.toString() ?? ''}
+          onChange={(e) => {
+            setSelectedMenu((prev) =>
+              prev ? { ...prev, minute: Number(e.target.value) ?? 0 } : null
+            )
+          }}
+          name="단위 시간(분)"
+        />
+        <Input
+          type="number"
+          value={selectedMenu?.price.toString() ?? ''}
+          onChange={(e) => {
+            setSelectedMenu((prev) =>
+              prev ? { ...prev, price: Number(e.target.value) ?? 0 } : null
+            )
+          }}
+          name="단위 금액(원)"
         />
         <div className="h-4"></div>
-        <Button buttonType={BUTTON_TYPE.primary} label="수정하기" />
+        <div className="flex flex-col gap-2">
+          <Button
+            buttonType={BUTTON_TYPE.primary}
+            label="수정하기"
+            onClick={() => {
+              updateMenuList()
+              setSelectedMenu(null)
+              setShowModal(false)
+            }}
+          />
+          <Button
+            buttonType={BUTTON_TYPE.secondary}
+            label="닫기"
+            onClick={() => {
+              setSelectedMenu(null)
+              setShowModal(false)
+            }}
+          />
+        </div>
       </Modal>
     </div>
   )

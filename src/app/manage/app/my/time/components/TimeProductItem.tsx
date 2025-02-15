@@ -2,12 +2,20 @@ import { formatNumberWithCommas } from '@/utils/numberFormatter'
 import { MenuItemProps } from './TimeTabs'
 import { InfoItem } from '../../hashtag/page'
 
-const TimeProductItem = ({ price, label, method }: MenuItemProps) => {
+export interface ITimeProductItemProps extends MenuItemProps {
+  onClick: (item: MenuItemProps) => void
+}
+
+const TimeProductItem = (props: ITimeProductItemProps) => {
+  const { method, price, minute, type } = props
   return (
-    <div className="h-11 bg-white rounded-xl flex items-center gap-4 w-full">
+    <div
+      onClick={() => props.onClick(props)}
+      className="h-11 bg-white rounded-xl flex items-center gap-4 w-full"
+    >
       <div className="grow flex-grow flex flex-col justify-center items-start gap-1">
         <div className="text-zinc-900 text-base font-bold leading-snug">
-          {label}{' '}
+          {`${minute}분 ${type == 'chat' ? '채팅' : '전화'} 상담`}{' '}
           {
             <span className="text-red-600 text-xs font-bold">
               {method === 'cash' ? '[선불결제]' : '[후불결제]'}

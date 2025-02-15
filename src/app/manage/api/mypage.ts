@@ -6,6 +6,11 @@ export const getMySummary = async () => {
   return result
 }
 
+export const getMenu = async (menu: string) => {
+  const result = await basicTeacherGet<string>('/manage/my/menu')
+  return result
+}
+
 export const updateMenu = async (menu: string) => {
   const result = await basicTeacherPost('/manage/my/menu', {
     menus: menu,
@@ -26,7 +31,7 @@ export const updateNotice = async (notice: string, noticeURL: string) => {
 }
 
 export const getIntro = async (): Promise<string> => {
-  const result = await basicTeacherGet('/manage/my/intro')
+  const result = await basicTeacherGet<string>('/manage/my/intro')
   return result
 }
 
@@ -37,7 +42,7 @@ export const updateInrtro = async (introduction: string) => {
 }
 
 export const getStrong = async (): Promise<string> => {
-  const result = await basicTeacherGet('/manage/my/strong')
+  const result = await basicTeacherGet<string>('/manage/my/strong')
   return result
 }
 export const updateStrong = async (strongField: string) => {
