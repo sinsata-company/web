@@ -124,7 +124,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             <div className="flex-col grow justify-center items-start gap-2 inline-flex overflow-hidden">
               <div className="flex-col flex items-baseline leading-tight">
                 <div className=" font-extrabold leading-tight">{name}</div>
-                <p className=" text-xs ">{summary.substring(0, 10)}</p>
+                <p className=" text-xs ">{summary.substring(0, 20)}</p>
               </div>
               <div className="flex-col inline-flex justify-between text-black text-sm font-bold ">
                 <div className="flex items-center  ">
@@ -134,7 +134,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                     height={24}
                     alt="cash"
                   />
-                  <div className="flex items-baseline">
+                  <div className="flex items-baseline gap-1">
                     <p>1,400원</p>
                     <p className="font-light text-xs">30초</p>
                   </div>
@@ -146,7 +146,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                     height={24}
                     alt="cash"
                   />
-                  <div className="flex items-baseline">
+                  <div className="flex items-baseline gap-1">
                     <p>25,000원</p>
                     <p className="font-light text-xs">15분</p>
                   </div>
