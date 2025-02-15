@@ -83,16 +83,11 @@ export default function TimeTabs() {
         {tab == 1 && (
           <>
             <TimeProductItem
-              label="10초 당 단위금액"
+              label="30초 당 단위금액"
               type="phone"
-              minute={10}
+              minute={30}
               method="direct"
               price={1400}
-            />
-            <Button
-              buttonType={BUTTON_TYPE.primary}
-              label="후불 시간 수정하기"
-              onClick={() => setShowModal(true)}
             />
             <GreyDivider />
             <TimeProductItem

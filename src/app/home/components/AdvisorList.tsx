@@ -124,7 +124,9 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             <div className="flex-col grow justify-center items-start gap-2 inline-flex overflow-hidden">
               <div className="flex-col flex items-baseline leading-tight">
                 <div className=" font-extrabold leading-tight">{name}</div>
-                <p className=" text-xs ">{summary.substring(0, 20)}</p>
+                <p className=" text-xs ">
+                  {summary?.length > 20 ? summary.substring(0, 20) : summary}
+                </p>
               </div>
               <div className="flex-col inline-flex justify-between text-black text-sm font-bold ">
                 <div className="flex items-center  ">
