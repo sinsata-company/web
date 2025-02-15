@@ -15,7 +15,9 @@ const TimeProductItem = (props: ITimeProductItemProps) => {
     >
       <div className="grow flex-grow flex flex-col justify-center items-start gap-1">
         <div className="text-zinc-900 text-base font-bold leading-snug">
-          {`${minute}분 ${type == 'chat' ? '채팅' : '전화'} 상담`}{' '}
+          {`${minute}${method == 'direct' ? '초' : '분'} ${
+            type == 'chat' ? '채팅' : '전화'
+          } 상담`}{' '}
           {
             <span className="text-red-600 text-xs font-bold">
               {method === 'cash' ? '[선불결제]' : '[후불결제]'}
