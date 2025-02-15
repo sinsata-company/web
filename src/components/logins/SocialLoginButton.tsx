@@ -18,7 +18,7 @@ export default function SocialLoginButton({
       onClick={() => {
         onClick(name)
       }}
-      className="w-full px-5 py-4 bg-white rounded-xl justify-center items-center gap-1 inline-flex"
+      className="w-full px-5 h-14 py-4 bg-white rounded-xl justify-center items-center gap-1 inline-flex"
     >
       {image && (
         <Image
