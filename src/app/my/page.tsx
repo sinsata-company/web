@@ -8,18 +8,24 @@ import { useEffect, useState } from 'react'
 import SuggestLogin from '@/components/common/SuggestLogin'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
-import { withdraw } from '../api/user'
+import { getMyInfo, withdraw } from '../api/user'
 import { useRouter } from 'next/navigation'
+import Membership from './components/Membership'
+import { UserDto } from '@/types/user'
 
 export default function MyPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [me, setMe] = useState<UserDto | null>(null)
 
   useEffect(() => {
     const token = localStorage.getItem('sst-access-token')
     if (!token) {
       setIsLogin(false)
     }
+    getMyInfo().then((res) => {
+      setMe(res)
+    })
   }, [])
 
   const router = useRouter()
@@ -33,6 +39,7 @@ export default function MyPage() {
         </div>
       ) : (
         <>
+          <Membership level={me?.level ?? ''} />
           <CashSummary />
           <div className="h-4"></div>
           <MyTabContainer />

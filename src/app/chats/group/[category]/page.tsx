@@ -8,6 +8,8 @@ import * as StompJs from '@stomp/stompjs'
 import { usePathname, useRouter } from 'next/navigation'
 import ChatScreen from './components/ChatScreen'
 import { v4 as uuidv4 } from 'uuid'
+import { UserDto } from '@/types/user'
+import { getMyInfo } from '@/app/api/user'
 
 export interface IMessage {
   roomId: string
@@ -15,6 +17,8 @@ export interface IMessage {
   message: string
   id: number
   createdAt: string
+  level: string
+  nickname: string
 }
 
 export default function GroupChat() {
@@ -23,6 +27,16 @@ export default function GroupChat() {
   const client = useRef<StompJs.Client>(null)
   const category = usePathname().split('/').pop() as string
   const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
+  const [user, setUser] = useState<UserDto | null>(null)
+
+  useEffect(() => {
+    getUserDetails()
+  }, [])
+
+  const getUserDetails = async () => {
+    const user = await getMyInfo()
+    setUser(user)
+  }
 
   const router = useRouter()
 
@@ -36,6 +50,8 @@ export default function GroupChat() {
           roomId: category,
           authorId: myId,
           message: message,
+          level: user?.level,
+          nickname: user?.nickname,
         }),
       })
 
@@ -112,7 +128,7 @@ export default function GroupChat() {
         }}
       />
 
-      <ChatScreen messages={receivedMessages} myId={myId} />
+      <ChatScreen user={user} messages={receivedMessages} myId={myId} />
 
       <ChatWriter
         message={message}
