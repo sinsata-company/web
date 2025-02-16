@@ -18,13 +18,13 @@ export default function HomeBanner({
   var settings = {
     dots: true,
     infinite: false,
-    // fade: true,
-
     waitForAnimate: true,
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
+    autoplay: true,
+    autoplaySpeed: 3000,
   }
   return (
     <Slider {...settings}>
