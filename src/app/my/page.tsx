@@ -39,26 +39,28 @@ export default function MyPage() {
         </div>
       ) : (
         <>
-          <Membership level={me?.level ?? ''} />
+          <Membership level={me?.level ?? ''} nickname={me?.nickname ?? ''} />
           <CashSummary />
           <div className="h-4"></div>
           <MyTabContainer />
-          <div className="flex justify-end px-4">
-            <button
-              className=" text-gray-400 text-sm py-2 px-4 rounded"
-              onClick={() => {
-                // Handle 회원탈퇴 logic here
-                setIsModalOpen(true)
-              }}
-            >
-              회원탈퇴
-            </button>
-          </div>
+          {isLogin && (
+            <div className="flex justify-end px-4">
+              <button
+                className=" text-gray-400 text-sm py-2 px-4 rounded"
+                onClick={() => {
+                  // Handle 회원탈퇴 logic here
+                  setIsModalOpen(true)
+                }}
+              >
+                회원탈퇴
+              </button>
+            </div>
+          )}
           <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             title="회원탈퇴"
-            content="회원탈퇴를 하시겠습니까?"
+            content="회원탈퇴를 하시겠습니까? 한 번 탈퇴한 계정은 영구 삭제되며, 다시 복구되지 않습니다."
           >
             <div className="flex justify-end gap-4">
               <Button

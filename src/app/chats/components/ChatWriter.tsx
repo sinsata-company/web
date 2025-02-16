@@ -1,3 +1,6 @@
+'use client'
+
+import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Image from 'next/image'
 
 export default function ChatWriter({
@@ -9,8 +12,23 @@ export default function ChatWriter({
   message: string
   setMessage: Function
 }) {
+  const expire = localStorage.getItem('sst-access-token-expire-at')
+  const isLogin =
+    localStorage.getItem('sst-access-token') &&
+    expire &&
+    expire &&
+    Number(expire) > Date.now()
   return (
-    <div className="max-w-[550px] w-full mx-auto  fixed bottom-0 left-0 right-0 w-full h-28 px-5 pt-4 pb-10 bg-white border-t border-zinc-100 flex-col justify-start items-start gap-2.5 inline-flex">
+    <div className="max-w-[550px] w-full mx-auto  fixed bottom-0 left-0 right-0 w-full  px-5 pt-4 pb-10 bg-white border-t border-zinc-100 flex-col justify-start items-start gap-2.5 inline-flex">
+      {!isLogin && (
+        <Button
+          buttonType={BUTTON_TYPE.primary}
+          label="로그인하러가기"
+          onClick={() => {
+            window.location.href = '/register'
+          }}
+        />
+      )}
       <div className="self-stretch h-12 p-3 bg-zinc-100 rounded-xl justify-between items-center inline-flex">
         <input
           value={message}
@@ -19,6 +37,7 @@ export default function ChatWriter({
 
             setMessage(text)
           }}
+          disabled={isLogin ? false : true}
           onKeyUp={(e) => {
             if (e.key == 'Enter') {
               sendMessage()

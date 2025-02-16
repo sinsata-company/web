@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-4/5 px-4 py-8">
+      <div className="max-w-[500px] bg-white rounded-lg shadow-lg w-4/5 px-4 py-8">
         <div className="text-zinc-900 text-xl font-bold font-['Pretendard']">
           {title}
         </div>
