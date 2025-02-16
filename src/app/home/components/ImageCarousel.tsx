@@ -17,7 +17,7 @@ export default function HomeBanner({
 }) {
   var settings = {
     dots: true,
-    infinite: false,
+    infinite: true,
     waitForAnimate: true,
     speed: 300,
     slidesToShow: 1,
@@ -31,6 +31,7 @@ export default function HomeBanner({
       {imageList?.map((item, idx) => (
         <div
           key={idx}
+          className="cursor-pointer"
           style={{ width: 54, height: 240, filter: 'grayscale(100%)' }}
         >
           <Image

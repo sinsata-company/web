@@ -31,6 +31,31 @@ export default function Page() {
   }, [password, passwordConfirm])
 
   const nav = useRouter()
+
+  const onSubmit = async () => {
+    const canUse = await canUseId(name)
+    if (isLogin) {
+      if (!canUse) {
+        const result = await loginByEmail(name, password, 'EMAIL')
+        if (!result) {
+          setPasswordError('비밀번호가 일치하지 않습니다.')
+          return
+        }
+      } else {
+        setNameError('존재하지 않는 아이디입니다.')
+        return
+      }
+    } else {
+      if (!canUse) {
+        setNameError('이미 사용중인 아이디입니다.')
+        return
+      }
+      if (validate() && name && canUse && password) {
+        await joinByEmail(name, password, 'EMAIL')
+      }
+    }
+    nav.push('/home')
+  }
   return (
     <div>
       <LogoAppbar />
@@ -51,6 +76,11 @@ export default function Page() {
           placeholder="비밀번호를 입력해주세요"
           error={passwordError}
           type="password"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              onSubmit()
+            }
+          }}
         />
         {!isLogin && (
           <Input
@@ -68,30 +98,7 @@ export default function Page() {
         <Button
           buttonType={BUTTON_TYPE.primary}
           label={isLogin ? '로그인' : '회원가입'}
-          onClick={async () => {
-            const canUse = await canUseId(name)
-            if (isLogin) {
-              if (!canUse) {
-                const result = await loginByEmail(name, password, 'EMAIL')
-                if (!result) {
-                  setPasswordError('비밀번호가 일치하지 않습니다.')
-                  return
-                }
-              } else {
-                setNameError('존재하지 않는 아이디입니다.')
-                return
-              }
-            } else {
-              if (!canUse) {
-                setNameError('이미 사용중인 아이디입니다.')
-                return
-              }
-              if (validate() && name && canUse && password) {
-                await joinByEmail(name, password, 'EMAIL')
-              }
-            }
-            nav.push('/home')
-          }}
+          onClick={onSubmit}
         />
         <div
           className="text-grey-600 text-sm cursor-pointer underline text-center"

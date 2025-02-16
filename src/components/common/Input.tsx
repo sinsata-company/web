@@ -13,6 +13,9 @@ interface InputProps {
   maxLength?: number
   type?: string
   error?: string
+  onKeyDown?: (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void
 }
 
 export default function Input({
@@ -26,6 +29,7 @@ export default function Input({
   lines,
   useCounter,
   maxLength,
+  onKeyDown,
   type,
   error,
 }: InputProps) {
@@ -50,6 +54,7 @@ export default function Input({
               placeholder={placeholder}
               value={value}
               onChange={onChange}
+              onKeyDown={onKeyDown}
             />
           ) : (
             <input
@@ -62,6 +67,7 @@ export default function Input({
               placeholder={placeholder}
               value={value}
               onChange={onChange}
+              onKeyDown={onKeyDown}
             />
           )}
         </div>

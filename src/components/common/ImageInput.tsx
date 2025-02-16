@@ -47,7 +47,7 @@ export default function ImageInput({
       <div>
         <div
           onClick={onClick}
-          className="w-20 h-20  rounded-xl border border-stone-300 flex flex-col justify-center items-center gap-1"
+          className="cursor-pointer w-20 h-20  rounded-xl border border-stone-300 flex flex-col justify-center items-center gap-1"
         >
           <input
             onChange={onChange}

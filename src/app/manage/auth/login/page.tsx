@@ -11,6 +11,11 @@ export default function Page() {
   const [password, setPassword] = useState<string>('')
 
   const router = useRouter()
+
+  const onClick = async () => {
+    await loginTeacher(pin, password)
+    router.replace('/manage/app/main/home')
+  }
   return (
     <div className="flex flex-col gap-8 w-full">
       <Input
@@ -25,6 +30,11 @@ export default function Page() {
         name="비밀번호"
         placeholder="이메일을 입력해주세요"
         value={password}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onClick()
+          }
+        }}
         onChange={(e) => {
           setPassword(e.target.value)
         }}
@@ -32,10 +42,7 @@ export default function Page() {
       <Button
         buttonType={BUTTON_TYPE.primary}
         label="로그인"
-        onClick={async () => {
-          await loginTeacher(pin, password)
-          router.replace('/manage/app/main/home')
-        }}
+        onClick={onClick}
       />
     </div>
   )

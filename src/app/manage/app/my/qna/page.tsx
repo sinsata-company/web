@@ -60,7 +60,6 @@ export default function Page() {
   }
 
   const onClickModify = async () => {
-    console.log(qna)
     await updateQna(JSON.stringify(qna))
     setShowModal(false)
     const result = await getQna()
@@ -69,7 +68,11 @@ export default function Page() {
 
   useEffect(() => {
     getQna().then((res) => {
-      setQna(res)
+      console.log(res)
+      if (res) {
+        setQna(res)
+      }
+      // setQna(res ?? faqs)
     })
   }, [])
 

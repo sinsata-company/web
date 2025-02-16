@@ -16,7 +16,6 @@ function getAccessToken() {
   const expire = window.localStorage.getItem('sst-access-token-expire-at')
   if (expire && new Date().getTime() > parseInt(expire)) {
     window.location.href = `${BASE_WEB}/register`
-    console.log('adf')
     return null
   }
   return window.localStorage.getItem('sst-access-token')
