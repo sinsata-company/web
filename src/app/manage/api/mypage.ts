@@ -26,7 +26,7 @@ export const updateHash = async (hashtag: string) => {
 export const updateNotice = async (notice: string, noticeURL: string) => {
   const result = await basicTeacherPost('/manage/my/notice', {
     notice,
-    noticeURL,
+    imageUrls: noticeURL,
   })
 }
 

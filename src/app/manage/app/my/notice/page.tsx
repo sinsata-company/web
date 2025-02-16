@@ -27,7 +27,7 @@ export default function Page() {
       />
       <ImageInput
         images={images}
-        count={1}
+        count={3}
         onDelete={(index) => {
           setImages(images.filter((_, i) => i !== index))
         }}
@@ -39,7 +39,7 @@ export default function Page() {
         buttonType={BUTTON_TYPE.primary}
         label="저장하기"
         onClick={async () => {
-          await updateNotice(value, images[0])
+          await updateNotice(value, JSON.stringify(images))
           router.back()
         }}
       />
