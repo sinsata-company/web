@@ -27,6 +27,10 @@ const ProfileMenu = () => {
       route: 'strength',
       title: '잘하는 분야 수정',
     },
+    {
+      route: 'qna',
+      title: '자주 묻는 질문',
+    },
   ]
   return (
     <div>

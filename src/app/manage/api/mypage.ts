@@ -50,3 +50,13 @@ export const updateStrong = async (strongField: string) => {
     strongField,
   })
 }
+
+export const getQna = async (): Promise<string> => {
+  const result = await basicTeacherGet<string>('/manage/my/qna')
+  return result
+}
+export const updateQna = async (qna: string) => {
+  const result = await basicTeacherPost('/manage/my/qna', {
+    qna,
+  })
+}

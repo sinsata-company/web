@@ -111,7 +111,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             style={{
               objectFit: 'cover',
             }}
-            className="rounded-xl w-30 h-24 mr-1"
+            className="rounded-xl w-30 h-24 mr-1 cursor-pointer"
             src={thumbnail || '/logo.jpg'}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==" // 추가

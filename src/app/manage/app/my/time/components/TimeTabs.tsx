@@ -153,12 +153,14 @@ export default function TimeTabs() {
               method="direct"
               price={1400}
               id={9}
-              onClick={onClickMenu}
+              onClick={(t) => console.log(t)}
             />
             <GreyDivider />
             {menu.map((m, idx) => {
               if (m.type == 'phone') {
-                return <TimeProductItem {...m} key={m.id} onClick={(t) => {}} />
+                return (
+                  <TimeProductItem {...m} key={m.id} onClick={onClickMenu} />
+                )
               }
             })}
           </>
