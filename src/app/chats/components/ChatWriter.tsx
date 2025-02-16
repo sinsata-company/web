@@ -10,7 +10,7 @@ export default function ChatWriter({
   setMessage: Function
 }) {
   return (
-    <div className=" fixed bottom-0 left-0  w-full h-28 px-5 pt-4 pb-10 bg-white border-t border-zinc-100 flex-col justify-start items-start gap-2.5 inline-flex">
+    <div className="max-w-[550px] w-full mx-auto  fixed bottom-0 left-0 right-0 w-full h-28 px-5 pt-4 pb-10 bg-white border-t border-zinc-100 flex-col justify-start items-start gap-2.5 inline-flex">
       <div className="self-stretch h-12 p-3 bg-zinc-100 rounded-xl justify-between items-center inline-flex">
         <input
           value={message}

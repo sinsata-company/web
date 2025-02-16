@@ -236,7 +236,7 @@ const MyTabItem = ({
     >
       <div
         className={clsx(
-          "grow shrink basis-0 text-center  text-sm font-bold font-['Pretendard Variable']",
+          "cursor-pointer grow shrink basis-0 text-center  text-sm font-bold font-['Pretendard Variable']",
           selected ? 'text-yellow-400' : 'text-zinc-400'
         )}
       >

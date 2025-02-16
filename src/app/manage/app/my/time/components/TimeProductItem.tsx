@@ -11,7 +11,7 @@ const TimeProductItem = (props: ITimeProductItemProps) => {
   return (
     <div
       onClick={() => props.onClick(props)}
-      className="h-11 bg-white rounded-xl flex items-center gap-4 w-full"
+      className="h-11 cursor-pointer bg-white rounded-xl flex items-center gap-4 w-full"
     >
       <div className="grow flex-grow flex flex-col justify-center items-start gap-1">
         <div className="text-zinc-900 text-base font-bold leading-snug">
