@@ -19,6 +19,7 @@ body {
   background: var(--background);
 
   font-family: 'Noto Sans', sans-serif;
+  user-select: none;
 }
 
 .bg-gradient {

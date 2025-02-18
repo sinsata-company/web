@@ -8,11 +8,16 @@ import './ImageCarousel.css'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
+export interface IBannerProps {
+  image: string
+  onClick: Function
+}
+
 export default function HomeBanner({
-  imageList,
   showImageModal,
+  banner,
 }: {
-  imageList: string[] | null
+  banner: IBannerProps[]
   showImageModal: Function
 }) {
   var settings = {
@@ -28,7 +33,7 @@ export default function HomeBanner({
   }
   return (
     <Slider {...settings}>
-      {imageList?.map((item, idx) => (
+      {banner?.map((item, idx) => (
         <div
           key={idx}
           className="cursor-pointer"
@@ -36,11 +41,12 @@ export default function HomeBanner({
         >
           <Image
             onClick={() => {
+              item.onClick()
               showImageModal(item, idx)
             }}
             unoptimized
             className="w-full h-60 bg-gray-200 rounded-2xl"
-            src={item}
+            src={item.image}
             width={54}
             height={240}
             alt="thumb"
