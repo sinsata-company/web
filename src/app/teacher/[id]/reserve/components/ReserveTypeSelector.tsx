@@ -11,7 +11,7 @@ const ReserveTypeSelector = ({
   return (
     <div className="w-full px-5 justify-between items-center inline-flex">
       <div className="text-zinc-900 text-base font-bold font-['Pretendard Variable']">
-        시간 예약하기
+        상담 방식
       </div>
       <div className="justify-end items-center gap-3 flex">
         <TimeItem
