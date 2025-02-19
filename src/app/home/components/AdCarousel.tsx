@@ -12,7 +12,7 @@ export default function AdCarousel() {
   const router = useRouter()
   const banner: IBannerProps[] = [
     {
-      image: '/images/banners/sst-banner-6.jpeg',
+      image: '/images/banners/sst-banner-6.png',
       onClick: () => {
         router.push('/my')
       },
@@ -48,12 +48,7 @@ export default function AdCarousel() {
   ]
 
   useEffect(() => {
-    const hasSeenModal = localStorage.getItem('hasSeenModal')
-
-    if (!hasSeenModal) {
-      setShowModal(true)
-      localStorage.setItem('hasSeenModal', 'true')
-    }
+    setShowModal(true)
   }, [])
 
   return (
@@ -71,7 +66,7 @@ export default function AdCarousel() {
           onClick={() => {}}
           unoptimized
           className="w-full h-60 bg-gray-200 rounded-2xl mb-6"
-          src="/images/banners/sst-banner-6.jpeg"
+          src="/images/banners/sst-banner-6.png"
           width={54}
           height={240}
           alt="thumb"
