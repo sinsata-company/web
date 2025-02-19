@@ -44,16 +44,30 @@ export default function MyPage() {
           <div className="h-4"></div>
           <MyTabContainer />
           {isLogin && (
-            <div className="flex justify-end px-4">
-              <button
-                className=" text-gray-400 text-sm py-2 px-4 rounded"
-                onClick={() => {
-                  // Handle 회원탈퇴 logic here
-                  setIsModalOpen(true)
-                }}
-              >
-                회원탈퇴
-              </button>
+            <div>
+              <div className="flex justify-end px-4">
+                <button
+                  className=" text-gray-400 text-sm py-2 px-4 rounded"
+                  onClick={() => {
+                    // Handle 회원탈퇴 logic here
+                    localStorage.clear()
+                    router.push('/register')
+                  }}
+                >
+                  로그아웃
+                </button>
+              </div>
+              <div className="flex justify-end px-4">
+                <button
+                  className=" text-gray-400 text-sm py-2 px-4 rounded"
+                  onClick={() => {
+                    // Handle 회원탈퇴 logic here
+                    setIsModalOpen(true)
+                  }}
+                >
+                  회원탈퇴
+                </button>
+              </div>
             </div>
           )}
           <Modal
