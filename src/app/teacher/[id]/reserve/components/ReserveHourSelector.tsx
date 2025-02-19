@@ -1,4 +1,3 @@
-import { Moment } from 'moment'
 import Image from 'next/image'
 
 export default function RserveHourSelector({
@@ -20,7 +19,7 @@ export default function RserveHourSelector({
             if (selectedHour == 30) setSelectedHour(selectedHour - 15)
             if (selectedHour == 60) setSelectedHour(selectedHour - 30)
           }}
-          className="w-8 h-8 px-2.5 rounded-full border border-zinc-100 justify-center items-center gap-2 flex"
+          className="cursor-pointer w-8 h-8 px-2.5 rounded-full border border-zinc-100 justify-center items-center gap-2 flex"
         >
           <Image
             src={'/images/ic_minus.svg'}
@@ -38,7 +37,7 @@ export default function RserveHourSelector({
             if (selectedHour == 15) setSelectedHour(selectedHour + 15)
             if (selectedHour == 30) setSelectedHour(selectedHour + 30)
           }}
-          className="w-8 h-8 px-2.5 rounded-full border border-zinc-100 justify-center items-center gap-2 flex"
+          className="cursor-pointer w-8 h-8 px-2.5 rounded-full border border-zinc-100 justify-center items-center gap-2 flex"
         >
           <Image
             src={'/images/ic_plus.svg'}

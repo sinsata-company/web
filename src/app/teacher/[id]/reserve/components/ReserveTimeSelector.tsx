@@ -80,7 +80,7 @@ export default function ReserveTime({
   )
 }
 
-const TimeItem = ({
+export const TimeItem = ({
   time,
   selected,
   onClick,
@@ -95,7 +95,7 @@ const TimeItem = ({
         onClick(time)
       }}
       className={clsx(
-        'h-11 p-5  rounded-lg justify-center items-center gap-2.5 inline-flex',
+        'cursor-pointer h-11 p-5  rounded-lg justify-center items-center gap-2.5 inline-flex',
         selected ? 'bg-gradient' : 'bg-neutral-50'
       )}
     >

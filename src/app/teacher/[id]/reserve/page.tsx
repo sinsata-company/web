@@ -12,12 +12,14 @@ import { getMyCash } from '@/app/api/cash'
 import { useParams, useRouter } from 'next/navigation'
 import { makeReserve } from '@/app/api/reserve'
 import Modal from '@/components/common/Modal'
+import ReserveTypeSelector from './components/ReserveTypeSelector'
 
 export default function TeacherReservePage() {
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
   const [selectedTime, setSelectedTime] = useState<string>('')
   const [selectedHour, setSelectedHour] = useState<number>(15)
   const [myCash, setMyCash] = useState<number>(0)
+  const [type, setType] = useState<string>('')
   const [reserveComplete, setReserveComplete] = useState<boolean>(false)
 
   useEffect(() => {
@@ -46,6 +48,9 @@ export default function TeacherReservePage() {
         setSelectedHour={setSelectedHour}
       />
       <GreyDivider />
+      <ReserveTypeSelector selectedType={type} setSelectedType={setType} />
+      <GreyDivider />
+
       <ReserveCashSummary
         selectedHour={selectedHour}
         myCash={myCash}
@@ -69,7 +74,7 @@ export default function TeacherReservePage() {
                   'YYYY-MM-DD'
                 )} ${selectedTime.padStart(5, '0')}:00`,
                 reserveMinutes: selectedHour,
-                reserveType: 'CALL',
+                reserveType: type == '전화' ? 'CALL' : 'CHAT',
               },
               path as string
             )
