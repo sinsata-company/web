@@ -57,11 +57,6 @@ export default function CashChargePage() {
             캐시 충전
           </div>
           <div className="self-stretch p-4 rounded-2xl border-2 border-yellow-400 flex-col justify-start items-start gap-4 flex">
-            <CashItem
-              cashAmt={300}
-              payAmt={300}
-              onClickCharge={onClickCharge}
-            />
             {menus.map((item, index) => (
               <CashItem key={index} {...item} onClickCharge={onClickCharge} />
             ))}
