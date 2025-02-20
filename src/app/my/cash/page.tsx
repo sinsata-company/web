@@ -2,8 +2,10 @@
 
 import { getMenus, getMyCash, requestPayment } from '@/app/api/cash'
 import { getPayURL } from '@/app/api/http/mtn'
+import { getMyInfo } from '@/app/api/user'
 import BackAppbar from '@/components/common/BackAppbar'
 import { cashDto } from '@/types/cashTables'
+import { UserDto } from '@/types/user'
 import { formatNumberWithCommas } from '@/utils/numberFormatter'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -11,6 +13,7 @@ import { useEffect, useState } from 'react'
 export default function CashChargePage() {
   const [myCash, setMyCash] = useState<number>(0)
   const [menus, setMenus] = useState<cashDto[]>([])
+
   useEffect(() => {
     document.title = '캐시 충전'
     getMenusList()
@@ -19,6 +22,7 @@ export default function CashChargePage() {
   const onClickCharge = async (cash: number) => {
     const time = new Date().getTime().toString()
     requestPayment(cash, time)
+
     const url = await getPayURL(cash, time)
     console.log(url)
     window.location.href = url

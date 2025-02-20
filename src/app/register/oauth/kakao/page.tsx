@@ -1,6 +1,7 @@
 'use client'
 
 import { BASE_URL } from '@/api/base'
+import { login } from '@/app/api/user'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
@@ -24,7 +25,7 @@ export default function KakaoRedirect() {
 
       try {
         const response = await axios.post(
-          BASE_URL + '/users/join',
+          BASE_URL + '/users/key',
           {
             loginType: 'KAKAO',
             accessToken: code,
@@ -38,26 +39,12 @@ export default function KakaoRedirect() {
             },
           }
         )
-
-        const data = response.data
-        const header = response.headers
-        console.log(header)
-        const accessToken = header['sst-access-token']
-        const accessTokenExpireAt = header['sst-access-token-expire-at']
-        const refreshToken = header['sst-refresh-token']
-        const refreshTokenExpireAt = header['sst-refresh-token-expire-at']
-        console.log('Access Token:', accessToken)
-        console.log('Refresh Token:', refreshToken)
-        console.log('Access Token Expire At:', accessTokenExpireAt)
-        console.log('Refresh Token Expire At:', refreshTokenExpireAt)
-        localStorage.setItem('sst-access-token', accessToken)
-        localStorage.setItem('sst-access-token-expire-at', accessTokenExpireAt)
-        localStorage.setItem('sst-refresh-token', refreshToken)
-        localStorage.setItem(
-          'sst-refresh-token-expire-at',
-          refreshTokenExpireAt
-        )
-        router.push('/home')
+        if (response.data && response.data.isRegistered) {
+          await login(response.data)
+          router.push('/home')
+        } else {
+          router.push(`/register/info?key=${JSON.stringify(response.data)}`)
+        }
       } catch (error) {
         console.error('Error fetching token:', error)
       }

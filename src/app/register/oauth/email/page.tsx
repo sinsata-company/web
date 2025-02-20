@@ -1,6 +1,6 @@
 'use client'
 
-import { canUseId, joinByEmail, loginByEmail } from '@/app/api/user'
+import { canUseId, getKeyByEmail, login, loginByEmail } from '@/app/api/user'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Input from '@/components/common/Input'
 import LogoAppbar from '@/components/common/LogoAppbar'
@@ -36,8 +36,13 @@ export default function Page() {
     const canUse = await canUseId(name)
     if (isLogin) {
       if (!canUse) {
-        const result = await loginByEmail(name, password, 'EMAIL')
-        if (!result) {
+        setNameError('')
+        const data = await getKeyByEmail(name, password, 'EMAIL')
+
+        if (data.isRegistered) {
+          await login(data)
+          nav.push('/home')
+        } else {
           setPasswordError('비밀번호가 일치하지 않습니다.')
           return
         }
@@ -51,10 +56,15 @@ export default function Page() {
         return
       }
       if (validate() && name && canUse && password) {
-        await joinByEmail(name, password, 'EMAIL')
+        const data = await getKeyByEmail(name, password, 'EMAIL')
+        if (data.isRegistered) {
+          await login(data)
+          nav.push('/home')
+        } else {
+          nav.push(`/register/info?key=${JSON.stringify(data)}`)
+        }
       }
     }
-    nav.push('/home')
   }
   return (
     <div>

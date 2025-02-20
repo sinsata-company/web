@@ -10,6 +10,40 @@ export const getMyInfo = async () => {
   return result
 }
 
+export interface LoginProps {
+  token: string
+  name: string
+  email: string | null
+  isRegistered: boolean
+  loginType: string
+}
+
+export const login = async (login: LoginProps) => {
+  const response = await axios.post(
+    BASE_URL + '/users/login',
+    {
+      ...login,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  const data = response.data
+  const header = response.headers
+
+  const accessToken = header['sst-access-token']
+  const accessTokenExpireAt = header['sst-access-token-expire-at']
+  const refreshToken = header['sst-refresh-token']
+  const refreshTokenExpireAt = header['sst-refresh-token-expire-at']
+
+  localStorage.setItem('sst-access-token', accessToken)
+  localStorage.setItem('sst-access-token-expire-at', accessTokenExpireAt)
+  localStorage.setItem('sst-refresh-token', refreshToken)
+  localStorage.setItem('sst-refresh-token-expire-at', refreshTokenExpireAt)
+}
+
 export const loginAndJoin = async (info: UserCredential, provider: string) => {
   const response = await axios.post(
     BASE_URL + '/users/join',
@@ -41,13 +75,13 @@ export const loginAndJoin = async (info: UserCredential, provider: string) => {
   localStorage.setItem('sst-refresh-token-expire-at', refreshTokenExpireAt)
 }
 
-export const joinByEmail = async (
+export const getKeyByEmail = async (
   name: string,
   act: string,
   provider: string
 ) => {
   const response = await axios.post(
-    BASE_URL + '/users/join',
+    BASE_URL + '/users/key',
     {
       name: name,
       loginType: provider,
@@ -63,18 +97,7 @@ export const joinByEmail = async (
       },
     }
   )
-  const data = response.data
-  const header = response.headers
-
-  const accessToken = header['sst-access-token']
-  const accessTokenExpireAt = header['sst-access-token-expire-at']
-  const refreshToken = header['sst-refresh-token']
-  const refreshTokenExpireAt = header['sst-refresh-token-expire-at']
-
-  localStorage.setItem('sst-access-token', accessToken)
-  localStorage.setItem('sst-access-token-expire-at', accessTokenExpireAt)
-  localStorage.setItem('sst-refresh-token', refreshToken)
-  localStorage.setItem('sst-refresh-token-expire-at', refreshTokenExpireAt)
+  return response.data
 }
 export const loginByEmail = async (
   name: string,

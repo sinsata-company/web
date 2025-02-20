@@ -5,4 +5,6 @@ export interface UserDto {
   nickname: string
   loginType: string
   level: string
+  mtnId: string
+  phoneNum: string
 }
