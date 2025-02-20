@@ -1,7 +1,6 @@
 import { BASE_URL } from '@/api/base'
 import { getMyInfo } from '../user'
 import { isMobileDevice } from '@/utils/device'
-import { UserDto } from '@/types/user'
 
 export const getPayURL = async (
   amount: number,
