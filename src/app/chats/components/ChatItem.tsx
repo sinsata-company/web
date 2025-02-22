@@ -22,7 +22,7 @@ export default function ChatItem(props: CashHistoryDto) {
       className="w-full h-32 p-4 bg-yellow-500/20 rounded-2xl justify-center items-start gap-3 inline-flex"
     >
       <div className="grow shrink basis-0 flex-col justify-start items-start gap-2 inline-flex">
-        <ChatStatus />
+        <ChatStatus status={status} />
         <div className="self-stretch h-14 flex-col justify-start items-start gap-1 flex">
           <div className="self-stretch h-10 flex-col justify-start items-start gap-0.5 flex">
             <div className="self-stretch text-zinc-900 text-base font-bold font-['Pretendard Variable']">
@@ -33,8 +33,10 @@ export default function ChatItem(props: CashHistoryDto) {
             </div>
           </div>
           <div className="self-stretch text-zinc-400 text-xs font-normal font-['Pretendard']">
-            {moment(startAt).format('yyyy-MM-DD HH:mm')} -{' '}
-            {moment(endAt).format('yyyy-MM-DD HH:mm')}
+            {moment(startAt).format('yyyy-MM-DD HH:mm')}
+            {status != 'REQUEST'
+              ? ` - ${moment(endAt).format('yyyy-MM-DD HH:mm')}`
+              : ''}
           </div>
         </div>
       </div>

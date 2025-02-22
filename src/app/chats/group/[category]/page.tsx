@@ -10,16 +10,7 @@ import ChatScreen from './components/ChatScreen'
 import { v4 as uuidv4 } from 'uuid'
 import { UserDto } from '@/types/user'
 import { getMyInfo } from '@/app/api/user'
-
-export interface IMessage {
-  roomId: string
-  authorId: string
-  message: string
-  id: number
-  createdAt: string
-  level: string
-  nickname: string
-}
+import { IMessage } from '@/app/api/data'
 
 export default function GroupChat() {
   const [message, setMessage] = useState<string>('')

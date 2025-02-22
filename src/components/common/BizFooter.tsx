@@ -26,7 +26,7 @@ export function UsageFooter() {
           <div className="w-5"></div>
           <div className="justify-start items-center gap-2 inline-flex">
             <div className="text-zinc-500 text-xs font-normal font-['Spoqa Han Sans Neo'] leading-none">
-              대표자 : 김가경
+              개인정보관리자 : 박상현
             </div>
           </div>
         </div>

@@ -9,8 +9,10 @@ import { usePathname, useRouter } from 'next/navigation'
 import { v4 as uuidv4 } from 'uuid'
 import { UserDto } from '@/types/user'
 import { getMyInfo } from '@/app/api/user'
-import { IMessage } from '../../group/[category]/page'
 import ChatScreen from '../../group/[category]/components/ChatScreen'
+import ChatSummary from './components/ChatSummary'
+import PrivateChatScreen from './components/PrivateChatScreen'
+import { IMessage } from '@/app/api/data'
 
 export default function PrivateChatPage() {
   const [message, setMessage] = useState<string>('')
@@ -113,13 +115,9 @@ export default function PrivateChatPage() {
   return (
     <div className="w-full h-full relative">
       <BackAppbar />
-      <CategoryContainer
-        onClick={(image: string) => {
-          router.push('/chats/group/' + image)
-        }}
-      />
+      <ChatSummary />
 
-      <ChatScreen user={user} messages={receivedMessages} myId={myId} />
+      <PrivateChatScreen user={user} messages={receivedMessages} myId={myId} />
 
       <ChatWriter
         message={message}

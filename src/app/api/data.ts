@@ -54,3 +54,13 @@ export interface ReserveDto {
   thumbnail: any
   teacherPin: string
 }
+
+export interface IMessage {
+  roomId: string
+  authorId: string
+  message: string
+  id: number
+  createdAt: string
+  level: string
+  nickname: string
+}

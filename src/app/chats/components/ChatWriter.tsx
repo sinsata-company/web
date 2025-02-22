@@ -12,9 +12,9 @@ export default function ChatWriter({
   message: string
   setMessage: Function
 }) {
-  const expire = localStorage.getItem('sst-access-token-expire-at')
+  const expire = window.localStorage.getItem('sst-access-token-expire-at')
   const isLogin =
-    localStorage.getItem('sst-access-token') &&
+    window.localStorage.getItem('sst-access-token') &&
     expire &&
     expire &&
     Number(expire) > Date.now()

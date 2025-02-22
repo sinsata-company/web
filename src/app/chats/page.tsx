@@ -27,14 +27,17 @@ export default function Chats() {
   }, [])
 
   return (
-    <div>
+    <div className="h-screen">
       <MainAppbar />
       <div className="px-5">
         {!isLogin && <SuggestLogin label="채팅을 하기" />}
-        {chats.map((chat, idx) => {
-          return <ChatItem key={'chat-' + idx} {...chat} />
-        })}
+        <div className="flex flex-col gap-4">
+          {chats.map((chat, idx) => {
+            return <ChatItem key={'chat-' + idx} {...chat} />
+          })}
+        </div>
       </div>
+
       <BTB />
     </div>
   )
