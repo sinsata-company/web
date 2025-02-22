@@ -12,26 +12,30 @@ import { getMyInfo } from '@/app/api/user'
 import ChatScreen from '../../group/[category]/components/ChatScreen'
 import ChatSummary from './components/ChatSummary'
 import PrivateChatScreen from './components/PrivateChatScreen'
-import { IMessage } from '@/app/api/data'
+import { ChatDto, IMessage } from '@/app/api/data'
+import { getChatDetail } from '@/app/api/chat'
 
 export default function PrivateChatPage() {
   const [message, setMessage] = useState<string>('')
   const [myId, setMyId] = useState<string>('')
-  const client = useRef<StompJs.Client>(null)
-  const category = usePathname().split('/').pop() as string
+
   const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
   const [user, setUser] = useState<UserDto | null>(null)
+  const [chat, setChat] = useState<ChatDto | null>(null)
+
+  const client = useRef<StompJs.Client>(null)
+  const roomId = usePathname().split('/').pop() as string
 
   useEffect(() => {
-    getUserDetails()
+    initialize()
   }, [])
 
-  const getUserDetails = async () => {
+  const initialize = async () => {
     const user = await getMyInfo()
+    const chat = await getChatDetail(roomId)
     setUser(user)
+    setChat(chat)
   }
-
-  const router = useRouter()
 
   const sendMessage = () => {
     if (message.trim().length < 1) return
@@ -40,7 +44,7 @@ export default function PrivateChatPage() {
       client.current?.publish({
         destination: `/pub/message/group`,
         body: JSON.stringify({
-          roomId: category,
+          roomId: roomId,
           authorId: myId,
           message: message,
           level: user?.level,
@@ -65,7 +69,7 @@ export default function PrivateChatPage() {
     const subscribe = () => {
       console.log('Subscribing...')
       client.current?.subscribe(
-        `/sub/channel/${category}`,
+        `/sub/channel/${roomId}`,
         (received_message: StompJs.IFrame) => {
           const body = JSON.parse(received_message.body)
           // receivedMessages.push()
@@ -112,12 +116,19 @@ export default function PrivateChatPage() {
     connect()
   }, [])
 
+  // 해야될 것. 채팅 시작되지 않았을 때, 채팅 종료되었을 때 타이핑 막기 & 안내 문구 띄우기
+  //
   return (
     <div className="w-full h-full relative">
       <BackAppbar />
-      <ChatSummary />
+      <ChatSummary chat={chat} />
 
-      <PrivateChatScreen user={user} messages={receivedMessages} myId={myId} />
+      <PrivateChatScreen
+        chat={chat}
+        user={user}
+        messages={receivedMessages}
+        myId={myId}
+      />
 
       <ChatWriter
         message={message}

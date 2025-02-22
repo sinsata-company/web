@@ -8,3 +8,7 @@ export const getMyChats = async () => {
 export const startInstantChat = async (teacherId: string) => {
   return await basicUnpagedGet<ChatDto>(`/chats/${teacherId}/livechat`)
 }
+
+export const getChatDetail = async (roomId: string) => {
+  return await basicUnpagedGet<ChatDto>(`/chats/${roomId}`)
+}

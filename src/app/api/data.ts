@@ -39,9 +39,13 @@ export interface CashHistoryDto {
 }
 
 export interface ChatDto {
-  userId: string
-  teacherId: string
-  chatRoomId: string
+  teacherName: string
+  teacherProfile?: any
+  roomId: string
+  lastMsg: string
+  startAt: string
+  endAt: string
+  status: string
 }
 export interface ReserveDto {
   id: number

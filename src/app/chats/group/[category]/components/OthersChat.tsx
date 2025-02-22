@@ -1,6 +1,5 @@
+import { IMessage } from '@/app/api/data'
 import Image from 'next/image'
-import { IMessage } from '../page'
-import { IMyChat } from './MyChat'
 
 export default function OthersChat({
   message,

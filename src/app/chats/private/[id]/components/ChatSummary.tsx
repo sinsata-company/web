@@ -1,22 +1,34 @@
-const ChatSummary = () => {
+import { ChatDto } from '@/app/api/data'
+import ChatStatus from '@/app/chats/components/ChatStatus'
+import Image from 'next/image'
+
+const ChatSummary = ({ chat }: { chat: ChatDto | null }) => {
+  if (!chat) return null
+  const { teacherName, teacherProfile, startAt, endAt, status } = chat
+
   return (
-    <div className="flex flex-col justify-between items-start p-4 border-b-2 border-neutral-200 ">
-      <div className="w-full flex justify-start items-center gap-4">
-        <div className="text-neutral-800 text-lg font-bold font-['Pretendard']">
-          홍수아
+    <div className="flex justify-between items-start w-full border-b-2 border-neutral-200">
+      <div className="flex flex-col justify-between items-start p-4 ">
+        <div className="w-full flex justify-start items-center gap-4">
+          <div className="text-neutral-800 text-lg font-bold font-['Pretendard']">
+            {teacherName}
+          </div>
+          <ChatStatus status={status} />
         </div>
-        <div className="px-2 bg-orange-300/10 rounded-lg flex justify-center items-center">
-          <div className="text-orange-300 text-base font-bold font-['Pretendard']">
-            이용문의
+        <div className="flex justify-start items-center gap-2 mt-2">
+          <div className="w-4 h-4 bg-lime-300 rounded-full"></div>
+          <div className="text-center text-neutral-400 text-base font-semibold font-['Pretendard']">
+            온라인
           </div>
         </div>
       </div>
-      <div className="flex justify-start items-center gap-2 mt-2">
-        <div className="w-4 h-4 bg-lime-300 rounded-full"></div>
-        <div className="text-center text-neutral-400 text-base font-semibold font-['Pretendard']">
-          온라인
-        </div>
-      </div>
+      <Image
+        src={teacherProfile ?? '/logo.jpg'}
+        width={120}
+        height={80}
+        alt="profile"
+        className="rounded-full w-30 h-20 object-contain"
+      />
     </div>
   )
 }

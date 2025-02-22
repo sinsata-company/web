@@ -7,16 +7,19 @@ import { useEffect, useState } from 'react'
 import MyChat from '@/app/chats/components/MyChat'
 
 import ChatInform from './ChatInform'
-import { IMessage } from '@/app/api/data'
+import { ChatDto, IMessage } from '@/app/api/data'
+import TeacherChat from './TeacherChat'
 
 export default function PrivateChatScreen({
   messages,
   myId,
   user,
+  chat,
 }: {
   messages: IMessage[]
   myId: string
   user: UserDto | null
+  chat: ChatDto | null
 }) {
   return (
     <div
@@ -26,7 +29,7 @@ export default function PrivateChatScreen({
       }}
       className="inline-flex flex-col py-5 px-5 gap-2.5 w-full overflow-y-auto "
     >
-      <ChatInform />
+      <ChatInform status={chat?.status ?? ''} />
       {messages.map((item, idx) => {
         return item.authorId == myId ? (
           <MyChat
@@ -36,7 +39,7 @@ export default function PrivateChatScreen({
             isContinued={idx > 0 && messages[idx - 1].authorId == myId}
           />
         ) : (
-          <OthersChat
+          <TeacherChat
             key={idx}
             {...item}
             isContinued={idx > 0 && messages[idx - 1].authorId != myId}
