@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { UserDto } from '@/types/user'
 import { getMyInfo } from '@/app/api/user'
 import { IMessage } from '@/app/api/data'
+import { BASE_WS } from '@/api/base'
 
 export default function GroupChat() {
   const [message, setMessage] = useState<string>('')
@@ -89,7 +90,7 @@ export default function GroupChat() {
       client.current = new StompJs.Client({
         // brokerURL: 'ws://localhost:8080/chat/inbox',
         // brokerURL: 'ws://15.165.5.202:8080/chat/inbox',
-        brokerURL: 'wss://api.sinsata.co.kr/chat/inbox',
+        brokerURL: BASE_WS,
         reconnectDelay: 200,
         onConnect: () => {
           console.log('connected')

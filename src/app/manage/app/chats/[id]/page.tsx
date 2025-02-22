@@ -16,6 +16,7 @@ import ChatSummary from '@/app/chats/private/[id]/components/ChatSummary'
 import UserSummary from './components/UserSummary'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { startChat } from '@/app/manage/api/homepage'
+import { BASE_WS } from '@/api/base'
 
 export default function Page() {
   const [message, setMessage] = useState<string>('')
@@ -96,9 +97,8 @@ export default function Page() {
     const connect = () => {
       console.log('Connecting...')
       client.current = new StompJs.Client({
-        brokerURL: 'ws://localhost:8080/chat/inbox',
-        // brokerURL: 'ws://15.165.5.202:8080/chat/inbox',
-        // brokerURL: 'wss://api.sinsata.co.kr/chat/inbox',
+        brokerURL: BASE_WS,
+
         reconnectDelay: 200,
         onConnect: () => {
           console.log('connected')
