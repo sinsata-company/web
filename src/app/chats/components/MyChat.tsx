@@ -1,4 +1,5 @@
 import { IMessage } from '@/app/api/data'
+import UserLevelIcon from '@/components/common/UserLevelIcon'
 import { UserDto } from '@/types/user'
 
 import Image from 'next/image'
@@ -19,12 +20,7 @@ export default function MyChat({
       <div className="flex flex-col justify-end items-end ">
         {!isContinued && (
           <div className="flex items-center text-zinc-900 text-sm font-bold">
-            <Image
-              src={'/images/membership/' + user?.level + '.png'}
-              width={24}
-              height={24}
-              alt="level"
-            />
+            <UserLevelIcon level={user?.level ?? ''} />
             {user?.name}
           </div>
         )}

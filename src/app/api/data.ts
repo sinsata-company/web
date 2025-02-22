@@ -41,6 +41,8 @@ export interface CashHistoryDto {
 export interface ChatDto {
   teacherName: string
   teacherProfile?: any
+  userName: string
+  userLevel: string
   roomId: string
   lastMsg: string
   startAt: string
@@ -57,6 +59,7 @@ export interface ReserveDto {
   reserveType: string
   thumbnail: any
   teacherPin: string
+  chatroomId?: string
 }
 
 export interface IMessage {
