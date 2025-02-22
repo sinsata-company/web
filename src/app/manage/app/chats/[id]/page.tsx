@@ -14,6 +14,8 @@ import ChatWriter from '@/app/chats/components/ChatWriter'
 import PrivateChatScreen from '@/app/chats/private/[id]/components/PrivateChatScreen'
 import ChatSummary from '@/app/chats/private/[id]/components/ChatSummary'
 import UserSummary from './components/UserSummary'
+import { Button, BUTTON_TYPE } from '@/components/common/Button'
+import { startChat } from '@/app/manage/api/homepage'
 
 export default function Page() {
   const [message, setMessage] = useState<string>('')
@@ -25,6 +27,7 @@ export default function Page() {
 
   const client = useRef<StompJs.Client>(null)
   const roomId = usePathname().split('/').pop() as string
+  const router = useRouter()
 
   useEffect(() => {
     initialize()
@@ -121,19 +124,41 @@ export default function Page() {
   return (
     <div className="w-full h-full relative">
       <UserSummary chat={chat} />
-
       <PrivateChatScreen
         chat={chat}
         user={user}
         messages={receivedMessages}
         myId={myId}
       />
-
       <ChatWriter
+        disabled={chat?.status == 'REQUEST' || chat?.status == 'END'}
         message={message}
         setMessage={setMessage}
         sendMessage={sendMessage}
+        actionButton={
+          chat?.status == 'END' ? (
+            <Button
+              label="메모 남기기"
+              onClick={async () => {
+                // 채팅 수락
+                router.push('/manage/app/reserves/' + chat?.reserveId)
+              }}
+              buttonType={BUTTON_TYPE.primary}
+            />
+          ) : chat?.status == 'REQUEST' ? (
+            <Button
+              label="채팅 수락"
+              onClick={async () => {
+                // 채팅 수락
+                await startChat(chat.roomId)
+                initialize()
+              }}
+              buttonType={BUTTON_TYPE.primary}
+            />
+          ) : null
+        }
       />
+      {/* 채팅 안내 관련 모달 */}
     </div>
   )
 }

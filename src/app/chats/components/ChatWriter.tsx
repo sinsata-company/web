@@ -7,11 +7,16 @@ export default function ChatWriter({
   sendMessage,
   message,
   setMessage,
+  actionButton,
+  disabled,
 }: {
   sendMessage: Function
   message: string
   setMessage: Function
+  actionButton?: React.ReactNode
+  disabled?: boolean
 }) {
+  console.log(disabled)
   const expire = window.localStorage.getItem('sst-access-token-expire-at')
   const isLogin =
     window.localStorage.getItem('sst-access-token') &&
@@ -20,24 +25,26 @@ export default function ChatWriter({
     Number(expire) > Date.now()
   return (
     <div className="max-w-[550px] w-full mx-auto  fixed bottom-0 left-0 right-0 w-full  px-5 pt-4 pb-10 bg-white border-t border-zinc-100 flex-col justify-start items-start gap-2.5 inline-flex">
-      {!isLogin && (
-        <Button
-          buttonType={BUTTON_TYPE.primary}
-          label="로그인하러가기"
-          onClick={() => {
-            window.location.href = '/register'
-          }}
-        />
-      )}
+      {actionButton
+        ? actionButton
+        : !isLogin && (
+            <Button
+              buttonType={BUTTON_TYPE.primary}
+              label="로그인하러가기"
+              onClick={() => {
+                window.location.href = '/register'
+              }}
+            />
+          )}
       <div className="self-stretch h-12 p-3 bg-zinc-100 rounded-xl justify-between items-center inline-flex">
         <input
           value={message}
           onChange={(e) => {
             const text = e.target.value
-
             setMessage(text)
           }}
-          disabled={isLogin ? false : true}
+          // disabled={true}
+          disabled={disabled || !isLogin}
           onKeyUp={(e) => {
             if (e.key == 'Enter') {
               sendMessage()

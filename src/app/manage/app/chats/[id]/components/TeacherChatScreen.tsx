@@ -34,12 +34,14 @@ export default function TeacherChatScreen({
             key={idx}
             {...item}
             user={user}
+            isTeacher={true}
             isContinued={idx > 0 && messages[idx - 1].authorId == myId}
           />
         ) : (
           <TeacherChat
             key={idx}
             {...item}
+            chat={chat}
             isContinued={idx > 0 && messages[idx - 1].authorId != myId}
           />
         )

@@ -7,6 +7,7 @@ import Image from 'next/image'
 export interface IMyChat extends IMessage {
   user: UserDto | null
   isContinued: boolean
+  isTeacher?: boolean
 }
 
 export default function MyChat({
@@ -14,11 +15,13 @@ export default function MyChat({
   authorId,
   user,
   isContinued,
+  isTeacher,
 }: IMyChat) {
+  console.log(isTeacher)
   return (
     <div className="self-stretch flex justify-end items-end">
       <div className="flex flex-col justify-end items-end ">
-        {!isContinued && (
+        {!isTeacher && !isContinued && (
           <div className="flex items-center text-zinc-900 text-sm font-bold">
             <UserLevelIcon level={user?.level ?? ''} />
             {user?.name}

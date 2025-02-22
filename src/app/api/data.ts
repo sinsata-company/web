@@ -48,6 +48,7 @@ export interface ChatDto {
   startAt: string
   endAt: string
   status: string
+  reserveId: number
 }
 export interface ReserveDto {
   id: number

@@ -12,3 +12,16 @@ export const getReserveByDate = async (date: string) => {
   )
   return result
 }
+
+export const startChat = async (roomid: string) => {
+  const result = await basicTeacherGet<ReserveDto[]>(
+    `/manage/home/chat/${roomid}/start`
+  )
+  return result
+}
+export const endChat = async (roomid: string) => {
+  const result = await basicTeacherGet<ReserveDto[]>(
+    `/manage/home/chat/${roomid}/end`
+  )
+  return result
+}

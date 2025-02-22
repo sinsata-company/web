@@ -27,9 +27,9 @@ export default function PrivateChatScreen({
         marginTop: 15,
         height: 'calc(100vh - 120px)',
       }}
-      className="inline-flex flex-col py-5 px-5 gap-2.5 w-full overflow-y-auto "
+      className="inline-flex flex-col py-2 px-5 gap-2.5 w-full overflow-y-auto "
     >
-      <ChatInform status={chat?.status ?? ''} />
+      <ChatInform chat={chat} />
       {messages.map((item, idx) => {
         return item.authorId == myId ? (
           <MyChat
@@ -42,6 +42,7 @@ export default function PrivateChatScreen({
           <TeacherChat
             key={idx}
             {...item}
+            chat={chat}
             isContinued={idx > 0 && messages[idx - 1].authorId != myId}
           />
         )
