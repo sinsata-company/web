@@ -1,12 +1,25 @@
 'use client'
 
+import { ReserveDetailDto, writeNote } from '@/app/manage/api/reserve'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import GradientTitle from '@/components/common/GradientTitle'
 import Input from '@/components/common/Input'
-import { useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-const ReserveNotes = () => {
+const ReserveNotes = ({
+  detail,
+  reload,
+}: {
+  detail: ReserveDetailDto | null
+  reload: () => void
+}) => {
   const [value, setValue] = useState('')
+  const reserveId = usePathname().split('/').pop() as string
+
+  useEffect(() => {
+    setValue(detail?.reserveNote ?? '')
+  }, [detail])
   return (
     <div className="w-full inline-flex flex-col gap-2">
       <GradientTitle title="고객과의 상담 노트" />
@@ -19,7 +32,14 @@ const ReserveNotes = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <Button buttonType={BUTTON_TYPE.primary} label="노트 저장" />
+      <Button
+        onClick={async () => {
+          await writeNote(reserveId, value)
+          reload()
+        }}
+        buttonType={BUTTON_TYPE.primary}
+        label="노트 저장"
+      />
     </div>
   )
 }

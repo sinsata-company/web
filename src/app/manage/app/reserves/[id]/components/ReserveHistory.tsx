@@ -1,11 +1,18 @@
 'use client'
 
+import { ReserveDto } from '@/app/api/data'
+import { ReserveDetailDto } from '@/app/manage/api/reserve'
 import GradientTitle from '@/components/common/GradientTitle'
-import { useState } from 'react'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
 
-const ReserveHistory = () => {
-  const [histories, setHistory] = useState(['', ''])
+const ReserveHistory = ({ detail }: { detail: ReserveDetailDto | null }) => {
+  const [histories, setHistory] = useState<ReserveDto[]>([])
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    setHistory(detail?.reserveDtos ?? [])
+  }, [detail])
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
@@ -22,7 +29,7 @@ const ReserveHistory = () => {
           >
             <div className="self-stretch justify-between items-center inline-flex">
               <div className="text-zinc-900 text-base font-bold font-['Pretendard Variable'] leading-snug">
-                2025년 1월 7일
+                {moment(history.startAt).format('YYYY년 MM월 DD일 HH:mm')}
               </div>
               <div className="w-4 h-4 flex-col justify-center items-center gap-2.5 inline-flex">
                 <img
@@ -39,7 +46,7 @@ const ReserveHistory = () => {
                 openIndex === index ? 'max-h-40' : 'max-h-0'
               }`}
             >
-              상담 메모 샘플
+              {history.note ?? '상담 내용이 없습니다.'}
             </div>
           </div>
         ))}
