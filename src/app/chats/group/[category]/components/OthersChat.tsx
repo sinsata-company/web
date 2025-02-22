@@ -17,6 +17,7 @@ export default function OthersChat({
             width={24}
             height={24}
             alt="level"
+            className="mr-2"
           />
           {nickname}
         </div>
