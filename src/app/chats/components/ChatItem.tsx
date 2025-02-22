@@ -1,27 +1,46 @@
+import { CashHistoryDto } from '@/app/api/data'
 import ChatStatus from './ChatStatus'
+import moment from 'moment'
+import { useRouter } from 'next/navigation'
 
-export default function ChatItem() {
+export default function ChatItem(props: CashHistoryDto) {
+  const {
+    teacherName,
+    teacherProfile,
+    lastMsg,
+    startAt,
+    endAt,
+    status,
+    roomId,
+  } = props
+  const router = useRouter()
   return (
-    <div className="w-full h-32 p-4 bg-yellow-500/20 rounded-2xl justify-center items-start gap-3 inline-flex">
+    <div
+      onClick={() => {
+        router.push(`/chats/private/${roomId}`)
+      }}
+      className="w-full h-32 p-4 bg-yellow-500/20 rounded-2xl justify-center items-start gap-3 inline-flex"
+    >
       <div className="grow shrink basis-0 flex-col justify-start items-start gap-2 inline-flex">
         <ChatStatus />
         <div className="self-stretch h-14 flex-col justify-start items-start gap-1 flex">
           <div className="self-stretch h-10 flex-col justify-start items-start gap-0.5 flex">
             <div className="self-stretch text-zinc-900 text-base font-bold font-['Pretendard Variable']">
-              홍수아
+              {teacherName}
             </div>
             <div className="self-stretch text-neutral-500 text-sm font-normal font-['Pretendard'] leading-tight">
-              계약했습니다!
+              {lastMsg}
             </div>
           </div>
           <div className="self-stretch text-zinc-400 text-xs font-normal font-['Pretendard']">
-            2024.11.11 - 2024.11-14
+            {moment(startAt).format('yyyy-MM-DD HH:mm')} -{' '}
+            {moment(endAt).format('yyyy-MM-DD HH:mm')}
           </div>
         </div>
       </div>
       <div className="w-20 h-20 bg-white rounded-xl">
         <img
-          src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+          src={teacherProfile}
           alt="profile"
           className="w-20 h-20 rounded-xl"
         />

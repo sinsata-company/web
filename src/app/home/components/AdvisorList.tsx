@@ -6,6 +6,7 @@ import { TeacherListDto } from '@/app/api/data'
 import { forwardRef, useState } from 'react'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
+import { startInstantChat } from '@/app/api/chat'
 
 export default function AdvisorList({
   advisorList,
@@ -21,6 +22,7 @@ export default function AdvisorList({
     setAdvisor(advisor)
     setIsPhoneModalOpen(true)
   }
+  const router = useRouter()
 
   return (
     <div className="inline-flex flex-col gap-2.5 w-full">
@@ -105,8 +107,11 @@ export default function AdvisorList({
           </div>
           <div className="inline-flex flex-col w-full gap-2">
             <Button
-              onClick={() => {
-                setIsPhoneModalOpen(false)
+              onClick={async () => {
+                const result = await startInstantChat(advisor?.id ?? '')
+                router.push(`/chats/private/${result.chatRoomId}`)
+
+                // setIsPhoneModalOpen(false)
               }}
               buttonType={BUTTON_TYPE.primary}
               label={'채팅상담 시작하기'}
