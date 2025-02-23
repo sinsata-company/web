@@ -23,7 +23,7 @@ export default function Switch({
         setEnabled(checked)
         updateCanStatus(!checked, type)
       }}
-      className="group relative flex border w-10 cursor-pointer rounded-full bg-teal-400 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
+      className="group relative flex border w-10 cursor-pointer rounded-full bg-indigo-400 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
     >
       <span
         aria-hidden="true"

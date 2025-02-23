@@ -23,19 +23,23 @@ body {
 }
 
 .bg-gradient {
-  background: var(
+  background: #7595ec;
+
+  /* var(
     --Gradient-1,
     linear-gradient(121deg, #f9c00f 3.88%, #e62419 59.99%, #21499c 115.85%)
-  );
+  ); */
 }
 .text-gradient {
-  background: var(
+  color: #7595ec;
+  /* background: 
+  var(
     --Gradient-1,
     linear-gradient(121deg, #f9c00f 3.88%, #e62419 59.99%, #21499c 115.85%)
   );
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; */
 }
 
 .text-primary {

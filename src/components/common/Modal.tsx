@@ -3,7 +3,7 @@ import React from 'react'
 
 interface ModalProps {
   isOpen: boolean
-  onClose: () => void
+  onClose: React.MouseEventHandler<HTMLImageElement>
   title: string
   content: string
   children: React.ReactNode

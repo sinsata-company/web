@@ -15,16 +15,23 @@ const AdvisorSummary = () => {
   }, [])
 
   return (
-    <div className="h-36 px-4 pt-6 pb-5 bg-rose-100 rounded-2xl flex-col justify-start items-start gap-4 inline-flex">
-      <div className="self-stretch text-zinc-900 text-2xl font-bold font-['Pretendard Variable']">
-        이달의 상담 금액
-      </div>
-      <div className="self-stretch h-14 p-3 bg-white rounded-full justify-center items-center gap-2 inline-flex">
-        <div className="w-8 h-8 p-2.5 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-full flex-col justify-center items-center gap-2.5 inline-flex" />
-        <div className="grow shrink basis-0 text-center text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
-          {formatNumberWithCommas(cash)} 캐시
+    <div className="w-full h-auto px-4   flex-col justify-start items-start gap-2.5 inline-flex">
+      <div className=" bg-amber-50 px-6 py-4 rounded-2xl   w-full flex-col justify-start items-start gap-6 flex">
+        <div className="text-black text-lg font-bold font-['Pretendard']">
+          이달의 상담 금액
         </div>
-        <div className="w-8 h-8 p-2.5 opacity-0 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-full" />
+        <div className="w-full relative">
+          <div className="w-full px-4 py-2 bg-white rounded-full border-2 border-gray-200 flex">
+            <div className="w-6 h-6  bg-orange-300 rounded-full flex items-center justify-center">
+              <div className=" text-center text-neutral-800 text-md font-semibold font-['Pretendard'] ">
+                ₩
+              </div>
+            </div>
+            <div className=" w-full text-center text-neutral-800 text-lg font-bold font-['Pretendard']">
+              {formatNumberWithCommas(cash)} 코인
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

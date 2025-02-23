@@ -75,7 +75,9 @@ export default function AdvisorList({
               />
               <p className="font-bold text-lg">전화 상담(후불)</p>
             </div>
-            <p className=" text-lg text-zinc-900">30초 당 1,400원</p>
+            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+              30초 당 1,400원
+            </p>
           </div>
           <div className="text-zinc-600 py-3">
             하단 버튼을 눌러 전화 연결 후, 안내멘트에 따라 상담사 고유번호{' '}
@@ -100,7 +102,9 @@ export default function AdvisorList({
               />
               <p className="font-bold text-lg">채팅 상담(잔액차감)</p>
             </div>
-            <p className=" text-lg text-zinc-900">30초 당 1,400원</p>
+            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+              30초 당 1,400원
+            </p>
           </div>
           <div className="text-zinc-600 py-3">
             하단 버튼을 누르면, 회원권에 남아있는 잔액에서 상담료가 차감됩니다.
@@ -109,7 +113,7 @@ export default function AdvisorList({
             <Button
               onClick={async () => {
                 const result = await startInstantChat(advisor?.id ?? '')
-                router.push(`/chats/private/${result.chatRoomId}`)
+                router.push(`/chats/private/${result.roomId}`)
 
                 // setIsPhoneModalOpen(false)
               }}
@@ -131,98 +135,91 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
   function AdvisorItem(advisor, ref) {
     const { id, name, thumbnail, hashtag, summary, onClickPhone } = advisor
     const nav = useRouter()
+
+    const handleItemClick = () => {
+      nav.push('/teacher/' + id)
+    }
+
+    const handlePhoneClick = (e: React.MouseEvent) => {
+      e.stopPropagation()
+      onClickPhone(advisor)
+    }
+
+    const renderHashtags = () => {
+      return hashtag?.split('#').map((tag, idx) => {
+        if (tag === '') return null
+        return (
+          <p
+            className="leading-none text-primary-red font-bold"
+            key={'hash-' + idx}
+          >
+            #{tag.trim()}{' '}
+          </p>
+        )
+      })
+    }
+
+    const renderPriceInfo = (price: string, duration: string) => (
+      <div className="flex items-center gap-1">
+        <Image src={'/images/ic_cash.svg'} width={16} height={16} alt="cash" />
+        <div className="flex items-baseline gap-1">
+          <p>{price}</p>
+          <p className="text-neutral-400 font-semibold font-light text-xs">
+            {duration}
+          </p>
+        </div>
+      </div>
+    )
+
     return (
       <div
         ref={ref}
-        onClick={() => {
-          nav.push('/teacher/' + id)
-        }}
-        className="w-full items-stretch flex-col p-4 pb-2 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-start  inline-flex"
+        onClick={handleItemClick}
+        className="w-full items-stretch flex-col p-4 pb-2 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-start inline-flex"
       >
         <div className="flex items-center grow">
           <Image
-            style={{
-              objectFit: 'cover',
-            }}
-            className="rounded-xl w-30 h-24 mr-1 cursor-pointer"
+            style={{ objectFit: 'cover' }}
+            className="rounded-xl w-30 h-24 mr-2 cursor-pointer"
             src={thumbnail || '/logo.jpg'}
             placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg==" // 추가
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
             width={120}
             height={90}
             alt="profile"
           />
 
-          <div className="border-b-2 border-primary-red flex  grow items-center">
+          <div className="border-primary-red flex grow items-center">
             <div className="flex-col grow justify-center items-start gap-2 inline-flex overflow-hidden">
-              <div className="flex-col flex items-baseline leading-tight">
-                <div className=" font-extrabold leading-tight">{name}</div>
-                <p className=" text-xs ">
-                  {summary?.length > 20 ? summary.substring(0, 20) : summary}
-                </p>
-              </div>
-              <div className="flex-col inline-flex justify-between text-black text-sm font-bold ">
-                <div className="flex items-center  ">
-                  <Image
-                    src={'/images/cash_060.png'}
-                    width={24}
-                    height={24}
-                    alt="cash"
-                  />
-                  <div className="flex items-baseline gap-1">
-                    <p>1,400원</p>
-                    <p className="font-light text-xs">30초</p>
-                  </div>
-                </div>
-                <div className="flex items-center  ">
-                  <Image
-                    src={'/images/cash_070.png'}
-                    width={24}
-                    height={24}
-                    alt="cash"
-                  />
-                  <div className="flex items-baseline gap-1">
-                    <p>25,000원</p>
-                    <p className="font-light text-xs">15분</p>
-                  </div>
+              <div className="w-full flex-col flex items-baseline leading-tight">
+                <div className="font-extrabold leading-tight">{name}</div>
+                <div
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    maxWidth: '170px',
+                  }}
+                  className="gap-2 text-sm text-primary-red flex justify-start mt-1   overflow-hidden"
+                >
+                  {renderHashtags()}
                 </div>
               </div>
-            </div>
-            <div
-              onClick={(e) => {
-                e.stopPropagation()
-                onClickPhone(advisor)
-              }}
-              className="cursor-pointer rounded-xl  bg-primary-red flex py-2 px-3 items-center"
-              style={{
-                height: 'auto',
-                maxHeight: '2.5rem',
-              }}
-            >
-              <Image
-                src={'/images/button_call.png'}
-                width={24}
-                height={24}
-                alt="call"
-                className="mr-2 w-6 h-6"
-              />
-              <div className="text-white">전화 상담</div>
+              <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
+                {renderPriceInfo('1,400원', '30초')}
+                {renderPriceInfo('25,000원', '15분')}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="gap-2 text-sm text-primary-red flex justify-start mt-1">
-          {hashtag &&
-            hashtag.split('#').map((tag, idx) => {
-              if (tag === '') return null
-              return (
-                <p
-                  className="leadig-none text-primary-red text-bold font-bold"
-                  key={'hash-' + idx}
-                >
-                  #{tag.trim()}{' '}
-                </p>
-              )
-            })}
+
+          <Image
+            onClick={handlePhoneClick}
+            src={'/images/status_ready.svg'}
+            width={120}
+            height={40}
+            alt="call"
+            className="w-24 h-10"
+          />
         </div>
       </div>
     )

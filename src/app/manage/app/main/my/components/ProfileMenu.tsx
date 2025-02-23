@@ -31,6 +31,10 @@ const ProfileMenu = () => {
       route: 'qna',
       title: '자주 묻는 질문',
     },
+    {
+      route: '#',
+      title: '회원탈퇴',
+    },
   ]
   return (
     <div>

@@ -2,7 +2,7 @@ import { ReserveDto } from '@/app/api/data'
 import { basicTeacherGet } from './base'
 
 export const getHomeCash = async () => {
-  const result = await basicTeacherGet('/manage/home/cash')
+  const result = await basicTeacherGet<number>('/manage/home/cash')
   return result
 }
 
