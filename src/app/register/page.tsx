@@ -85,7 +85,7 @@ export default function RegisterPage() {
       `response_type=code` +
       `&client_id=${clientId}` +
       `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-      `&scope=name email` + // 사용자 이름, 이메일 요청
+      // `&scope=name email` + // 사용자 이름, 이메일 요청
       `&response_mode=query` + // POST 방식으로 응답 받기 (권장)
       `&state=STATE_STRING`
     window.location.href = appleAuthUrl
