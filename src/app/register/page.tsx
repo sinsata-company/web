@@ -108,7 +108,7 @@ export default function RegisterPage() {
           name="구글"
           onClick={loginWithGoogle}
         /> */}
-        <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} />
+        {/* <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} />
         <SocialLoginButton
           image="kakao"
           name="카카오"
@@ -119,7 +119,7 @@ export default function RegisterPage() {
           image="naver"
           name="네이버"
           onClick={loginWithNaver}
-        />
+        /> */}
       </div>
     </div>
   )
