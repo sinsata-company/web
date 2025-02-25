@@ -12,10 +12,12 @@ import { getMyInfo, withdraw } from '../api/user'
 import { useRouter } from 'next/navigation'
 import Membership from './components/Membership'
 import { UserDto } from '@/types/user'
+import MenuOptions from './components/MenuOptions'
+import ApplyCsl from './components/ApplyCsl'
 
 export default function MyPage() {
   const [isLogin, setIsLogin] = useState(true)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const [me, setMe] = useState<UserDto | null>(null)
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function MyPage() {
   const router = useRouter()
 
   return (
-    <div>
+    <div className="h-screen">
       <MainAppbar />
       {!isLogin ? (
         <div className="px-4">
@@ -39,10 +41,16 @@ export default function MyPage() {
         </div>
       ) : (
         <>
-          <Membership level={me?.level ?? ''} nickname={me?.nickname ?? ''} />
+          <Membership
+            level={me?.level ?? ''}
+            nickname={me?.nickname ?? ''}
+            createdAt={me?.createdAt ?? ''}
+          />
           <CashSummary />
           <div className="h-4"></div>
-          <MyTabContainer />
+          <MenuOptions />
+          <ApplyCsl />
+          {/* <MyTabContainer /> */}
           {isLogin && (
             <div>
               <div className="flex justify-end px-4">
@@ -57,47 +65,8 @@ export default function MyPage() {
                   로그아웃
                 </button>
               </div>
-              <div className="flex justify-end px-4">
-                <button
-                  className=" text-gray-400 text-sm py-2 px-4 rounded"
-                  onClick={() => {
-                    // Handle 회원탈퇴 logic here
-                    setIsModalOpen(true)
-                  }}
-                >
-                  회원탈퇴
-                </button>
-              </div>
             </div>
           )}
-          <Modal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            title="회원탈퇴"
-            content="회원탈퇴를 하시겠습니까? 한 번 탈퇴한 계정은 영구 삭제되며, 다시 복구되지 않습니다."
-          >
-            <div className="flex justify-end gap-4">
-              <Button
-                label="취소"
-                onClick={() => {
-                  // Handle 회원탈퇴 logic here
-                  setIsModalOpen(false)
-                }}
-                buttonType={BUTTON_TYPE.primary}
-              />
-              <Button
-                label="회원탈퇴"
-                onClick={async () => {
-                  // Handle 회원탈퇴 logic here
-                  await withdraw()
-                  setIsModalOpen(false)
-                  localStorage.clear()
-                  router.push('/register')
-                }}
-                buttonType={BUTTON_TYPE.secondary}
-              />
-            </div>
-          </Modal>
         </>
       )}
 

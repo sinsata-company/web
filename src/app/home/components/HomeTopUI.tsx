@@ -11,8 +11,7 @@ const BannersAndStatics = () => {
     <div className="relative h-[600px]">
       <Image
         src="/images/banner-sample.png"
-        layout="fill"
-        objectFit="cover"
+        fill
         alt="banner"
         className="w-full h-[400px]"
       />

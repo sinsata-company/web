@@ -1,11 +1,4 @@
-import MainAppbar from '@/components/common/MainAppbar'
-import AdCarousel from './components/AdCarousel'
-
 import BTB from '@/components/common/Btb'
-import GroupChatItem from './components/GroupChatItem'
-
-import FindMyAdvisor from './components/FindMyAdvisor'
-import HomeCategory from './components/HomeCategory'
 import AdvisorContainer from './components/AdvisorContainer'
 import BannersAndStatics from './components/HomeTopUI'
 
@@ -16,15 +9,9 @@ export default function HomePage() {
       {/* <AdCarousel /> */}
       <BannersAndStatics />
       <div className="h-6"></div>
-      {/* <div className="px-5">
-        <GroupChatItem />
-      </div> */}
-      {/* <div className="h-6"></div> */}
-      {/* <HomeCategory /> */}
-
       <div className="h-6"></div>
       <AdvisorContainer />
-      <FindMyAdvisor />
+
       <BTB />
     </div>
   )

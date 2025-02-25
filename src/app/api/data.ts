@@ -9,6 +9,8 @@ export interface TeacherListDto {
   canCall: boolean
   status: number
   pinNumber: string
+  reviewCount: number
+  rating: number
 }
 
 export interface TeacherDetailDto {

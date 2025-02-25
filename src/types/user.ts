@@ -7,4 +7,5 @@ export interface UserDto {
   level: string
   mtnId: string
   phoneNum: string
+  createdAt: string
 }

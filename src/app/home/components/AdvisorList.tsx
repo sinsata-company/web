@@ -231,11 +231,11 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
               </div>
               <div>
                 <span className="text-neutral-800 text-lg font-bold font-['Pretendard']">
-                  4.5
+                  {advisor.rating}
                 </span>
                 <span className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
                   {' '}
-                  (4)
+                  ({advisor.reviewCount})
                 </span>
               </div>
             </div>

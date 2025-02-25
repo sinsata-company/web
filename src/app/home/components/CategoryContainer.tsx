@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import CategoryItem from './CategoryItem'
 import { useRouter } from 'next/navigation'
 

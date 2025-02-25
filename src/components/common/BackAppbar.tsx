@@ -9,6 +9,7 @@ export default function BackAppbar({ onClick }: { onClick?: () => void }) {
     <div className="w-96 h-14 px-5 justify-between items-center inline-flex">
       <div className="h-6 justify-start items-center gap-1 flex">
         <Image
+          className="cursor-pointer"
           onClick={() => {
             if (onClick) {
               onClick && onClick()

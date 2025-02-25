@@ -2,6 +2,7 @@
 
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { UserDto } from '@/types/user'
+import moment from 'moment'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -16,44 +17,55 @@ export enum MembershipLevel {
 const Membership = ({
   level,
   nickname,
+  createdAt,
 }: {
   level: string
   nickname: string
+  createdAt: string
 }) => {
   const router = useRouter()
   return (
-    <div>
-      <div className="p-4 flex justify-between items-center ">
-        <div className="self-stretch flex items-center text-zinc-900 text-2xl font-bold font-['Pretendard Variable']">
-          내 계정 정보
+    <div className="mb-4">
+      {!level ? (
+        <div className="px-4 my-4">
+          <Button
+            onClick={() => {
+              router.push('/register')
+            }}
+            label="로그인 하러 가기"
+            buttonType={BUTTON_TYPE.primary}
+          />
         </div>
-        <div className="flex flex-col items-end">
-          <div className="flex items-center">
-            {level ? (
-              <Image
-                src={`/images/membership/${level}.png`}
-                alt="level"
-                width={36}
-                height={36}
-              />
-            ) : (
-              <Button
-                onClick={() => {
-                  router.push('/register')
-                }}
-                label="로그인하고 멤버십 확인하기"
-                buttonType={BUTTON_TYPE.primary}
-              />
-            )}
-            <span className="text-zinc-800 text-lg font-bold font-['Pretendard Variable']">
-              {MembershipLevel[level as keyof typeof MembershipLevel]}
-            </span>
+      ) : (
+        <>
+          <div className="p-4 flex  items-center w-full">
+            <Image
+              src={`/images/membership/${level}.png`}
+              alt="level"
+              width={48}
+              height={48}
+            />
+            <div className="flex-col ml-3">
+              <div className="text-zinc-900 text-lg font-bold font-['Pretendard Variable']">
+                {nickname}
+              </div>
+              <div className="text-zinc-500 text-lg font-bold font-['Pretendard Variable']">
+                {moment(createdAt).format('YYYY.MM.DD')}가입
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                router.push('/my/menus/profile')
+              }}
+              className="cursor-pointer ml-auto px-5 py-2 bg-gray-200 rounded-md justify-center items-center inline-flex"
+            >
+              <div className="text-center text-neutral-800 text-md font-semibold font-['Pretendard']">
+                수정
+              </div>
+            </div>
           </div>
-          <span className="text-zinc-900 text-lg font-bold font-['Pretendard Variable']">
-            {nickname}
-          </span>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   )
 }

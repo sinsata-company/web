@@ -74,7 +74,7 @@ export default function RootLayout({
         className={`${notoSans.className} antialiased relative w-full h-full max-w-[550px] mx-auto`}
       >
         <div className="relative">{children}</div>
-        <UsageFooter />
+        {/* <UsageFooter /> */}
       </body>
       <KakaoScript />
     </html>

@@ -78,18 +78,24 @@ export default function RegisterPage() {
   }
 
   const loginWithApple = () => {
-    const clientId = 'com.sst.sinsataCs'
+    const clientId = 'com.sst.signin'
     const redirectUri = BASE_WEB + '/register/oauth/apple'
-    const appleAuthUrl = `https://appleid.apple.com/auth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=STATE_STRING`
+    const appleAuthUrl =
+      `https://appleid.apple.com/auth/authorize?` +
+      `response_type=code` +
+      `&client_id=${clientId}` +
+      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+      `&scope=name email` + // 사용자 이름, 이메일 요청
+      `&response_mode=query` + // POST 방식으로 응답 받기 (권장)
+      `&state=STATE_STRING`
     window.location.href = appleAuthUrl
   }
-
   const nav = useRouter()
   return (
-    <div className="h-screen w-full flex flex-col  bg-zinc-900">
+    <div className="h-screen w-full flex flex-col  bg-amber-50">
       <script defer src="https://developers.kakao.com/sdk/js/kakao.js"></script>
       <LandingLogo />
-      <div className="w-full px-5 py-10 shadow-inner flex-col justify-center items-center gap-3 inline-flex">
+      <div className="w-full px-5 py-10  flex-col justify-center items-center gap-3 inline-flex">
         <SocialLoginButton
           image=""
           name="이메일"

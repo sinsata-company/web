@@ -3,7 +3,10 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SearchType } from '@/app/api/teacher'
-import Select from 'react-select'
+
+import dynamic from 'next/dynamic'
+
+const Select = dynamic(() => import('react-select'), { ssr: false })
 
 const tabs = [
   { name: '신규순', active: true, query: SearchType.NEW },
@@ -29,7 +32,13 @@ export default function AdvisorSort(props: {
           label: tab.name,
           index: index,
         }))}
-        onChange={(selectedOption) => {
+        onChange={(
+          selectedOption: {
+            value: SearchType
+            label: string
+            index: number
+          } | null
+        ) => {
           const selectedIndex = selectedOption!.index
           props.getTeachers(tabs[selectedIndex].query, props.page)
           setActiveTab(selectedIndex)

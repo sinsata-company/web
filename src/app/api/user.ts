@@ -3,7 +3,7 @@ import { BASE_URL, basicUnpagedGet } from '../../api/base'
 import axios from 'axios'
 import { UserCredential } from 'firebase/auth'
 import { isMobileDevice } from '@/utils/device'
-import { basicDelete } from './base'
+import { basicDelete, basicGet, basicPut } from './base'
 
 export const getMyInfo = async () => {
   const result = await basicUnpagedGet<UserDto>('/users/me')
@@ -154,4 +154,28 @@ function getMachineId() {
 
 export const withdraw = async () => {
   await basicDelete('/users/withdraw')
+}
+
+export const updateprofile = async ({
+  nickname,
+  phoneNum,
+}: {
+  nickname: string
+  phoneNum: string
+}) => {
+  await basicPut('/users/profile', {
+    phoneNumber: phoneNum,
+    nickname,
+  })
+}
+
+export interface PayHistoryDto {
+  payDttm: string
+  payType: 'RESERVE' | 'LIVECHAT' | 'LIVECALL'
+  payAmt: number
+  teacherName: string
+}
+
+export const getPayHistory = async () => {
+  return await basicUnpagedGet<PayHistoryDto[]>('/users/billing')
 }
