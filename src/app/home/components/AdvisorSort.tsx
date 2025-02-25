@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SearchType } from '@/app/api/teacher'
+import Select from 'react-select'
 
 const tabs = [
   { name: '신규순', active: true, query: SearchType.NEW },
@@ -18,37 +19,43 @@ export default function AdvisorSort(props: {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <div className="w-full h-12 p-1.5 bg-zinc-100 rounded-xl justify-center items-center gap-1 inline-flex">
-      {tabs.map((tab, index) => (
-        <div
-          key={index}
-          className={`grow shrink basis-0 h-9 p-2 rounded-lg justify-center items-center gap-2.5 flex cursor-pointer ${
-            activeTab === index ? 'bg-white shadow' : ''
-          }`}
-          onClick={() => {
-            props.getTeachers(tabs[index].query, props.page)
-            setActiveTab(index)
-          }}
-        >
-          <AnimatePresence>
-            {activeTab === index ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-zinc-900 text-base font-bold font-['Pretendard Variable']"
-              >
-                {tab.name}
-              </motion.div>
-            ) : (
-              <div className="text-zinc-400 text-base font-bold font-['Pretendard Variable']">
-                {tab.name}
-              </div>
-            )}
-          </AnimatePresence>
-        </div>
-      ))}
+    <div className="relative w-full flex justify-between items-center">
+      <div className="text-neutral-800 text-xl font-bold font-['Pretendard']">
+        상담 가능한 선생님
+      </div>
+      <Select
+        options={tabs.map((tab, index) => ({
+          value: tab.query,
+          label: tab.name,
+          index: index,
+        }))}
+        onChange={(selectedOption) => {
+          const selectedIndex = selectedOption!.index
+          props.getTeachers(tabs[selectedIndex].query, props.page)
+          setActiveTab(selectedIndex)
+        }}
+        value={{
+          value: tabs[activeTab].query,
+          label: tabs[activeTab].name,
+          index: activeTab,
+        }}
+        classNamePrefix="react-select text-neutral-400 font-semibold"
+        styles={{
+          control: (base) => ({
+            ...base,
+            color: '#a3a3a3',
+            border: 'none',
+            boxShadow: 'none',
+
+            '&:hover': {
+              boxShadow: 'none',
+            },
+            '&:focus': {
+              boxShadow: 'none',
+            },
+          }),
+        }}
+      />
     </div>
   )
 }

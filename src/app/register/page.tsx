@@ -78,7 +78,7 @@ export default function RegisterPage() {
   }
 
   const loginWithApple = () => {
-    const clientId = 'com.sst.web'
+    const clientId = 'com.sst.sinsataCs'
     const redirectUri = BASE_WEB + '/register/oauth/apple'
     const appleAuthUrl = `https://appleid.apple.com/auth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=STATE_STRING`
     window.location.href = appleAuthUrl
@@ -102,7 +102,7 @@ export default function RegisterPage() {
           name="구글"
           onClick={loginWithGoogle}
         /> */}
-        {/* <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} /> */}
+        <SocialLoginButton image="apple" name="애플" onClick={loginWithApple} />
         <SocialLoginButton
           image="kakao"
           name="카카오"

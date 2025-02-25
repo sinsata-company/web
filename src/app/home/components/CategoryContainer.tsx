@@ -1,10 +1,13 @@
 'use client'
 
+import Image from 'next/image'
 import CategoryItem from './CategoryItem'
+import { useRouter } from 'next/navigation'
 
 export default function CategoryContainer({ onClick }: { onClick?: Function }) {
+  const router = useRouter()
   return (
-    <div className=" px-5  w-full h-16 justify-between items-start gap-3 inline-flex">
+    <div className="px-8 justify-start items-stretch  gap-10 inline-flex ">
       <CategoryItem
         onClick={onClick}
         textColor="text-red-600"
@@ -34,5 +37,9 @@ export default function CategoryContainer({ onClick }: { onClick?: Function }) {
         color="bg-red-600/10"
       />
     </div>
+
+    // <div className=" px-5  w-full h-16 justify-between items-start gap-3 inline-flex">
+
+    // </div>
   )
 }

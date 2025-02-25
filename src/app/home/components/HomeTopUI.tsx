@@ -1,0 +1,46 @@
+'use client'
+
+import Image from 'next/image'
+import CategoryContainer from './CategoryContainer'
+import StaticItem from './StaticItem'
+import { useRouter } from 'next/navigation'
+
+const BannersAndStatics = () => {
+  const router = useRouter()
+  return (
+    <div className="relative h-[600px]">
+      <Image
+        src="/images/banner-sample.png"
+        layout="fill"
+        objectFit="cover"
+        alt="banner"
+        className="w-full h-[400px]"
+      />
+      <div className="absolute top-[300px] left-0 w-full h-80 ">
+        <div className="mx-4  py-4 bg-white rounded-2xl flex-col justify-start items-center gap-4 inline-flex">
+          <CategoryContainer />
+          <div className="self-stretch h-px bg-gray-200"></div>
+          <div className="justify-start items-center gap-6 inline-flex">
+            <Image
+              onClick={() => {
+                router.push('/chats/group/sinjeom')
+              }}
+              src={`/images/group-chat-button.svg`}
+              alt="group-chat"
+              width={40}
+              height={40}
+              className="h-6 w-full cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div className="mt-6 flex px-4 items-stretch justify-between gap-4">
+          <StaticItem label="누적 상담 건수" data="325건" />
+          <StaticItem label="전문가 수" data="91명" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default BannersAndStatics

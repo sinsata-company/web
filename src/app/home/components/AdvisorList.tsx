@@ -175,9 +175,9 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
       <div
         ref={ref}
         onClick={handleItemClick}
-        className="w-full items-stretch flex-col p-4 pb-2 bg-neutral-50 rounded-2xl border border-zinc-100 justify-start items-start inline-flex"
+        className="w-full items-stretch flex-col p-4 pb-2 rounded-2xl  justify-start items-start inline-flex"
       >
-        <div className="flex items-center grow">
+        <div className="flex items-start grow">
           <Image
             style={{ objectFit: 'cover' }}
             className="rounded-xl w-30 h-24 mr-2 cursor-pointer"
@@ -211,15 +211,35 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
               </div>
             </div>
           </div>
-
-          <Image
-            onClick={handlePhoneClick}
-            src={'/images/status_ready.svg'}
-            width={120}
-            height={40}
-            alt="call"
-            className="w-24 h-10"
-          />
+          <div className="flex flex-col items-end">
+            <Image
+              onClick={handlePhoneClick}
+              src={'/images/status_ready.svg'}
+              width={120}
+              height={40}
+              alt="call"
+              className="w-24 h-10"
+            />
+            <div className="h-11 justify-start items-center gap-1 inline-flex">
+              <div data-svg-wrapper className="relative">
+                <Image
+                  src={'/images/ic_star.svg'}
+                  width={16}
+                  height={16}
+                  alt="chat"
+                />
+              </div>
+              <div>
+                <span className="text-neutral-800 text-lg font-bold font-['Pretendard']">
+                  4.5
+                </span>
+                <span className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+                  {' '}
+                  (4)
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

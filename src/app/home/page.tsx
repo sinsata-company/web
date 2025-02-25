@@ -7,18 +7,20 @@ import GroupChatItem from './components/GroupChatItem'
 import FindMyAdvisor from './components/FindMyAdvisor'
 import HomeCategory from './components/HomeCategory'
 import AdvisorContainer from './components/AdvisorContainer'
+import BannersAndStatics from './components/HomeTopUI'
 
 export default function HomePage() {
   return (
     <div>
-      <MainAppbar />
-      <AdCarousel />
+      {/* <MainAppbar /> */}
+      {/* <AdCarousel /> */}
+      <BannersAndStatics />
       <div className="h-6"></div>
-      <div className="px-5">
+      {/* <div className="px-5">
         <GroupChatItem />
-      </div>
-      <div className="h-6"></div>
-      <HomeCategory />
+      </div> */}
+      {/* <div className="h-6"></div> */}
+      {/* <HomeCategory /> */}
 
       <div className="h-6"></div>
       <AdvisorContainer />

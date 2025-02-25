@@ -11,6 +11,7 @@ import { useState } from 'react'
 
 const AdviseContent = () => {
   const [contents, setContents] = useState<string>('')
+  const [contentsError, setContentsError] = useState<string>('')
   const [isLoaing, setIsLoading] = useState<boolean>(false)
 
   const getRecommendation = async () => {
@@ -37,11 +38,22 @@ const AdviseContent = () => {
         lines={8}
         useCounter
         maxLength={1000}
+        error={contentsError}
       />
+
       <Button
         buttonType={BUTTON_TYPE.primary}
         label="찾기"
         onClick={async () => {
+          if (!contents) {
+            setContentsError('내용을 입력해주세요.')
+            return
+          }
+          if (contents.length < 20) {
+            setContentsError('20자 이상 입력해주세요.')
+            return
+          }
+          setContentsError('')
           setIsLoading(true)
           const result = await getRecommendation()
           setIsLoading(false)

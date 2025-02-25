@@ -23,27 +23,19 @@ export default function CategoryItem({
         onClick && onClick(image)
       }}
       className={clsx(
-        'cursor-pointer grow  px-2 py-3 bg-red-600/10 rounded-xl flex-col justify-center items-center gap-1 inline-flex',
-        color
+        'cursor-pointer grow  bg-white rounded-xl flex-col justify-center items-center gap-1 inline-flex'
+        // color
       )}
     >
-      <Image
-        src={`/images/category_${image}.png`}
-        width={24}
-        height={24}
-        alt="category"
-      />
-
-      <div
-        className={clsx(
-          "text-base font-bold font-['Pretendard Variable'] leading-tight",
-          textColor
-        )}
-        style={{
-          color: '#685c41',
-        }}
-      >
-        {label}
+      <div className=" flex-col justify-start items-center gap-2.5 inline-flex">
+        <div className="  justify-center items-center inline-flex overflow-hidden">
+          <Image
+            src={`/images/category_${image}.svg`}
+            width={80}
+            height={80}
+            alt="category"
+          />
+        </div>
       </div>
     </div>
   )

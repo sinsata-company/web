@@ -51,7 +51,7 @@ export default function AdvisorContainer() {
         />
       </div>
       <div className="h-6"></div>
-      <div className="px-5">
+      <div className="px-5 h-screen">
         <AdvisorList
           advisorList={advisorList}
           lastAdvisorElementRef={lastAdvisorElementRef}
