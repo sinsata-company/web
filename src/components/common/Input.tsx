@@ -74,7 +74,7 @@ export default function Input({
         {useSuffix && (
           <div
             onClick={onClickSuffix}
-            className="h-14 px-8 py-5 bg-gradient-to-br from-yellow-400 via-red-600 to-blue-800 rounded-xl justify-center items-center gap-2 inline-flex"
+            className="h-14 px-8 py-5 bg-gradient rounded-xl justify-center items-center gap-2 inline-flex"
           >
             <div className="text-center text-white text-base font-bold font-['Pretendard Variable'] capitalize">
               등록
