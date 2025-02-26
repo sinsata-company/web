@@ -1,10 +1,12 @@
 'use client'
 
+import { startInstantChat } from '@/app/api/chat'
 import { TeacherDetailDto } from '@/app/api/data'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Modal from '@/components/common/Modal'
 import { IAdvisor } from '@/dummy/dummyTeacher'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function TeacherSummary({
@@ -13,6 +15,7 @@ export default function TeacherSummary({
   advisor: TeacherDetailDto | null
 }) {
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
+  const router = useRouter()
   return (
     <div className="w-full sh-20 flex flex-col justify-start items-start gap-2">
       <div className="flex w-full justify-between gap-2">
@@ -84,7 +87,9 @@ export default function TeacherSummary({
               />
               <p className="font-bold text-lg">전화 상담(후불)</p>
             </div>
-            <p className=" text-lg text-zinc-900">30초 당 1,400원</p>
+            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+              30초 당 1,400원
+            </p>
           </div>
           <div className="text-zinc-600 py-3">
             하단 버튼을 눌러 전화 연결 후, 안내멘트에 따라 상담사 고유번호{' '}
@@ -109,15 +114,20 @@ export default function TeacherSummary({
               />
               <p className="font-bold text-lg">채팅 상담(잔액차감)</p>
             </div>
-            <p className=" text-lg text-zinc-900">30초 당 1,400원</p>
+            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+              30초 당 1,400원
+            </p>
           </div>
           <div className="text-zinc-600 py-3">
             하단 버튼을 누르면, 회원권에 남아있는 잔액에서 상담료가 차감됩니다.
           </div>
           <div className="inline-flex flex-col w-full gap-2">
             <Button
-              onClick={() => {
-                setIsPhoneModalOpen(false)
+              onClick={async () => {
+                const result = await startInstantChat(advisor?.id ?? '')
+                router.push(`/chats/private/${result.roomId}`)
+
+                // setIsPhoneModalOpen(false)
               }}
               buttonType={BUTTON_TYPE.primary}
               label={'채팅상담 시작하기'}
