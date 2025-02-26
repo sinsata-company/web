@@ -1,4 +1,5 @@
 import { teacherTypeConverter } from '@/utils/teacherTypeConverter'
+import clsx from 'clsx'
 
 const TeacherTypeLabel = ({
   teacherType,
@@ -26,8 +27,14 @@ const TeacherTypeLabel = ({
       break
   }
   return (
-    <div className="absolute top-2 left-2 px-2 py-1  bg-red-400 rounded-lg justify-center items-center inline-flex">
-      <div className="text-white text-xs font-bold font-['Pretendard'] leading-none">
+    <div
+      className={clsx(
+        'absolute top-2 left-2 px-2 py-1 rounded-lg justify-center items-center inline-flex',
+        color,
+        textColor
+      )}
+    >
+      <div className=" text-xs font-bold font-['Pretendard'] leading-none">
         {teacherTypeConverter(teacherType.toLowerCase())}
       </div>
     </div>

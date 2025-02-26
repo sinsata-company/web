@@ -38,7 +38,7 @@ export const getTeacherDetail = async (teacherId: String) => {
 }
 
 export const requestRecommendation = async (contents: string) => {
-  const response = await basicPost(`/advice/request`, contents)
+  const response = await basicPost(`/advice/request`, { contents })
   const data = response as string
   return data
 }

@@ -1,9 +1,20 @@
+'use client'
+
+import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function MainAppbar() {
+  const path = usePathname()
   return (
-    <div className="w-full mt-3 h-14 px-5 justify-between items-center inline-flex">
+    <div
+      className={clsx(
+        'w-full pt-3 h-14 px-5 justify-between items-center inline-flex',
+
+        path === '/chats' && 'bg-amber-50'
+      )}
+    >
       <Link href="/home">
         <Image
           src={'/images/sinsata_appbar_logo.svg'}

@@ -7,6 +7,7 @@ import { forwardRef, useState } from 'react'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { startInstantChat } from '@/app/api/chat'
+import TeacherTypeLabel from '@/components/common/TeacherTypeLabel'
 
 export default function AdvisorList({
   advisorList,
@@ -134,7 +135,8 @@ interface AdvisorItemProps extends TeacherListDto {
 
 const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
   function AdvisorItem(advisor, ref) {
-    const { id, name, thumbnail, hashtag, summary, onClickPhone } = advisor
+    const { id, name, thumbnail, hashtag, summary, onClickPhone, teacherType } =
+      advisor
     const nav = useRouter()
 
     const handleItemClick = () => {
@@ -180,16 +182,19 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         className="w-full items-stretch flex-col p-4 pb-2 rounded-2xl  justify-start items-start inline-flex"
       >
         <div className="flex items-start grow">
-          <Image
-            style={{ objectFit: 'cover' }}
-            className="rounded-xl w-30 h-24 mr-2 cursor-pointer"
-            src={thumbnail || '/logo.jpg'}
-            placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-            width={120}
-            height={90}
-            alt="profile"
-          />
+          <div className="w-30 h-24 relative">
+            <Image
+              style={{ objectFit: 'cover' }}
+              className="rounded-xl w-30 h-24 mr-2 cursor-pointer"
+              src={thumbnail || '/logo.jpg'}
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+              width={120}
+              height={90}
+              alt="profile"
+            />
+            <TeacherTypeLabel teacherType={teacherType} />
+          </div>
 
           <div className="border-primary-red flex grow items-center">
             <div className="flex-col grow justify-center items-start gap-2 inline-flex overflow-hidden">

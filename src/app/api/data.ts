@@ -2,7 +2,7 @@ export interface TeacherListDto {
   id: string
   name: string
   summary: string
-  teacherType: string
+  teacherType: 'TARO' | 'MIND' | 'SINJEOM' | 'SAJU'
   hashtag: string
   thumbnail: string
   canChat: boolean
