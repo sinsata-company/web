@@ -35,7 +35,7 @@ const TeacherTypeLabel = ({
       )}
     >
       <div className=" text-xs font-bold font-['Pretendard'] leading-none">
-        {teacherTypeConverter(teacherType.toLowerCase())}
+        {teacherTypeConverter(teacherType?.toLowerCase())}
       </div>
     </div>
   )
