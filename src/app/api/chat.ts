@@ -2,7 +2,7 @@ import { basicUnpagedGet } from '@/api/base'
 import { CashHistoryDto, ChatDto, ChatRoomRes } from './data'
 
 export const getMyChats = async () => {
-  return await basicUnpagedGet<CashHistoryDto[]>('/chats/my')
+  return await basicUnpagedGet<ChatDto[]>('/chats/my')
 }
 
 export const startInstantChat = async (teacherId: string) => {

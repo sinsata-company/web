@@ -1,9 +1,10 @@
-import { CashHistoryDto } from '@/app/api/data'
+import { CashHistoryDto, ChatDto } from '@/app/api/data'
 import ChatStatus from './ChatStatus'
 import moment from 'moment'
 import { useRouter } from 'next/navigation'
+import TeacherTypeLabel from '@/components/common/TeacherTypeLabel'
 
-export default function ChatItem(props: CashHistoryDto) {
+export default function ChatItem(props: ChatDto) {
   const {
     teacherName,
     teacherProfile,
@@ -12,6 +13,7 @@ export default function ChatItem(props: CashHistoryDto) {
     endAt,
     status,
     roomId,
+    teacherType,
   } = props
   const router = useRouter()
   return (
@@ -40,11 +42,12 @@ export default function ChatItem(props: CashHistoryDto) {
           </div>
         </div>
       </div>
-      <div className="w-20 h-20 bg-white rounded-xl">
+      <div className="w-32 h-20 bg-white rounded-xl relative">
+        <TeacherTypeLabel teacherType={teacherType} />
         <img
           src={teacherProfile}
           alt="profile"
-          className="w-20 h-20 rounded-xl"
+          className="w-32 h-20 rounded-xl"
         />
       </div>
     </div>

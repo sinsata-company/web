@@ -17,7 +17,11 @@ const BannersAndStatics = () => {
       />
       <div className="absolute top-[300px] left-0 w-full h-80 ">
         <div className="mx-4  py-4 bg-white rounded-2xl flex-col justify-start items-center gap-4 inline-flex">
-          <CategoryContainer />
+          <CategoryContainer
+            onClick={(e: string) => {
+              router.push('/home/' + e)
+            }}
+          />
           <div className="self-stretch h-px bg-gray-200"></div>
           <div className="justify-start items-center gap-6 inline-flex">
             <Image

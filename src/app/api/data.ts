@@ -33,6 +33,7 @@ export interface TeacherDetailDto {
 export interface CashHistoryDto {
   teacherName: string
   teacherProfile?: any
+  teacherType: 'TARO' | 'MIND' | 'SINJEOM' | 'SAJU'
   roomId: string
   lastMsg: string
   startAt: string
@@ -42,6 +43,7 @@ export interface CashHistoryDto {
 
 export interface ChatDto {
   teacherName: string
+  teacherType: 'TARO' | 'MIND' | 'SINJEOM' | 'SAJU'
   teacherProfile?: any
   userName: string
   userLevel: string

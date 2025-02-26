@@ -143,6 +143,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
 
     const handlePhoneClick = (e: React.MouseEvent) => {
       e.stopPropagation()
+      console.log(advisor)
       onClickPhone(advisor)
     }
 
