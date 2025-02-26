@@ -199,7 +199,9 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
           <div className="border-primary-red flex grow items-center">
             <div className="flex-col grow justify-center items-start gap-2 inline-flex overflow-hidden">
               <div className="w-full flex-col flex items-baseline leading-tight">
-                <div className="font-extrabold leading-tight">{name}</div>
+                <div className="font-extrabold leading-tight">
+                  {name?.replace(' 선생님', '')}
+                </div>
                 <div
                   style={{
                     whiteSpace: 'nowrap',
