@@ -33,7 +33,7 @@ export default function ChatStatus({ status }: { status: string }) {
   return (
     <div
       className={clsx(
-        'h-5 px-1.5 py-2 rounded-sm justify-center items-center inline-flex',
+        'cursor-pointer h-5 px-1.5 py-2 rounded-sm justify-center items-center inline-flex',
         color,
         text
       )}

@@ -11,7 +11,7 @@ interface ReserveListProps {
 const ReserveList = ({ reserves }: ReserveListProps) => {
   const router = useRouter()
   return (
-    <div className="inline-flex flex-col gap-2 w-full">
+    <div className="inline-flex flex-col gap-2 w-full cursor-pointer">
       {reserves.map((reserve, index) => (
         <div
           key={index}
@@ -41,7 +41,7 @@ const ReserveList = ({ reserves }: ReserveListProps) => {
                 router.push('/manage/app/reserves/' + reserve.id)
               }
             }}
-            className="p-2 bg-red-600/10 rounded-full flex items-center gap-1"
+            className="p-2 bg-red-600/10 rounded-full flex items-center gap-1 cursor-pointer"
           >
             <div className="text-red-600 text-base font-bold leading-tight">
               {reserve.endAt == null
