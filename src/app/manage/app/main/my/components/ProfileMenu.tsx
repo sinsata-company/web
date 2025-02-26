@@ -32,7 +32,7 @@ const ProfileMenu = () => {
       title: '자주 묻는 질문',
     },
     {
-      route: '#',
+      route: 'withdraw',
       title: '회원탈퇴',
     },
   ]

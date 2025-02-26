@@ -12,7 +12,8 @@ const ProfileMenuItems = ({ route, title }: IMenuItem) => {
   return (
     <div
       onClick={() => {
-        if ((route = '#')) {
+        if (route == 'withdraw') {
+          console.log('탈퇴하기')
           setShowModal(true)
         } else {
           router.push('/manage/app/my/' + route)
