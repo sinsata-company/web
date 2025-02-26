@@ -36,7 +36,7 @@ export default function ChatItem(props: ChatDto) {
           </div>
           <div className="self-stretch text-zinc-400 text-xs font-normal font-['Pretendard']">
             {moment(startAt).format('yyyy-MM-DD HH:mm')}
-            {status != 'REQUEST'
+            {status != 'REQUEST' && endAt
               ? ` - ${moment(endAt).format('yyyy-MM-DD HH:mm')}`
               : ''}
           </div>
