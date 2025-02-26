@@ -52,6 +52,12 @@ export interface ChatDto {
   status: string
   reserveId: number
 }
+
+export interface ChatRoomRes {
+  userId: string
+  teacherId: string
+  chatRoomId: string
+}
 export interface ReserveDto {
   id: number
   teacherId: string

@@ -125,7 +125,7 @@ export default function TeacherSummary({
             <Button
               onClick={async () => {
                 const result = await startInstantChat(advisor?.id ?? '')
-                router.push(`/chats/private/${result.roomId}`)
+                router.push(`/chats/private/${result.chatRoomId}`)
 
                 // setIsPhoneModalOpen(false)
               }}

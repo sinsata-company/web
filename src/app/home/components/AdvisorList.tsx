@@ -112,8 +112,9 @@ export default function AdvisorList({
           <div className="inline-flex flex-col w-full gap-2">
             <Button
               onClick={async () => {
+                // window.alert(advisor?.id)
                 const result = await startInstantChat(advisor?.id ?? '')
-                router.push(`/chats/private/${result.roomId}`)
+                router.push(`/chats/private/${result.chatRoomId}`)
 
                 // setIsPhoneModalOpen(false)
               }}
