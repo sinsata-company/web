@@ -76,7 +76,7 @@ const MenuOptions = () => {
     {
       label: '고객센터',
       onClick: () => {
-        window.open('http://pf.kakao.com/_rMFxbn', '_blank')
+        router.push('/my/menus/cs')
       },
     },
     {
