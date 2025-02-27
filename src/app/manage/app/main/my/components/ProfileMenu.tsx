@@ -43,6 +43,7 @@ const ProfileMenu = () => {
           <ProfileMenuItems route={menu.route} title={menu.title} />
         </div>
       ))}
+      <div className="h-12"></div>
     </div>
   )
 }
