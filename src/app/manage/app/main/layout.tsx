@@ -5,8 +5,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col h-screen">
       <LogoAppbar />
-      <section>{children}</section>
-      <div className="h-32"></div>
+      <section className="py-4">{children}</section>
+      <div className="h-[120px]"></div>
       <AdvisorBTB />
     </div>
   )

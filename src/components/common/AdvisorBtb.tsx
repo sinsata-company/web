@@ -25,18 +25,18 @@ const BTBItem = ({ name, image }: { name: string; image: string }) => {
       onClick={() => {
         router.push('/manage/app/main/' + image)
       }}
-      className="grow shrink basis-0 self-stretch flex-col justify-start items-center gap-1.5 inline-flex"
+      className="grow shrink basis-0 self-stretch flex-col justify-start items-center inline-flex"
     >
       <Image
         src={`/images/btb/${image}${selected ? '_selected' : ''}.svg`}
-        height={24}
-        width={24}
+        height={36}
+        width={36}
         alt="btb"
       />
       <div
         className={clsx(
-          "self-stretch h-4 text-center text-zinc-400 text-xs font-normal font-['Pretendard']",
-          selected ? 'text-gradient' : ''
+          "self-stretch h-4 text-center  text-xs font-normal font-['Pretendard']",
+          selected ? 'text-black' : 'text-zinc-400'
         )}
       >
         {name}

@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation'
 export default function ManagePage() {
   const nav = useRouter()
   return (
-    <div className="h-screen w-full flex flex-col  bg-zinc-900">
+    <div className="h-screen w-full flex flex-col  bg-amber-50">
       <LandingLogo />
-      <div className="w-full px-5 py-10 shadow-inner flex-col justify-center items-center gap-3 inline-flex">
+      <div className="w-full px-5 py-10 flex-col justify-center items-center gap-3 inline-flex">
         <SocialLoginButton
           label="상담사 로그인하기"
           name=""
