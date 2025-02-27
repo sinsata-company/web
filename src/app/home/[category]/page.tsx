@@ -43,8 +43,14 @@ export default function CategoryAdvisorList() {
     const response = await getTeachersByCategory(query, page, type)
     if (response.content.length === 0) {
       setHasMore(false)
+
       return
     }
+    if (advisors.length === 0) {
+      setAdvisors(response.content)
+      return
+    }
+
     setHasMore(!response.last)
     setAdvisors((prev) => [...prev, ...response.content])
   }
