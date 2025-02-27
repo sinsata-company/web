@@ -28,7 +28,7 @@ const BTBItem = ({ name, image }: { name: string; image: string }) => {
       className="grow shrink basis-0 self-stretch flex-col justify-start items-center gap-1.5 inline-flex"
     >
       <Image
-        src={`/images/btb_${image}${selected ? '_selected' : ''}.svg`}
+        src={`/images/btb/${image}${selected ? '_selected' : ''}.svg`}
         height={24}
         width={24}
         alt="btb"

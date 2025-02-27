@@ -16,7 +16,12 @@ const BannersAndStatics = () => {
         className="w-full h-[400px]"
       />
       <div className="absolute top-[300px] left-0 w-full h-80 ">
-        <div className="mx-4  py-4 bg-white rounded-2xl flex-col justify-start items-center gap-4 inline-flex">
+        <div
+          style={{
+            width: 'calc(100% - 2rem)',
+          }}
+          className="mx-4  py-4 bg-white rounded-2xl flex-col justify-start items-center gap-4 inline-flex"
+        >
           <CategoryContainer
             onClick={(e: string) => {
               router.push('/home/' + e)
@@ -39,7 +44,7 @@ const BannersAndStatics = () => {
 
         <div className="mt-6 flex px-4 items-stretch justify-between gap-4">
           <StaticItem label="누적 상담 건수" data="325건" />
-          <StaticItem label="전문가 수" data="91명" />
+          <StaticItem label="현재 접속 상담사" data="91명" />
         </div>
       </div>
     </div>

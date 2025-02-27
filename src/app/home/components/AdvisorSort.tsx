@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { SearchType } from '@/app/api/teacher'
 
 import dynamic from 'next/dynamic'
+import './AdvisorSort.css'
 
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
@@ -32,13 +33,12 @@ export default function AdvisorSort(props: {
           label: tab.name,
           index: index,
         }))}
-        onChange={(
-          selectedOption: {
+        onChange={(newValue: unknown) => {
+          const selectedOption = newValue as {
             value: SearchType
             label: string
             index: number
           } | null
-        ) => {
           const selectedIndex = selectedOption!.index
           props.getTeachers(tabs[selectedIndex].query, props.page)
           setActiveTab(selectedIndex)
@@ -61,6 +61,16 @@ export default function AdvisorSort(props: {
             },
             '&:focus': {
               boxShadow: 'none',
+            },
+          }),
+          singleValue: (base) => ({
+            ...base,
+            display: 'flex',
+            alignItems: 'center',
+            '&::before': {
+              content: '""',
+              display: 'block',
+              width: 0,
             },
           }),
         }}

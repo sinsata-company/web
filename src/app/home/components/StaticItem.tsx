@@ -5,7 +5,7 @@ const StaticItem = ({ label, data }: { label: string; data: string }) => {
         <div className="self-stretch text-indigo-400 text-3xl font-bold font-['Pretendard']">
           {data}
         </div>
-        <div className="self-stretch text-neutral-400 text-xl font-semibold font-['Pretendard']">
+        <div className="self-stretch text-neutral-400 text-lg font-semibold font-['Pretendard']">
           {label}
         </div>
       </div>

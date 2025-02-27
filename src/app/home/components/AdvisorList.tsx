@@ -32,7 +32,7 @@ export default function AdvisorList({
           return (
             <AdvisorItem
               {...item}
-              key={idx}
+              key={item.id}
               ref={lastAdvisorElementRef}
               onClickPhone={onClickPhone}
             />
@@ -154,7 +154,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         if (tag === '') return null
         return (
           <p
-            className="leading-none text-primary-red font-bold"
+            className="leading-none text-indigo-400 text-xs  font-bold"
             key={'hash-' + idx}
           >
             #{tag.trim()}{' '}
@@ -179,48 +179,44 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
       <div
         ref={ref}
         onClick={handleItemClick}
-        className="w-full items-stretch flex-col p-4 pb-2 rounded-2xl  justify-start items-start inline-flex"
+        className="w-full items-stretch flex py-4 pb-2 rounded-2xl  justify-start items-start inline-flex"
       >
-        <div className="flex items-start grow">
-          <div className="w-30 h-24 relative">
-            <Image
-              style={{ objectFit: 'cover' }}
-              className="rounded-xl w-30 h-24 mr-2 cursor-pointer"
-              src={thumbnail || '/logo.jpg'}
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-              width={120}
-              height={90}
-              alt="profile"
-            />
-            <TeacherTypeLabel teacherType={teacherType} />
-          </div>
+        <div className="flex-basis relative">
+          <Image
+            style={{ objectFit: 'cover', minWidth: '120px', minHeight: '96px' }}
+            className="rounded-xl w-[120px] h-24 cursor-pointer"
+            src={thumbnail || '/logo.jpg'}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+            width={120}
+            height={96}
+            alt="profile"
+          />
+          <TeacherTypeLabel teacherType={teacherType} />
+        </div>
 
-          <div className="border-primary-red flex grow items-center">
-            <div className="flex-col grow justify-center items-start gap-2 inline-flex overflow-hidden">
-              <div className="w-full flex-col flex items-baseline leading-tight">
-                <div className="font-extrabold leading-tight">
+        <div className="pl-2 flex flex-col justify-between grow overflow-hidden">
+          <div className=" items-center flex justify-between w-full">
+            <div className="overflow-hidden">
+              {/* 선생님 이름 & 해쉬태그 */}
+              <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                <div
+                  className="font-extrabold leading-tight text-lg
+                  whitespace-nowrap overflow-hidden text-ellipsis max-w-full
+                  "
+                >
                   {name?.replace(' 선생님', '')}
                 </div>
-                <div
-                  style={{
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '170px',
-                  }}
-                  className="gap-2 text-sm text-primary-red flex justify-start mt-1   overflow-hidden"
+                <span
+                  className="
+                leading-none text-indigo-400 text-sm  font-bold
+                whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
                 >
-                  {renderHashtags()}
-                </div>
-              </div>
-              <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
-                {renderPriceInfo('1,400원', '30초')}
-                {renderPriceInfo('25,000원', '15분')}
+                  {hashtag}
+                  {/* {renderHashtags()} */}
+                </span>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col items-end">
             <Image
               onClick={handlePhoneClick}
               src={'/images/status_ready.svg'}
@@ -229,14 +225,24 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
               alt="call"
               className="w-24 h-10"
             />
-            <div className="h-11 justify-start items-center gap-1 inline-flex">
-              <div data-svg-wrapper className="relative">
-                <Image
-                  src={'/images/ic_star.svg'}
-                  width={16}
-                  height={16}
-                  alt="chat"
-                />
+          </div>
+          <div className="flex justify-between items-center w-full">
+            {/* 요금표 */}
+            <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
+              {renderPriceInfo('1,400원', '30초')}
+              {renderPriceInfo('25,000원', '15분')}
+            </div>
+            <div className="flex">
+              {/* 리뷰 평점 */}
+              <div className="justify-start items-center gap-1 inline-flex">
+                <div className="relative">
+                  <Image
+                    src={'/images/ic_star.svg'}
+                    width={16}
+                    height={16}
+                    alt="chat"
+                  />
+                </div>
               </div>
               <div>
                 <span className="text-neutral-800 text-lg font-bold font-['Pretendard']">

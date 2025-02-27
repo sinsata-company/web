@@ -28,11 +28,11 @@ export default function CategoryItem({
       )}
     >
       <div className=" flex-col justify-start items-center gap-2.5 inline-flex">
-        <div className="  justify-center items-center inline-flex overflow-hidden">
+        <div className=" justify-center items-center inline-flex overflow-hidden">
           <Image
             src={`/images/category_${image}.svg`}
-            width={80}
-            height={80}
+            width={100}
+            height={100}
             alt="category"
           />
         </div>

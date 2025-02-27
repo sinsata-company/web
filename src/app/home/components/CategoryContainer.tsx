@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 export default function CategoryContainer({ onClick }: { onClick?: Function }) {
   const router = useRouter()
   return (
-    <div className="px-8 justify-start items-stretch  gap-10 inline-flex ">
+    <div className="px-8 justify-start items-stretch  inline-flex w-full">
       <CategoryItem
         onClick={onClick}
         textColor="text-red-600"

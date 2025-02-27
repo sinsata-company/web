@@ -14,11 +14,21 @@ export default function AdvisorContainer() {
   const observer = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
+    }
+  }, [])
+
+  useEffect(() => {
     getTeachers(SearchType.NEW, page)
   }, [page, sort])
 
   const getTeachers = async (query: SearchType, page: number) => {
     const response = await getTeacherList(query, page)
+    if (advisorList.length === 0) {
+      setAdvisorList(response.content)
+      return
+    }
 
     setAdvisorList((prev) => [...prev, ...response.content])
     setHasMore(!response.last)
@@ -43,9 +53,9 @@ export default function AdvisorContainer() {
         <AdvisorSort
           getTeachers={async (sort, page) => {
             setPage(0)
-            setAdvisorList([])
             setSort(sort)
-            await getTeachers(SearchType.NEW, page)
+            setAdvisorList([])
+            await getTeachers(sort, page)
           }}
           page={page}
         />
