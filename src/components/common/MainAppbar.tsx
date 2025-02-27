@@ -10,7 +10,7 @@ export default function MainAppbar() {
   return (
     <div
       className={clsx(
-        'w-full pt-3 h-14 px-5 justify-between items-center inline-flex',
+        'w-full pt-3  px-5 justify-between items-center inline-flex',
 
         path === '/chats' && 'bg-amber-50'
       )}

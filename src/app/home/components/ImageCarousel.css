@@ -30,6 +30,32 @@
 .slick-dots li button:before {
   font-size: 10px !important;
 }
+.slick-dots {
+  position: absolute;
+  top: 55%;
+  /* top: 80%; */
+  font-size: 17px;
+  line-height: 29px;
+  left: 4%;
+  font-weight: 600;
+  width: auto !important;
+
+  .slick-active {
+    display: block !important;
+  }
+  .customPaging {
+    display: flex;
+    width: 100px;
+    gap: 10px;
+  }
+}
+
+.slick-dots li {
+  display: none !important;
+}
+.slick-dots li {
+  display: none !important;
+}
 
 ::-webkit-scrollbar {
   display: initial;

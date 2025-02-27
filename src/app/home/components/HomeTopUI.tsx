@@ -8,14 +8,8 @@ import { useRouter } from 'next/navigation'
 const BannersAndStatics = () => {
   const router = useRouter()
   return (
-    <div className="relative h-[600px]">
-      <Image
-        src="/images/banner-sample.png"
-        fill
-        alt="banner"
-        className="w-full h-[400px]"
-      />
-      <div className="absolute top-[300px] left-0 w-full h-80 ">
+    <div className="relative h-[200px]">
+      <div className="absolute top-[-50px] left-0 w-full h-80 ">
         <div
           style={{
             width: 'calc(100% - 2rem)',

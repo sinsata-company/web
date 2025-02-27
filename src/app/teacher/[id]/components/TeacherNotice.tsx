@@ -8,7 +8,7 @@ export default function TeacherNotice({
 }) {
   return (
     <div className="w-full  flex-col justify-start items-start gap-3 inline-flex">
-      <div className="self-stretch text-yellow-400 text-base font-bold font-['Pretendard Variable']">
+      <div className="text-black text-xl font-bold font-['Pretendard']">
         상담가 공지사항
       </div>
       <div className="w-full h-64 relative aspect-w-16 aspect-h-9">

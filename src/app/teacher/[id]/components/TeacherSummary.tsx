@@ -20,7 +20,7 @@ export default function TeacherSummary({
     <div className="w-full sh-20 flex flex-col justify-start items-start gap-2">
       <div className="flex w-full justify-between gap-2">
         <div className="flex-grow flex-shrink-0 flex flex-col justify-start items-start gap-4">
-          <div className="w-full text-yellow-400 text-base font-bold font-['Pretendard Variable']">
+          <div className="text-black text-xl font-bold font-['Pretendard']">
             상담사명
           </div>
         </div>
@@ -37,7 +37,7 @@ export default function TeacherSummary({
         </div> */}
         <div
           onClick={() => setIsPhoneModalOpen(true)}
-          className="p-2 bg-red-600/10 rounded-full flex justify-center items-center gap-1"
+          className="p-2 bg-indigo-400/10 rounded-full flex justify-center items-center gap-1"
         >
           <Image
             src={'/images/ic_phone.svg'}
@@ -45,7 +45,7 @@ export default function TeacherSummary({
             height={20}
             alt="chat"
           />
-          <div className="text-red-600 text-base font-bold font-['Pretendard Variable'] leading-tight">
+          <div className="text-indigo-400 text-base font-bold font-['Pretendard Variable'] leading-tight">
             전화하기
           </div>
         </div>

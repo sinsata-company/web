@@ -12,15 +12,11 @@ export default function AdCarousel() {
   const router = useRouter()
   const banner: IBannerProps[] = [
     {
-      image: '/images/banners/sst-banner-6.png',
+      image: '/images/banners/sst-banner-0.png',
       onClick: () => {
         router.push('/my')
       },
     },
-    // {
-    //   image: '/images/banners/sst-banner-7.jpeg',
-    //   onClick: () => {},
-    // },
     {
       image: '/images/banners/sst-banner-1.jpeg',
       onClick: () => {},
@@ -35,12 +31,16 @@ export default function AdCarousel() {
     },
     {
       image: '/images/banners/sst-banner-4.jpeg',
+      onClick: () => {},
+    },
+    {
+      image: '/images/banners/sst-banner-5.png',
       onClick: () => {
         window.open('http://pf.kakao.com/_rMFxbn', '_blank')
       },
     },
     {
-      image: '/images/banners/sst-banner-5.jpeg',
+      image: '/images/banners/sst-banner-6.png',
       onClick: () => {
         window.location.href = '/manage'
       },
@@ -48,12 +48,12 @@ export default function AdCarousel() {
   ]
 
   useEffect(() => {
-    setShowModal(true)
+    // setShowModal(true)
   }, [])
 
   return (
-    <div className="px-5 w-full h-60 flex-col justify-start items-start gap-2.5 inline-flex">
-      <div className="self-stretch h-60 bg-zinc-100 rounded-2xl">
+    <div className="w-full h-60 flex-col justify-start items-start gap-2.5 inline-flex">
+      <div className="self-stretch h-60 bg-zinc-100">
         <HomeBanner banner={banner} showImageModal={() => {}} />
       </div>
       <Modal
@@ -65,7 +65,7 @@ export default function AdCarousel() {
         <Image
           onClick={() => {}}
           unoptimized
-          className="w-full h-60 bg-gray-200 rounded-2xl mb-6"
+          className="w-full h-60 bg-gray-200  mb-6"
           src="/images/banners/sst-banner-6.png"
           width={54}
           height={240}
