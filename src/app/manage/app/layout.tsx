@@ -7,9 +7,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   useEffect(() => {
-    console.log('asdfdaf')
     const token = window.localStorage.getItem('sst-teacher-token')
-    console.log(token)
+
     // 토큰이 없으면 /manage로 리디렉션
     if (!token || token.trim() === '') {
       router.replace('/manage')
