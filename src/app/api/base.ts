@@ -53,7 +53,7 @@ export const basicGet = _.debounce(
     }
   },
   500,
-  { leading: true, trailing: false }
+  { leading: false, trailing: true }
 )
 
 export async function basicPost(route: string, body: any) {

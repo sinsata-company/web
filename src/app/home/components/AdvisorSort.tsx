@@ -49,6 +49,7 @@ export default function AdvisorSort(props: {
           index: activeTab,
         }}
         classNamePrefix="react-select text-neutral-400 font-semibold"
+        isSearchable={false}
         styles={{
           control: (base) => ({
             ...base,

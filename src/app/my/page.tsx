@@ -69,6 +69,7 @@ export default function MyPage() {
           )}
         </>
       )}
+      <div className="h-16"></div>
 
       <BTB />
     </div>

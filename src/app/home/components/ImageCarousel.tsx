@@ -28,7 +28,7 @@ export default function HomeBanner({
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 3000,
     customPaging: (i: number) => {
       return (
