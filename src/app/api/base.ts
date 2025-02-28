@@ -14,24 +14,20 @@ function getAccessToken() {
   return window.localStorage.getItem('sst-access-token')
 }
 
-export const basicNotAuthorizedGet = _.debounce(
-  async function <T>(route: string) {
-    const url = `${BASE_URL}${route}`
+export async function basicNotAuthorizedGet<T>(route: string) {
+  const url = `${BASE_URL}${route}`
 
-    // TODO jwt 갱신하거나 로그아웃 하는 방안
+  // TODO jwt 갱신하거나 로그아웃 하는 방안
 
-    const response = await axios.get(url)
+  const response = await axios.get(url)
 
-    if (response.status == 200) {
-      const data = response.data
-      return data as T
-    } else {
-      throw '에러 발생'
-    }
-  },
-  300,
-  { leading: true, trailing: false }
-)
+  if (response.status == 200) {
+    const data = response.data
+    return data as T
+  } else {
+    throw '에러 발생'
+  }
+}
 
 export const basicGet = _.debounce(
   async function <T>(route: string) {

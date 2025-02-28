@@ -19,6 +19,17 @@ export const getTeacherList = async (searchType: SearchType, page: number) => {
   return data
 }
 
+export interface summary {
+  teachers: number
+  reservations: number
+}
+
+export const getSummary = async () => {
+  const response = await basicNotAuthorizedGet(`/teachers/summary`)
+  const data = response
+  return data as summary
+}
+
 export const getTeachersByCategory = async (
   searchType: SearchType,
   page: number,

@@ -4,9 +4,20 @@ import Image from 'next/image'
 import CategoryContainer from './CategoryContainer'
 import StaticItem from './StaticItem'
 import { useRouter } from 'next/navigation'
+import { getSummary, summary } from '@/app/api/teacher'
+import { useEffect, useState } from 'react'
 
 const BannersAndStatics = () => {
   const router = useRouter()
+  const [info, setSummary] = useState<summary>({
+    teachers: 0,
+    reservations: 0,
+  })
+  useEffect(() => {
+    getSummary().then((res) => {
+      setSummary(res)
+    })
+  }, [])
   return (
     <div className="relative h-[200px]">
       <div className="absolute top-[-50px] left-0 w-full h-80 ">
@@ -37,8 +48,8 @@ const BannersAndStatics = () => {
         </div>
 
         <div className="mt-6 flex px-4 items-stretch justify-between gap-4">
-          <StaticItem label="누적 상담 건수" data="325건" />
-          <StaticItem label="현재 접속 상담사" data="91명" />
+          <StaticItem label="누적 상담 건수" data={`${info.reservations}건`} />
+          <StaticItem label="현재 접속 상담사" data={`${info.teachers}명`} />
         </div>
       </div>
     </div>

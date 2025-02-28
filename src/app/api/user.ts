@@ -31,6 +31,9 @@ export const login = async (login: LoginProps) => {
     }
   )
   const data = response.data
+  if (data.userStatus === 'WITHDRAW') {
+    return false
+  }
   const header = response.headers
 
   const accessToken = header['sst-access-token']
@@ -42,6 +45,7 @@ export const login = async (login: LoginProps) => {
   localStorage.setItem('sst-access-token-expire-at', accessTokenExpireAt)
   localStorage.setItem('sst-refresh-token', refreshToken)
   localStorage.setItem('sst-refresh-token-expire-at', refreshTokenExpireAt)
+  return true
 }
 
 export const loginAndJoin = async (info: UserCredential, provider: string) => {
@@ -154,6 +158,10 @@ function getMachineId() {
 
 export const withdraw = async () => {
   await basicDelete('/users/withdraw')
+}
+
+export const getEvent = async () => {
+  await basicGet('/users/event')
 }
 
 export const updateprofile = async ({

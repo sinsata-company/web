@@ -29,7 +29,10 @@ export default function Chats() {
   return (
     <div className="h-screen">
       <MainAppbar />
-      <div className="px-5 py-5 bg-amber-50 h-screen">
+      <div
+        className="px-5 py-5 bg-amber-50 "
+        style={{ height: 'calc(100vh - 64px)', overflowY: 'scroll' }}
+      >
         {!isLogin && <SuggestLogin label="채팅을 하기" />}
         <div className="flex flex-col gap-4 ">
           {chats?.map((chat, idx) => {
