@@ -14,6 +14,7 @@ export let token: string = ''
 
 export const setToken = (tk: string) => {
   token = tk
+  console.log('asdf')
 }
 
 function getAccessToken() {
