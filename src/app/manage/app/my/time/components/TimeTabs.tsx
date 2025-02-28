@@ -136,6 +136,15 @@ export default function TimeTabs() {
       <div className="w-full  flex-col justify-start items-start gap-4 inline-flex mb-12">
         {tab == 0 && (
           <>
+            <TimeProductItem
+              type="chat"
+              minute={30}
+              method="direct"
+              price={1400}
+              id={11}
+              onClick={(t) => console.log(t)}
+            />
+            <GreyDivider />
             {menu.map((m, idx) => {
               if (m.type == 'chat') {
                 return (
