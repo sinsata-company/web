@@ -14,8 +14,8 @@ export default function AdvisorContainer() {
   const observer = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
+    if ('scrollRestoration' in window?.history) {
+      window?.history?.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
     }
   }, [])
 
