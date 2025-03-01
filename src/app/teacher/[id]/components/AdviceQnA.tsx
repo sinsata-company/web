@@ -24,9 +24,7 @@ export default function AdviceQnA() {
 
   return (
     <div className="flex-col justify-start items-start gap-4 inline-flex w-full">
-      <div className="text-black text-xl font-bold font-['Pretendard']">
-        자주 묻는 질문
-      </div>
+      <div className="text-black text-xl font-bold ">자주 묻는 질문</div>
       <div className="self-stretch flex-col justify-start items-start gap-3 flex">
         {faqs.map((faq, index) => (
           <div
@@ -35,7 +33,7 @@ export default function AdviceQnA() {
             onClick={() => toggleFAQ(index)}
           >
             <div className="self-stretch justify-between items-center inline-flex">
-              <div className="text-zinc-900 text-base font-medium font-['Pretendard Variable'] leading-snug">
+              <div className="text-zinc-900 text-base font-medium  leading-snug">
                 {faq.question}
               </div>
               <div className="w-4 h-4 flex-col justify-center items-center gap-2.5 inline-flex">
@@ -49,7 +47,7 @@ export default function AdviceQnA() {
               </div>
             </div>
             <div
-              className={`self-stretch text-neutral-500 text-base font-normal font-['Pretendard'] leading-snug transition-max-height duration-300 ease-in-out overflow-hidden ${
+              className={`self-stretch text-neutral-500 text-base font-normal  leading-snug transition-max-height duration-300 ease-in-out overflow-hidden ${
                 openIndex === index ? 'max-h-40' : 'max-h-0'
               }`}
             >

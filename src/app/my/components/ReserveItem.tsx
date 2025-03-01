@@ -38,15 +38,13 @@ const ReserveItem = (reserve: IReserveItem) => {
         alt="profile"
       />
       <div className="grow flex-col justify-center items-start gap-2 inline-flex overflow-hidden">
-        <div className=" text-zinc-900 text-base font-bold font-['Pretendard Variable']">
-          {userName}
-        </div>
-        <div className=" text-zinc-900 text-base text-xs font-['Pretendard Variable']">
+        <div className=" text-zinc-900 text-base font-bold ">{userName}</div>
+        <div className=" text-zinc-900 text-base text-xs ">
           {moment(startAt).format('YYYY-MM-DD HH:mm')} -
           {moment(endAt).format('YYYY-MM-DD HH:mm')}
         </div>
       </div>
-      <div className=" text-gradient text-base font-bold font-['Pretendard Variable']">
+      <div className=" text-gradient text-base font-bold ">
         {reserveType == 'CALL' ? '전화 상담' : '채팅 상담'}
       </div>
     </div>

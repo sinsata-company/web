@@ -8,7 +8,7 @@ const SuggestLogin = ({ label }: { label: string }) => {
   return (
     <div className="text-center mt-5 w-full  flex flex-col justify-center items-center gap-4">
       <div className="self-stretch mb-4 flex-col justify-start items-start gap-4 flex">
-        <div className="self-stretch text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+        <div className="self-stretch text-zinc-900 text-xl font-bold ">
           {label} 위해 로그인이 필요합니다.
           <br />
           아래 버튼을 눌러 로그인해주세요.

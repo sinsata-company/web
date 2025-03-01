@@ -46,10 +46,8 @@ const Membership = ({
               height={48}
             />
             <div className="flex-col ml-3">
-              <div className="text-zinc-900 text-lg font-bold font-['Pretendard Variable']">
-                {nickname}
-              </div>
-              <div className="text-zinc-500 text-lg font-bold font-['Pretendard Variable']">
+              <div className="text-zinc-900 text-lg font-bold ">{nickname}</div>
+              <div className="text-zinc-500 text-lg font-bold ">
                 {moment(createdAt).format('YYYY.MM.DD')}가입
               </div>
             </div>
@@ -59,7 +57,7 @@ const Membership = ({
               }}
               className="cursor-pointer ml-auto px-5 py-2 bg-gray-200 rounded-md justify-center items-center inline-flex"
             >
-              <div className="text-center text-neutral-800 text-md font-semibold font-['Pretendard']">
+              <div className="text-center text-neutral-800 text-md font-semibold ">
                 수정
               </div>
             </div>

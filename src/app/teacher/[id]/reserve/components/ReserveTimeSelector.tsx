@@ -22,9 +22,7 @@ export default function ReserveTime({
   const now = moment()
   return (
     <div className="w-full px-5 flex-col justify-start items-start gap-4 inline-flex">
-      <div className="text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
-        상담 예약
-      </div>
+      <div className="text-zinc-900 text-xl font-bold ">상담 예약</div>
       <IWCalendar
         year={now.year()}
         month={now.month() + 1}
@@ -35,9 +33,7 @@ export default function ReserveTime({
       />
       <div className="self-stretch h-72 flex-col justify-start items-start gap-4 flex">
         <div className="w-full h-20 ">
-          <div className="  text-zinc-900 text-base font-bold font-['Pretendard Variable']">
-            오전
-          </div>
+          <div className="  text-zinc-900 text-base font-bold ">오전</div>
           <div className="mt-4 grid grid-cols-4 h-11 justify-start items-start gap-2 inline-flex">
             {['10:00', '10:30', '11:00', '11:30'].map((item) => (
               <TimeItem
@@ -50,9 +46,7 @@ export default function ReserveTime({
           </div>
         </div>
         <div className="w-full ">
-          <div className="  text-zinc-900 text-base font-bold font-['Pretendard Variable']">
-            오후
-          </div>
+          <div className="  text-zinc-900 text-base font-bold ">오후</div>
           <div className="mt-4 grid grid-cols-4 h-11 justify-start items-start gap-2 inline-flex">
             {[
               '12:00',
@@ -101,7 +95,7 @@ export const TimeItem = ({
     >
       <div
         className={clsx(
-          " text-base font-medium font-['Pretendard Variable']",
+          ' text-base font-medium ',
           selected ? 'text-white' : 'text-zinc-900'
         )}
       >

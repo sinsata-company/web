@@ -62,7 +62,7 @@ export default function AdvisorList({
               <Image src="/logo.jpg" width={160} height={90} alt="profile" />
             )}
 
-            <div className=" ml-2 w-full justify-between text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+            <div className=" ml-2 w-full justify-between text-zinc-900 text-xl font-bold ">
               {advisor?.name} {advisor?.pinNumber}번
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function AdvisorList({
               />
               <p className="font-bold text-lg">전화 상담(후불)</p>
             </div>
-            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+            <p className="text-neutral-400 text-lg font-semibold ">
               30초 당 1,400원
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function AdvisorList({
               />
               <p className="font-bold text-lg">채팅 상담(잔액차감)</p>
             </div>
-            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+            <p className="text-neutral-400 text-lg font-semibold ">
               30초 당 1,400원
             </p>
           </div>
@@ -231,10 +231,10 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 </div>
               </div>
               <div>
-                <span className="text-neutral-800 text-lg font-bold font-['Pretendard']">
+                <span className="text-neutral-800 text-lg font-bold ">
                   {advisor.rating}
                 </span>
-                <span className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+                <span className="text-neutral-400 text-lg font-semibold ">
                   {' '}
                   ({advisor.reviewCount})
                 </span>

@@ -14,14 +14,14 @@ const ChatSummary = ({ chat }: { chat: ChatDto | null }) => {
     <div className="flex justify-between items-center w-full border-b-2 border-neutral-200">
       <div className="flex flex-col justify-between items-start p-4 ">
         <div className="w-full flex justify-start items-center gap-4">
-          <div className="text-neutral-800 text-lg font-bold font-['Pretendard']">
+          <div className="text-neutral-800 text-lg font-bold ">
             {teacherName?.replace('선생님', '')}
           </div>
           <ChatStatus status={status} />
         </div>
         <div className="flex justify-start items-center gap-2 mt-2">
           <div className="w-4 h-4 bg-lime-300 rounded-full"></div>
-          <div className="text-center text-neutral-400 text-base font-semibold font-['Pretendard']">
+          <div className="text-center text-neutral-400 text-base font-semibold ">
             온라인
           </div>
         </div>

@@ -23,14 +23,14 @@ const UserSummary = ({ chat }: { chat: ChatDto | null }) => {
         </div>
         <div className="flex flex-col justify-between items-start p-4 ">
           <div className="w-full flex justify-start items-center gap-4">
-            <div className="flex text-neutral-800 text-lg font-bold font-['Pretendard']">
+            <div className="flex text-neutral-800 text-lg font-bold ">
               <UserLevelIcon level={chat?.userLevel ?? ''} />
               {chat?.userName}
             </div>
           </div>
           <div className="flex justify-start items-center gap-2 mt-2">
             <div className="w-4 h-4 bg-lime-300 rounded-full"></div>
-            <div className="text-center text-neutral-400 text-base font-semibold font-['Pretendard']">
+            <div className="text-center text-neutral-400 text-base font-semibold ">
               온라인
             </div>
           </div>

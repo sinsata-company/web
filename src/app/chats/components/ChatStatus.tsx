@@ -38,9 +38,7 @@ export default function ChatStatus({ status }: { status: string }) {
         text
       )}
     >
-      <div className="text-xs font-bold font-['Pretendard Variable'] leading-tight">
-        {label}
-      </div>
+      <div className="text-xs font-bold  leading-tight">{label}</div>
     </div>
   )
 }

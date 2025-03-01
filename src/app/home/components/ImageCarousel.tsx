@@ -34,9 +34,7 @@ export default function HomeBanner({
       return (
         <span className="customPaging">
           <div className="px-3 py-.5 bg-white/20 rounded-3xl justify-center items-center gap-2.5 inline-flex">
-            <div className="text-white text-sm font-semibold font-['Pretendard']">
-              {i + 1}/7
-            </div>
+            <div className="text-white text-sm font-semibold ">{i + 1}/7</div>
           </div>
         </span>
       )

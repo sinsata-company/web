@@ -39,7 +39,7 @@ export default function Page() {
             key={tag}
             className="h-9 px-3 py-2 bg-red-600/10 rounded-full justify-center items-center gap-1 inline-flex"
           >
-            <div className="text-red-600 text-sm font-bold font-['Pretendard Variable'] leading-tight">
+            <div className="text-red-600 text-sm font-bold  leading-tight">
               {tag}
             </div>
           </div>
@@ -67,7 +67,7 @@ export const InfoItem = ({ text }: { text: string }) => {
   return (
     <div className=" items-center inline-flex">
       <img src="/images/ic_notification.svg" className="mr-1" />
-      <div className="grow text-zinc-500 text-xs font-normal font-['Pretendard Variable'] leading-tight">
+      <div className="grow text-zinc-500 text-xs font-normal  leading-tight">
         {text}
       </div>
     </div>

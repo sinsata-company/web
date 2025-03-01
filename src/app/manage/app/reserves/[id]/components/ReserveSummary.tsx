@@ -10,7 +10,7 @@ const ReserveSummary = ({ detail }: { detail: ReserveDetailDto | null }) => {
       <div className="w-full  justify-start items-start gap-2 inline-flex">
         <div className="grow shrink basis-0 flex-col justify-start items-start gap-4 inline-flex">
           <GradientTitle title={detail?.userName + ' 고객'} />
-          <div className="text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+          <div className="text-zinc-900 text-xl font-bold ">
             {moment(detail?.startAt).format('YYYY년 MM월 DD일')}
             <br />
             {moment(detail?.startAt).format('a hh시 mm분')} -{' '}
@@ -18,7 +18,7 @@ const ReserveSummary = ({ detail }: { detail: ReserveDetailDto | null }) => {
           </div>
         </div>
         <div className="p-2 bg-red-600/10 rounded-full justify-center items-center gap-1 flex">
-          <div className="text-red-600 text-base font-bold font-['Pretendard Variable'] leading-tight">
+          <div className="text-red-600 text-base font-bold  leading-tight">
             {detail?.reserveType == 'CHAT' ? '채팅 상담' : '전화 상담'}
           </div>
         </div>

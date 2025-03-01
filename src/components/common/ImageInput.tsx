@@ -61,11 +61,11 @@ export default function ImageInput({
             src="/images/ic_close.svg"
             alt="plus"
           />
-          <div className="w-20 h-5 text-center text-black text-sm font-normal font-['Pretendard Variable'] leading-tight">
+          <div className="w-20 h-5 text-center text-black text-sm font-normal  leading-tight">
             이미지 등록
           </div>
         </div>
-        <div className="mt-2 text-zinc-400 text-sm font-normal font-['Pretendard Variable'] leading-tight">
+        <div className="mt-2 text-zinc-400 text-sm font-normal  leading-tight">
           {images.length}/{count}
         </div>
       </div>

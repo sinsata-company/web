@@ -9,9 +9,7 @@ export default function RserveHourSelector({
 }) {
   return (
     <div className="w-full px-5 justify-between items-center inline-flex">
-      <div className="text-zinc-900 text-base font-bold font-['Pretendard Variable']">
-        시간 예약하기
-      </div>
+      <div className="text-zinc-900 text-base font-bold ">시간 예약하기</div>
       <div className="justify-end items-center gap-3 flex">
         <div
           onClick={() => {
@@ -28,7 +26,7 @@ export default function RserveHourSelector({
             alt="minus"
           />
         </div>
-        <div className="text-zinc-900 text-base font-bold font-['Pretendard Variable']">
+        <div className="text-zinc-900 text-base font-bold ">
           {selectedHour}분
         </div>
         <div

@@ -27,14 +27,14 @@ export default function ChatItem(props: ChatDto) {
         <ChatStatus status={status} />
         <div className="self-stretch h-14 flex-col justify-start items-start gap-1 flex">
           <div className="self-stretch h-10 flex-col justify-start items-start gap-0.5 flex">
-            <div className="self-stretch text-zinc-900 text-base font-bold font-['Pretendard Variable'] overflow-hidden">
+            <div className="self-stretch text-zinc-900 text-base font-bold  overflow-hidden">
               {teacherName.replaceAll('선생님', '')}
             </div>
-            <div className="self-stretch text-neutral-500 text-sm font-normal font-['Pretendard'] leading-tight">
+            <div className="self-stretch text-neutral-500 text-sm font-normal  leading-tight">
               {lastMsg ? lastMsg : '메시지가 없습니다.'}
             </div>
           </div>
-          <div className="self-stretch text-zinc-400 text-xs font-normal font-['Pretendard']">
+          <div className="self-stretch text-zinc-400 text-xs font-normal ">
             {startAt == null
               ? '상담 시작 전입니다.'
               : moment(startAt).format('yyyy-MM-DD HH:mm')}

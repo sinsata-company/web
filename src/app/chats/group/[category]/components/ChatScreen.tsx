@@ -25,7 +25,7 @@ export default function ChatScreen({
       }}
       className="inline-flex flex-col py-5 px-5 gap-2.5 w-full overflow-y-auto "
     >
-      <div className="text-center px-3 text-neutral-500 text-sm font-normal font-['Pretendard Variable'] leading-tight">
+      <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
         안녕하세요 신사타 입니다.
         <br /> 여기는 고객들이 실시간으로 대화를 나누는 소통 공간 입니다.
         <br /> 욕설 및 비방, 상대에게 상처를 주는 대화는 삼가해 주세요.

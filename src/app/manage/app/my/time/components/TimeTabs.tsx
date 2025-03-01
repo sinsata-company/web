@@ -8,7 +8,12 @@ import { InfoItem } from '../../hashtag/page'
 import { GreyDivider } from '@/components/common/Divider'
 import Modal from '@/components/common/Modal'
 import Input from '@/components/common/Input'
-import { getMenu, updateMenu } from '@/app/manage/api/mypage'
+import {
+  getMenu,
+  getMenuPrepay,
+  updateMenu,
+  updatePrepay,
+} from '@/app/manage/api/mypage'
 
 export interface MenuItemProps {
   id: number
@@ -73,8 +78,16 @@ const initialMenu: MenuItemProps[] = [
 export default function TimeTabs() {
   const [tab, setTab] = useState<number>(0)
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [showPrepay, setShowPrepay] = useState<boolean>(false)
   const [menu, setMenu] = useState<MenuItemProps[]>(initialMenu)
   const [selectedMenu, setSelectedMenu] = useState<MenuItemProps | null>(null)
+  const [prepay, setPrepay] = useState<{
+    chat: number
+    phone: number
+  }>({
+    chat: 1400,
+    phone: 1000,
+  })
 
   const selectTab = (idx: number) => {
     setTab(idx)
@@ -103,6 +116,16 @@ export default function TimeTabs() {
         return
       } else {
         setMenu(res)
+      }
+    })
+    getMenuPrepay().then((res) => {
+      if (res.chatPrepay && res.callPrepay) {
+        {
+          setPrepay({
+            chat: res.chatPrepay,
+            phone: res.callPrepay,
+          })
+        }
       }
     })
   }, [])
@@ -140,9 +163,11 @@ export default function TimeTabs() {
               type="chat"
               minute={30}
               method="direct"
-              price={1400}
+              price={prepay.chat}
               id={11}
-              onClick={(t) => console.log(t)}
+              onClick={(t) => {
+                setShowPrepay(true)
+              }}
             />
             <GreyDivider />
             {menu.map((m, idx) => {
@@ -163,6 +188,17 @@ export default function TimeTabs() {
               price={1400}
               id={9}
               onClick={(t) => console.log(t)}
+            />
+            <TimeProductItem
+              type="phone"
+              minute={30}
+              method="cash"
+              price={prepay.phone}
+              id={9}
+              // onClick={(t) => console.log(t)}
+              onClick={(t) => {
+                setShowPrepay(true)
+              }}
             />
             <GreyDivider />
             {menu.map((m, idx) => {
@@ -222,6 +258,52 @@ export default function TimeTabs() {
           />
         </div>
       </Modal>
+      <Modal
+        isOpen={showPrepay}
+        onClose={() => setShowPrepay(false)}
+        title="선불 결제 금액 수정"
+        content="선불 결제 금액을 수정하시고 수정하기 버튼을 눌러주세요."
+      >
+        <Input
+          type="number"
+          value={prepay.chat.toString()}
+          onChange={(e) => {
+            setPrepay((prev) => ({ ...prev, chat: Number(e.target.value) }))
+          }}
+          name="채팅 상담 선불 결제 금액(원)"
+        />
+        <Input
+          type="number"
+          value={prepay.phone.toString()}
+          onChange={(e) => {
+            setPrepay((prev) => ({ ...prev, phone: Number(e.target.value) }))
+          }}
+          name="전화 상담 선불 결제 금액(원)"
+        />
+        <div className="h-4"></div>
+        <div className="flex flex-col gap-2">
+          <Button
+            buttonType={BUTTON_TYPE.primary}
+            label="수정하기"
+            onClick={() => {
+              updatePrepay({
+                chatPrepay: prepay.chat,
+                callPrePay: prepay.phone,
+              })
+              setSelectedMenu(null)
+              setShowPrepay(false)
+            }}
+          />
+          <Button
+            buttonType={BUTTON_TYPE.secondary}
+            label="닫기"
+            onClick={() => {
+              setSelectedMenu(null)
+              setShowPrepay(false)
+            }}
+          />
+        </div>
+      </Modal>
     </div>
   )
 }
@@ -245,7 +327,7 @@ const MyTabItem = ({
     >
       <div
         className={clsx(
-          "cursor-pointer grow shrink basis-0 text-center  text-sm font-bold font-['Pretendard Variable']",
+          'cursor-pointer grow shrink basis-0 text-center  text-sm font-bold ',
           selected ? 'text-yellow-400' : 'text-zinc-400'
         )}
       >

@@ -76,7 +76,7 @@ export default function MyTabContainer() {
       </div>
       <div className="h-4"></div>
       <div className="w-full h-96 px-5 flex-col justify-start items-start gap-4 inline-flex">
-        <div className="text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+        <div className="text-zinc-900 text-xl font-bold ">
           {tab == 0 ? '캐시내역' : tab == 1 ? '나의 예약' : '쿠폰 등록'}
         </div>
         {tab == 0 && (
@@ -185,7 +185,7 @@ const MyTabItem = ({
     >
       <div
         className={clsx(
-          "grow shrink basis-0 text-center  text-sm font-bold font-['Pretendard Variable']",
+          'grow shrink basis-0 text-center  text-sm font-bold ',
           selected ? 'text-yellow-400' : 'text-zinc-400'
         )}
       >

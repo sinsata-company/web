@@ -3,12 +3,8 @@ import { Noto_Sans } from 'next/font/google'
 import './globals.css'
 import KakaoScript from '@/components/common/KakaoScript'
 import { UsageFooter } from '@/components/common/BizFooter'
-
-const notoSans = Noto_Sans({
-  subsets: ['latin'], // 서브셋 설정
-  weight: ['400', '700'], // 사용할 폰트 굵기
-  variable: '--font-noto-sans', // CSS 변수 지정 (선택 사항)
-})
+import { AppProvider, useAppContext } from '@/context/AppContext'
+import LayoutChild from './layout-comp'
 
 export const metadata: Metadata = {
   title: '신사타',
@@ -70,12 +66,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="w-full h-screen">
-      <body
-        className={`${notoSans.className} antialiased relative w-full h-full max-w-[550px] mx-auto`}
-      >
-        <div className="relative">{children}</div>
-        {/* <UsageFooter /> */}
-      </body>
+      <LayoutChild>{children}</LayoutChild>
       <KakaoScript />
     </html>
   )

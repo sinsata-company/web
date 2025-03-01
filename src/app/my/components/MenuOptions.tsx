@@ -105,7 +105,7 @@ const MenuOptions = () => {
               width={24}
               height={24}
             />
-            <div className="text-center text-neutral-800 text-lg font-semibold font-['Pretendard']">
+            <div className="text-center text-neutral-800 text-lg font-semibold ">
               {item.label}
             </div>
           </div>

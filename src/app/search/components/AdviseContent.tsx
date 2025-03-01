@@ -25,7 +25,7 @@ const AdviseContent = () => {
       {false && (
         <div className="p-2 bg-red-600/10 rounded-full justify-center items-center gap-1 inline-flex">
           <Image src={'/images/ic_mic.svg'} width={16} height={16} alt="mic" />
-          <div className="text-red-600 text-base font-bold font-['Pretendard Variable'] leading-tight">
+          <div className="text-red-600 text-base font-bold  leading-tight">
             음성 녹음해서 보내기
           </div>
         </div>

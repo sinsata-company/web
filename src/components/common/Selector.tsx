@@ -23,7 +23,7 @@ export default function Selector({
 }: SelectorProps) {
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex ">
-      <div className="self-stretch text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+      <div className="self-stretch text-zinc-900 text-xl font-bold ">
         {name}
       </div>
       <Menu>

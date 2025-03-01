@@ -14,6 +14,7 @@ import Membership from './components/Membership'
 import { UserDto } from '@/types/user'
 import MenuOptions from './components/MenuOptions'
 import ApplyCsl from './components/ApplyCsl'
+import TextSize from './components/TextSize'
 
 export default function MyPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -49,6 +50,7 @@ export default function MyPage() {
           <CashSummary />
           <div className="h-4"></div>
           <MenuOptions />
+          <TextSize />
           <ApplyCsl />
           {/* <MyTabContainer /> */}
           {isLogin && (

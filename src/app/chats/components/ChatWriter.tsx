@@ -52,7 +52,7 @@ export default function ChatWriter({
             }
           }}
           placeholder="메세지 입력"
-          className="w-full bg-zinc-100  text-base font-normal font-['Pretendard'] leading-normal"
+          className="w-full bg-zinc-100  text-base font-normal  leading-normal"
           style={{
             outline: 'none',
           }}

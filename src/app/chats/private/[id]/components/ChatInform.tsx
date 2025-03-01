@@ -30,21 +30,21 @@ const ChatInform = ({ chat }: { chat: ChatDto | null }) => {
 
   if (!chat) {
     return (
-      <div className="text-center px-3 text-neutral-500 text-sm font-normal font-['Pretendard Variable'] leading-tight">
+      <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
         상담 정보를 불러오는 중입니다...
       </div>
     )
   }
   return chat.status === 'END' ? (
-    <div className="text-center px-3 text-neutral-500 text-sm font-normal font-['Pretendard Variable'] leading-tight">
+    <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
       상담이 종료되었습니다.
     </div>
   ) : chat.status === 'PROGRESS' ? (
-    <div className="text-center px-3 text-neutral-500 text-sm font-normal font-['Pretendard Variable'] leading-tight">
+    <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
       {elapsedTime} 상담 중
     </div>
   ) : (
-    <div className="text-center px-3 text-neutral-500 text-sm font-normal font-['Pretendard Variable'] leading-tight">
+    <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
       안녕하세요 신사타 입니다.
       <br /> 선생님께서 입장하시면 30초마다 1400원씩 과급됩니다.
       <br /> 입장 전까지 비용이 청구되지 않으며, 채팅 입력이 불가합니다.

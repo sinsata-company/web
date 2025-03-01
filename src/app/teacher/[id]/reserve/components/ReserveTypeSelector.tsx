@@ -10,9 +10,7 @@ const ReserveTypeSelector = ({
 }) => {
   return (
     <div className="w-full px-5 justify-between items-center inline-flex">
-      <div className="text-zinc-900 text-base font-bold font-['Pretendard Variable']">
-        상담 방식
-      </div>
+      <div className="text-zinc-900 text-base font-bold ">상담 방식</div>
       <div className="justify-end items-center gap-3 flex">
         <TimeItem
           onClick={setSelectedType}

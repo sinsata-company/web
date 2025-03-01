@@ -31,7 +31,7 @@ export default function MyChat({
           </div>
         )}
         <div className="h-10 shrink px-3 py-2 bg-blue-800 rounded-xl justify-end items-center gap-2.5 inline-flex">
-          <div className="inline-flex text-white text-base font-normal font-['Pretendard'] leading-normal">
+          <div className="inline-flex text-white text-base font-normal  leading-normal">
             {message}
           </div>
         </div>

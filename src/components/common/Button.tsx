@@ -48,7 +48,7 @@ export function Button({ className, buttonType, label, ...rest }: ButtonProps) {
     >
       <div
         className={clsx(
-          "text-base font-bold font-['Pretendard Variable'] leading-tight",
+          'text-base font-bold  leading-tight',
           buttonStyle[buttonType].text
         )}
       >

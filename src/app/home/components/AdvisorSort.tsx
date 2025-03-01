@@ -23,8 +23,8 @@ export default function AdvisorSort(props: {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <div className="relative w-full flex justify-between items-center">
-      <div className="text-neutral-800 text-xl font-bold font-['Pretendard']">
+    <div className="relative w-full flex justify-between items-center px-2">
+      <div className="text-neutral-800 text-xl font-bold ">
         상담 가능한 선생님
       </div>
       <Select

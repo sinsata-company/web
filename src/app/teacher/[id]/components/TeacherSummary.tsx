@@ -20,9 +20,7 @@ export default function TeacherSummary({
     <div className="w-full sh-20 flex flex-col justify-start items-start gap-2">
       <div className="flex w-full justify-between gap-2">
         <div className="flex-grow flex-shrink-0 flex flex-col justify-start items-start gap-4">
-          <div className="text-black text-xl font-bold font-['Pretendard']">
-            상담사명
-          </div>
+          <div className="text-black text-xl font-bold ">상담사명</div>
         </div>
         {/* <div className="p-2 bg-red-600/10 rounded-full flex justify-center items-center gap-1">
           <Image
@@ -31,7 +29,7 @@ export default function TeacherSummary({
             height={20}
             alt="chat"
           />
-          <div className="text-red-600 text-base font-bold font-['Pretendard Variable'] leading-tight">
+          <div className="text-red-600 text-base font-bold  leading-tight">
             채팅하기
           </div>
         </div> */}
@@ -45,12 +43,12 @@ export default function TeacherSummary({
             height={20}
             alt="chat"
           />
-          <div className="text-indigo-400 text-base font-bold font-['Pretendard Variable'] leading-tight">
+          <div className="text-indigo-400 text-base font-bold  leading-tight">
             전화하기
           </div>
         </div>
       </div>
-      <div className="w-full mt-2  text-xl  font-['Pretendard Variable'] flex justify-between items-center gap-2">
+      <div className="w-full mt-2  text-xl   flex justify-between items-center gap-2">
         <p className="text-zinc-900 font-bold">{advisor?.name}</p>
         <p className="text-zinc-900 fond-bold">{advisor?.pinNumber}번</p>
       </div>
@@ -73,7 +71,7 @@ export default function TeacherSummary({
               <Image src="/logo.jpg" width={160} height={90} alt="profile" />
             )}
 
-            <div className=" ml-2 w-full justify-between text-zinc-900 text-xl font-bold font-['Pretendard Variable']">
+            <div className=" ml-2 w-full justify-between text-zinc-900 text-xl font-bold ">
               {advisor?.name} {advisor?.pinNumber}번
             </div>
           </div>
@@ -87,7 +85,7 @@ export default function TeacherSummary({
               />
               <p className="font-bold text-lg">전화 상담(후불)</p>
             </div>
-            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+            <p className="text-neutral-400 text-lg font-semibold ">
               30초 당 1,400원
             </p>
           </div>
@@ -114,7 +112,7 @@ export default function TeacherSummary({
               />
               <p className="font-bold text-lg">채팅 상담(잔액차감)</p>
             </div>
-            <p className="text-neutral-400 text-lg font-semibold font-['Pretendard']">
+            <p className="text-neutral-400 text-lg font-semibold ">
               30초 당 1,400원
             </p>
           </div>

@@ -26,7 +26,7 @@ const AdviseStatus = () => {
             {text}
           </div>
           <div className="justify-start items-center gap-1.5 flex">
-            <div className="text-neutral-500 text-base text-xs font-medium font-['Pretendard Variable'] leading-none">
+            <div className="text-neutral-500 text-base text-xs font-medium  leading-none">
               가능
             </div>
             <Switch

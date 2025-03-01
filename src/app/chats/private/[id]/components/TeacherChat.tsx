@@ -21,7 +21,7 @@ export default function TeacherChat({
         </div>
       )}
       <div className="h-10 inline-flex items-start shrink px-3 py-2 bg-blue-800/10 rounded-xl gap-1 ">
-        <div className="text-zinc-900 inline text-base font-normal font-['Pretendard'] leading-normal">
+        <div className="text-zinc-900 inline text-base font-normal  leading-normal">
           {message}
         </div>
       </div>

@@ -35,7 +35,7 @@ const BTBItem = ({ name, image }: { name: string; image: string }) => {
       />
       <div
         className={clsx(
-          "self-stretch h-4 text-center text-xs font-normal font-['Pretendard']",
+          'self-stretch h-4 text-center text-xs font-normal ',
           selected ? 'text-black' : 'text-zinc-400'
         )}
       >
