@@ -15,7 +15,7 @@ export default function AdvisorContainer() {
 
   useEffect(() => {
     if ('scrollRestoration' in window?.history) {
-      window?.history?.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
+      window.history.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
     }
   }, [])
 
