@@ -1,6 +1,6 @@
 import { cashDto } from '@/types/cashTables'
 import { basicGet, basicUnpagedGet } from '../../api/base'
-import { CashHistoryDto } from './data'
+import { CashHistoryDto, VaDto } from './data'
 
 export const getMenus = async () => {
   const result = await basicUnpagedGet<cashDto[]>('/cash/tables')
@@ -24,7 +24,16 @@ export const requestPayment = async (amount: number, timestamp: string) => {
   return result
 }
 
+export interface VaCustomerDto {
+  name: string
+  price: 1234
+  teacherName: string
+  teacherThumbnail: string
+  details: string
+  productImage: string
+}
+
 export const getVaList = async (page: number) => {
-  const result = await basicGet(`/cash/va/list?page=${page}`)
+  const result = await basicGet<VaCustomerDto>(`/cash/va/list?page=${page}`)
   return result
 }

@@ -6,6 +6,7 @@ export const enum BUTTON_TYPE {
   secondary,
   inactive,
   inprogress,
+  primarySm,
 }
 
 type buttonStyleType = {
@@ -15,19 +16,23 @@ type buttonStyleType = {
 
 const buttonStyle: Record<BUTTON_TYPE, buttonStyleType> = {
   [BUTTON_TYPE.primary]: {
-    background: 'bg-gradient',
+    background: 'bg-gradient px-2 py-4 rounded-xl ',
+    text: 'text-white ',
+  },
+  [BUTTON_TYPE.primarySm]: {
+    background: 'bg-gradient py-1 rounded-md ',
     text: 'text-white ',
   },
   [BUTTON_TYPE.secondary]: {
-    background: 'border  bg-blue-800/10',
+    background: 'border  bg-blue-800/10 px-2 py-4 rounded-xl ',
     text: 'text-black',
   },
   [BUTTON_TYPE.inactive]: {
-    background: 'bg-gray-200',
+    background: 'bg-gray-200 px-2 py-4 rounded-xl ',
     text: 'text-white',
   },
   [BUTTON_TYPE.inprogress]: {
-    background: 'bg-teal-400/10',
+    background: 'bg-teal-400/10 px-2 py-4 rounded-xl ',
     text: 'text-teal-400',
   },
 }
@@ -42,7 +47,7 @@ export function Button({ className, buttonType, label, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={clsx(
-        'w-full px-2 py-4 rounded-xl flex-col justify-center items-center gap-1 inline-flex cursor-pointer',
+        'w-full flex-col justify-center items-center gap-1 inline-flex cursor-pointer',
         buttonStyle[buttonType].background
       )}
     >
