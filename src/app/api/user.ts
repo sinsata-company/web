@@ -161,7 +161,9 @@ export const withdraw = async () => {
 }
 
 export const getEvent = async () => {
-  await basicGet('/users/event')
+  const res = await basicGet<number>('/users/event')
+  console.log(res)
+  return res
 }
 
 export const updateprofile = async ({
