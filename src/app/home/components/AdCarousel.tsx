@@ -15,7 +15,8 @@ export default function AdCarousel() {
   const [showModal, setShowModal] = useState(false)
   const [amount, setAmount] = useState(0)
   const router = useRouter()
-  const banner: IBannerProps[] = [
+
+  const [banner, setBanner] = useState<IBannerProps[]>([
     {
       image: '/images/banners/sst-banner-0.png',
       onClick: () => {
@@ -50,7 +51,7 @@ export default function AdCarousel() {
         window.location.href = '/manage'
       },
     },
-  ]
+  ])
 
   useEffect(() => {
     getEvent().then((res) => {

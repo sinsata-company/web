@@ -149,20 +149,6 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
       onClickPhone(advisor)
     }
 
-    const renderHashtags = () => {
-      return hashtag?.split('#').map((tag, idx) => {
-        if (tag === '') return null
-        return (
-          <p
-            className="leading-none text-indigo-400 text-xs  font-bold"
-            key={'hash-' + idx}
-          >
-            #{tag.trim()}{' '}
-          </p>
-        )
-      })
-    }
-
     const renderPriceInfo = (price: string, duration: string) => (
       <div className="flex items-center gap-1">
         <Image src={'/images/ic_cash.svg'} width={16} height={16} alt="cash" />
