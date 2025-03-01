@@ -25,9 +25,9 @@ const TimeProductItem = (props: ITimeProductItemProps) => {
           }
         </div>
       </div>
-      <div className="px-4 py-3 bg-red-600/10 rounded-xl flex items-center gap-3 overflow-hidden">
-        <div className="text-red-600 text-base font-medium">₩</div>
-        <div className="text-red-600 text-base font-bold">
+      <div className="px-4 py-3 bg-indigo-400/10 rounded-xl flex items-center gap-3 overflow-hidden">
+        <div className="text-indigo-400 text-base font-medium">₩</div>
+        <div className="text-indigo-400 text-base font-bold">
           {formatNumberWithCommas(price)}
         </div>
       </div>
