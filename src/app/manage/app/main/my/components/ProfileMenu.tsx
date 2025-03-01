@@ -32,6 +32,10 @@ const ProfileMenu = () => {
       title: '자주 묻는 질문',
     },
     {
+      route: 'va',
+      title: '부가서비스',
+    },
+    {
       route: 'withdraw',
       title: '회원탈퇴',
     },

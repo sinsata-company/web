@@ -1,4 +1,4 @@
-import { TeacherListDto } from '@/app/api/data'
+import { TeacherListDto, VaDto } from '@/app/api/data'
 import { basicTeacherGet, basicTeacherPost } from './base'
 
 export const getMySummary = async () => {
@@ -59,4 +59,31 @@ export const updateQna = async (qna: string) => {
   const result = await basicTeacherPost('/manage/my/qna', {
     qna,
   })
+}
+
+export interface VADto {}
+
+export const getVas = async (): Promise<VaDto[]> => {
+  const result = await basicTeacherGet<VaDto[]>('/manage/my/va')
+  return result
+}
+
+export const updateVas = async ({
+  name,
+  details,
+  price,
+  image,
+}: {
+  name: string
+  details: string
+  price: string
+  image: string
+}): Promise<string> => {
+  const result = await basicTeacherPost('/manage/my/va', {
+    name,
+    details,
+    price,
+    image,
+  })
+  return result
 }

@@ -83,3 +83,36 @@ export interface IMessage {
   level: string
   nickname: string
 }
+
+export interface VaDto {
+  createdDateTime: string
+  modifiedDateTime: string
+  id: number
+  productName: string
+  productDetails: string
+  productImage: string
+  price: number
+  teachers: Teachers
+}
+
+export interface Teachers {
+  id: string
+  pinNumber: string
+  password: string
+  name: string
+  mtnId: string
+  phoneNumber: string
+  hashtag: string
+  thumbnailURI: any
+  summary: string
+  teacherType: string
+  canChat: boolean
+  canCall: boolean
+  status: string
+  viewCnt: number
+  reserveCnt: number
+  rating: number
+  ratingCnt: number
+  createdDateTime: string
+  modifiedDateTime: string
+}
