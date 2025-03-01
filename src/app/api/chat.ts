@@ -12,3 +12,7 @@ export const startInstantChat = async (teacherId: string) => {
 export const getChatDetail = async (roomId: string) => {
   return await basicUnpagedGet<ChatDto>(`/chats/${roomId}`)
 }
+
+export const completeChat = async (roomId: string) => {
+  return await basicUnpagedGet<boolean>(`/chats/${roomId}/end`)
+}

@@ -1,8 +1,12 @@
 import { ChatDto } from '@/app/api/data'
+import { endChat } from '@/app/manage/api/homepage'
+import { Button, BUTTON_TYPE } from '@/components/common/Button'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const ChatInform = ({ chat }: { chat: ChatDto | null }) => {
   const [elapsedTime, setElapsedTime] = useState<string>('')
+  const router = useRouter()
 
   useEffect(() => {
     if (chat?.status !== 'PROGRESS' || !chat.startAt) return
