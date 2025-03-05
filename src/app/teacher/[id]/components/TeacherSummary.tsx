@@ -23,14 +23,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
     async function fetchReservation() {
       try {
         const res = await myReserves()
-        // 여러 예약 정보가 있다면 첫 번째 예약을 사용 (필요 시 로직 조정)
         const firstRes = Array.isArray(res) ? res[0] : res
-
-        // ----- 시간 강제 지정 부분 제거! -----
-        // if (firstRes) {
-        //   firstRes.reserveTime = '2025-03-05 19:18:00'
-        // }
-
         setReservation(firstRes)
       } catch (error) {
         console.error('예약 정보를 불러오는데 실패했습니다:', error)
@@ -38,17 +31,6 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
     }
     fetchReservation()
   }, [])
-
-  // 예약 시간이 되었거나 예약 시간 + 5분 이내인지 판단하는 함수
-  const isPrepaidActive = () => {
-    if (!reservation || !reservation.reserveTime) return false
-    const resTime = new Date(reservation.reserveTime)
-    const now = new Date()
-    const fiveMinutesLater = new Date(resTime.getTime() + 5 * 60 * 1000)
-
-    // 현재 시간이 예약 시간 이상이고, 예약 시간 +5분 이하인 경우 활성화
-    return now >= resTime && now <= fiveMinutesLater
-  }
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -111,32 +93,30 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
             </div>
           </div>
 
-          {/* 선불 전화 상담 섹션 (조건부 표시) */}
-          {isPrepaidActive() && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Image
-                  src={'/images/cash_060.png'}
-                  width={24}
-                  height={24}
-                  alt="cash"
-                />
-                <p className="font-bold text-lg">전화 상담(선불)</p>
-              </div>
-              <div className="text-zinc-600">
-                하단 버튼을 눌러 전화 연결 후, 안내멘트에 따라 상담사 고유번호{' '}
-                {advisor?.pinNumber}를 입력하시면 {advisor?.name} 선생님과 연결됩니다.
-              </div>
-              <Button
-                onClick={() => {
-                  window.location.href = `tel:070-8016-9122`
-                  setIsPhoneModalOpen(false)
-                }}
-                buttonType={BUTTON_TYPE.primary}
-                label="070-8016-9122로 전화 후 고유번호 입력 (선불)"
+          {/* 선불 전화 상담 섹션 (무조건 표시) */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Image
+                src={'/images/cash_060.png'}
+                width={24}
+                height={24}
+                alt="cash"
               />
+              <p className="font-bold text-lg">전화 상담(선불)</p>
             </div>
-          )}
+            <div className="text-zinc-600">
+              하단 버튼을 눌러 전화 연결 후, 안내멘트에 따라 상담사 고유번호{' '}
+              {advisor?.pinNumber}를 입력하시면 {advisor?.name} 선생님과 연결됩니다.
+            </div>
+            <Button
+              onClick={() => {
+                window.location.href = `tel:070-8016-9122`
+                setIsPhoneModalOpen(false)
+              }}
+              buttonType={BUTTON_TYPE.primary}
+              label="070-8016-9122로 전화 후 고유번호 입력 (선불)"
+            />
+          </div>
 
           {/* 후불 전화 상담 섹션 */}
           <div className="space-y-2">
