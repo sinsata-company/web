@@ -68,11 +68,16 @@ export default function AdvisorList({
               {advisor?.name} {advisor?.pinNumber}번
             </div>
           </div>
+{/* ✅ 회색 작은 글씨 (위쪽 간격 mt-2, 아래쪽 간격 mb-3) */}
+<p className="text-gray-400 text-sm mt-2 mb-3">
+  전화 연결 후 989번을 입력하시면 상담사와 연결됩니다.
+</p>
+
 
           {/* -------------------------------
               (1) 전화 상담(선불) 섹션
           ------------------------------- */}
-          <div className="mb-4 flex justify-between items-center">
+<div className="mt-6 mb-4 flex justify-between items-center">
             <div className="flex">
               <Image
                 src={'/images/cash_070.png'}
@@ -86,18 +91,17 @@ export default function AdvisorList({
               30초 당 1,400원
             </p>
           </div>
-          <div className="text-zinc-600 py-3">
-              하단 버튼을 눌러 전화 연결 후, 안내멘트에 따라 상담사 고유번호{' '}
-              {advisor?.pinNumber}를 입력하시면 {advisor?.name} 선생님과 연결됩니다.
-          </div>
-          <Button
-            onClick={() => {
-              window.location.href = `tel:070-8016-9122`
-              setIsPhoneModalOpen(false)
-            }}
-            buttonType={BUTTON_TYPE.primary}
-            label={`070-8016-9122로 전화 후 고유번호 입력`}
-          />
+<div className="w-full flex justify-center">
+  <Button
+    onClick={() => {
+      window.location.href = `tel:070-8016-9122`
+      setIsPhoneModalOpen(false)
+    }}
+    buttonType={BUTTON_TYPE.primary}
+    label={<span className="text-xl font-bold">(070-8016-9122)</span>}
+  />
+</div>
+
 
           {/* -------------------------------
               (2) 전화 상담(후불) 섹션
@@ -116,17 +120,14 @@ export default function AdvisorList({
               30초 당 1,400원
             </p>
           </div>
-          <div className="text-zinc-600 py-3">
-            하단 버튼을 눌러 전화 연결 후, 안내멘트에 따라 상담사 고유번호{' '}
-            {advisor?.pinNumber}를 입력하시면 {advisor?.name} 선생님과 연결됩니다.
-          </div>
           <Button
             onClick={() => {
               window.location.href = `tel:060-500-8744`
               setIsPhoneModalOpen(false)
             }}
             buttonType={BUTTON_TYPE.primary}
-            label={`060-500-8744로 전화 후 고유번호 입력`}
+            label={<span className="text-xl font-bold">(060-500-8744)</span>
+}
           />
 
           {/* -------------------------------
@@ -146,20 +147,15 @@ export default function AdvisorList({
               30초 당 1,400원
             </p>
           </div>
-          <div className="text-zinc-600 py-3">
-            하단 버튼을 누르면, 회원권에 남아있는 잔액에서 상담료가 차감됩니다.
-          </div>
-          <div className="inline-flex flex-col w-full gap-2">
-            <Button
-              onClick={async () => {
-                const result = await startInstantChat(advisor?.id ?? '')
-                router.push(`/chats/private/${result.chatRoomId}`)
-                // 모달을 닫으려면 아래 코드도 추가
-                // setIsPhoneModalOpen(false)
-              }}
-              buttonType={BUTTON_TYPE.primary}
-              label={'채팅상담 시작하기'}
-            />
+<div className="flex justify-center w-auto gap-2"> {/* ✅ 부모 요소를 flex로 설정하여 중앙 정렬 */}
+  <Button
+    onClick={async () => {
+      const result = await startInstantChat(advisor?.id ?? '')
+      router.push(`/chats/private/${result.chatRoomId}`)
+    }}
+    buttonType={BUTTON_TYPE.primary}
+    label={<span className="text-xl font-bold">채팅상담 시작하기</span>}
+  />
           </div>
         </div>
       </Modal>
