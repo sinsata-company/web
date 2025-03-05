@@ -18,19 +18,6 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
   const router = useRouter()
 
-  // 예약 정보 API 호출
-  useEffect(() => {
-    async function fetchReservation() {
-      try {
-        const res = await myReserves()
-        const firstRes = Array.isArray(res) ? res[0] : res
-        setReservation(firstRes)
-      } catch (error) {
-        console.error('예약 정보를 불러오는데 실패했습니다:', error)
-      }
-    }
-    fetchReservation()
-  }, [])
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -93,7 +80,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
             </div>
           </div>
 
-          {/* 선불 전화 상담 섹션 (무조건 표시) */}
+          {/* 선불 전화 상담 섹션 (항상 표시) */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Image
