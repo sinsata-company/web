@@ -18,7 +18,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
   const router = useRouter()
 
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2 text-sm">
       {/* 상단 헤더 */}
       <div className="flex w-full justify-between gap-2">
         <div className="flex flex-col flex-grow gap-4">
