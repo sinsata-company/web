@@ -1,21 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { startInstantChat } from '@/app/api/chat'
-import { TeacherDetailDto } from '@/app/api/data'
+import { TeacherDetailDto, ReserveDto } from '@/app/api/data'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Modal from '@/components/common/Modal'
+import { myReserves } from '@/app/api/reserve'
 
 interface TeacherSummaryProps {
   advisor: TeacherDetailDto | null
 }
 
 export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
-  // 예약 정보와 관련된 부분은 모두 제거
+  const [reservation, setReservation] = useState<ReserveDto | null>(null)
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
   const router = useRouter()
+
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -46,7 +48,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
         <p className="text-zinc-900">{advisor?.pinNumber}번</p>
       </div>
 
-      {/* 모달: 모든 상담 섹션을 모달 내부에 표시 (조건 없이) */}
+      {/* 모달: 선불, 후불, 채팅 상담 섹션 전부 모달 내부 */}
       <Modal
         isOpen={isPhoneModalOpen}
         onClose={() => setIsPhoneModalOpen(false)}
@@ -103,7 +105,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
             />
           </div>
 
-          {/* 후불 전화 상담 섹션 (항상 표시) */}
+          {/* 후불 전화 상담 섹션 */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
@@ -133,7 +135,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
             />
           </div>
 
-          {/* 채팅 상담 섹션 (항상 표시) */}
+          {/* 채팅 상담 섹션 */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
