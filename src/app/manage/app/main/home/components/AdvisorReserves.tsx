@@ -18,7 +18,7 @@ const AdvisorReserves = () => {
 
   const onclickDate = async (date: Moment) => {
     setSelectedDate(date)
-    const result = await getReserveByDate(date.format('yyyy-MM-DD'))
+    const result = await getReserveByDate(date.format('YYYY-MM-DD'))
     setReserves(result)
   }
 
