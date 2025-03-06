@@ -134,7 +134,7 @@ export default function TeacherSummary({
           />
 
           {/* (3) 채팅 상담(잔액차감) 섹션 */}
-          <div className="mt-5 mb-4 flex justify-between items-center">
+          <div className="mt-5 mb-4 flex justify-between items-center  whitespace-nowrap">
             <div className="flex items-center gap-2">
               <Image
                 src={'/images/cash_070.png'}
