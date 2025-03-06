@@ -59,19 +59,20 @@ export default function TeacherSummary({
   <Image
     src={advisor?.images[0] ?? '/logo.jpg'}
     width={160}
-    height={90}
+    height={160}
     alt="profile"
-    className="rounded-xl"
+    className="object-cover"
   />
 ) : (
   <Image
     src="/logo.jpg"
     width={160}
-    height={90}
+    height={160}
     alt="profile"
-    className="rounded-xl"
+    className="object-cover"
   />
 )}
+
             <div className="ml-2 w-full justify-between text-zinc-900 text-xl font-bold">
               {advisor?.name} {advisor?.pinNumber}번
             </div>
