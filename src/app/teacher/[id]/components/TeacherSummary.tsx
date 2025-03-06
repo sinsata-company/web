@@ -118,7 +118,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
                 buttonType={BUTTON_TYPE.primary}
                 label={
                   <span className="text-xl font-bold">
-                    (070-8016-9122)
+                    070-8016-9122
                   </span>
                 }
               />
@@ -149,7 +149,7 @@ export default function TeacherSummary({ advisor }: TeacherSummaryProps) {
               buttonType={BUTTON_TYPE.primary}
               label={
                 <span className="text-xl font-bold">
-                  (060-500-8744)
+                  060-500-8744
                 </span>
               }
             />

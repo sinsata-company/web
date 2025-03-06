@@ -98,7 +98,7 @@ export default function AdvisorList({
       setIsPhoneModalOpen(false)
     }}
     buttonType={BUTTON_TYPE.primary}
-    label={<span className="text-xl font-bold">(070-8016-9122)</span>}
+    label={<span className="text-xl font-bold">070-8016-9122</span>}
   />
 </div>
 
@@ -126,7 +126,7 @@ export default function AdvisorList({
               setIsPhoneModalOpen(false)
             }}
             buttonType={BUTTON_TYPE.primary}
-            label={<span className="text-xl font-bold">(060-500-8744)</span>
+            label={<span className="text-xl font-bold">060-500-8744</span>
 }
           />
 
