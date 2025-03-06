@@ -13,12 +13,10 @@ import {
   updateMenu,
 } from '@/app/manage/api/mypage'
 
-// 임시 스텁: 실제 API 구현이 없다면 아래 함수를 추가합니다.
+// 임시 스텁
 const getMenuPrepay = async () => {
-  // 예시: 프리페이 값을 반환합니다.
   return Promise.resolve({ chatPrepay: 1400, callPrePay: 1000 })
 }
-
 const updatePrepay = async (data: { chatPrepay: number; callPrePay: number }) => {
   console.log('updatePrepay called with', data)
   return Promise.resolve(data)
@@ -33,48 +31,12 @@ export interface MenuItemProps {
 }
 
 const initialMenu: MenuItemProps[] = [
-  {
-    id: 1,
-    type: 'chat',
-    minute: 15,
-    method: 'cash',
-    price: 25000,
-  },
-  {
-    id: 2,
-    type: 'chat',
-    minute: 30,
-    method: 'cash',
-    price: 40000,
-  },
-  {
-    id: 3,
-    type: 'chat',
-    minute: 60,
-    method: 'cash',
-    price: 90000,
-  },
-  {
-    id: 4,
-    type: 'phone',
-    minute: 15,
-    method: 'cash',
-    price: 25000,
-  },
-  {
-    id: 5,
-    type: 'phone',
-    minute: 30,
-    method: 'cash',
-    price: 40000,
-  },
-  {
-    id: 6,
-    type: 'phone',
-    minute: 60,
-    method: 'cash',
-    price: 90000,
-  },
+  { id: 1, type: 'chat',  minute: 15, method: 'cash',   price: 25000 },
+  { id: 2, type: 'chat',  minute: 30, method: 'cash',   price: 40000 },
+  { id: 3, type: 'chat',  minute: 60, method: 'cash',   price: 90000 },
+  { id: 4, type: 'phone', minute: 15, method: 'cash',   price: 25000 },
+  { id: 5, type: 'phone', minute: 30, method: 'cash',   price: 40000 },
+  { id: 6, type: 'phone', minute: 60, method: 'cash',   price: 90000 },
 ]
 
 export default function TimeTabs() {
@@ -110,10 +72,8 @@ export default function TimeTabs() {
 
   useEffect(() => {
     getMenu('menu').then((res) => {
-      console.log(typeof res == 'object')
-      if (res.length !== 6) {
-        return
-      } else {
+      // 예시: res가 배열 형태로 넘어온다고 가정
+      if (Array.isArray(res) && res.length === 6) {
         setMenu(res)
       }
     })
@@ -129,6 +89,7 @@ export default function TimeTabs() {
 
   return (
     <div>
+      {/* 상단 탭 */}
       <div className="w-full h-7 flex-col justify-start items-start gap-2.5 inline-flex">
         <div
           className="w-full grid grid-cols-2"
@@ -153,61 +114,75 @@ export default function TimeTabs() {
         </div>
       </div>
       <div className="h-4"></div>
+
+      {/* 실제 내용 */}
       <div className="w-full flex-col justify-start items-start gap-4 inline-flex mb-12">
         {tab === 0 && (
           <>
-            {/* 첫 번째 채팅 상담 항목: method를 'cash'로 변경하여 선불결제로 표시 */}
+            {/* 채팅 상담 탭 - 첫 번째 항목: 30초 채팅 상담 [선불] */}
             <TimeProductItem
               type="chat"
               minute={30}
-              method="cash"
+              method="cash" // => [선불]
               price={prepay.chat}
               id={11}
-              onClick={(t) => {
+              onClick={() => {
+                // 선불 결제 금액 수정 모달 오픈
                 setShowPrepay(true)
               }}
             />
             <GreyDivider />
+
+            {/* 나머지 채팅 상담 메뉴 (기존) */}
             {menu.map((m) => {
               if (m.type === 'chat') {
                 return (
-                  <TimeProductItem onClick={onClickMenu} key={m.id} {...m} />
+                  <TimeProductItem key={m.id} {...m} onClick={onClickMenu} />
                 )
               }
             })}
           </>
         )}
+
         {tab === 1 && (
           <>
+            {/* 전화 상담 탭 - 첫 번째 항목: 30초 전화 상담 [후불] */}
             <TimeProductItem
               type="phone"
               minute={30}
-              method="direct"
+              method="direct" // => [후불]
               price={1400}
               id={9}
               onClick={(t) => console.log(t)}
             />
+
+            {/* 전화 상담 탭 - 두 번째 항목: 30초 전화 상담 [선불] */}
             <TimeProductItem
               type="phone"
               minute={30}
-              method="cash"
+              method="cash" // => [선불]
               price={prepay.phone}
-              id={9}
-              onClick={(t) => {
+              id={10}
+              onClick={() => {
+                // 선불 결제 금액 수정 모달
                 setShowPrepay(true)
               }}
             />
             <GreyDivider />
+
+            {/* 나머지 전화 상담 메뉴 (기존) */}
             {menu.map((m) => {
               if (m.type === 'phone') {
                 return (
-                  <TimeProductItem {...m} key={m.id} onClick={onClickMenu} />
+                  <TimeProductItem key={m.id} {...m} onClick={onClickMenu} />
                 )
               }
             })}
           </>
         )}
       </div>
+
+      {/* 아래는 모달 관련 로직 (상품 수정, 선불결제 수정 등) */}
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
@@ -255,6 +230,7 @@ export default function TimeTabs() {
           />
         </div>
       </Modal>
+
       <Modal
         isOpen={showPrepay}
         onClose={() => setShowPrepay(false)}

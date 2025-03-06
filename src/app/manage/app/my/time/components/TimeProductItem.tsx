@@ -1,13 +1,23 @@
+// TimeProductItem.tsx
+'use client'
+
 import { formatNumberWithCommas } from '@/utils/numberFormatter'
 import { MenuItemProps } from './TimeTabs'
 import { InfoItem } from '../../hashtag/page'
 
 export interface ITimeProductItemProps extends MenuItemProps {
-  onClick: (item: MenuItemProps) => void
+  onClick: (item: MenuItemProps) => void;
 }
 
 const TimeProductItem = (props: ITimeProductItemProps) => {
-  const { method, price, minute, type } = props
+  const { method, price, minute, type } = props;
+
+  // 분기 로직: minute가 30이면 '초', 아니면 '분'
+  const unitLabel = minute === 30 ? '초' : '분'
+
+  // 결제 방식 표기: method === 'cash' -> '[선불]', 아니면 '[후불]'
+  const paymentLabel = method === 'cash' ? '[선불]' : '[후불]'
+
   return (
     <div
       onClick={() => props.onClick(props)}
@@ -15,14 +25,10 @@ const TimeProductItem = (props: ITimeProductItemProps) => {
     >
       <div className="grow flex-grow flex flex-col justify-center items-start gap-1">
         <div className="text-zinc-900 text-base font-bold leading-snug">
-          {`${minute}${method == 'direct' ? '초' : '분'} ${
-            type == 'chat' ? '채팅' : '전화'
-          } 상담`}{' '}
-          {
-            <span className="text-red-600 text-xs font-bold">
-              {method === 'cash' ? '[선불결제]' : '[후불결제]'}
-            </span>
-          }
+          {`${minute}${unitLabel} ${type === 'chat' ? '채팅' : '전화'} 상담 `}
+          <span className="text-[#E46777] text-xs font-bold">
+            {paymentLabel}
+          </span>
         </div>
       </div>
       <div className="px-4 py-3 bg-indigo-400/10 rounded-xl flex items-center gap-3 overflow-hidden">
