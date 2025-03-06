@@ -23,12 +23,14 @@ const updatePrepay = async (data: { chatPrepay: number; callPrePay: number }) =>
 }
 
 export interface MenuItemProps {
-  id: number
-  type: 'chat' | 'phone'
-  minute: number
-  method: 'direct' | 'cash'
-  price: number
+  id: number;
+  type: 'chat' | 'phone';
+  minute: number;
+  method: 'direct' | 'cash';
+  price: number;
+  unit?: 'minute' | 'second'; // 추가!
 }
+
 
 const initialMenu: MenuItemProps[] = [
   { id: 1, type: 'chat',  minute: 15, method: 'cash',   price: 25000 },
@@ -119,18 +121,15 @@ export default function TimeTabs() {
       <div className="w-full flex-col justify-start items-start gap-4 inline-flex mb-12">
         {tab === 0 && (
           <>
-            {/* 채팅 상담 탭 - 첫 번째 항목: 30초 채팅 상담 [선불] */}
-            <TimeProductItem
-              type="chat"
-              minute={30}
-              method="cash" // => [선불]
-              price={prepay.chat}
-              id={11}
-              onClick={() => {
-                // 선불 결제 금액 수정 모달 오픈
-                setShowPrepay(true)
-              }}
-            />
+<TimeProductItem
+  type="chat"
+  minute={30}
+  method="cash"
+  price={prepay.chat}
+  id={11}
+  unit="second"  // 명확히 초 단위로 지정!
+  onClick={() => setShowPrepay(true)}
+/>
             <GreyDivider />
 
             {/* 나머지 채팅 상담 메뉴 (기존) */}
@@ -144,31 +143,31 @@ export default function TimeTabs() {
           </>
         )}
 
-        {tab === 1 && (
-          <>
-            {/* 전화 상담 탭 - 첫 번째 항목: 30초 전화 상담 [후불] */}
-            <TimeProductItem
-              type="phone"
-              minute={30}
-              method="direct" // => [후불]
-              price={1400}
-              id={9}
-              onClick={(t) => console.log(t)}
-            />
+{tab === 1 && (
+  <>
+    {/* 전화 상담 탭 - 첫 번째 항목: 30초 전화 상담 [후불] */}
+    <TimeProductItem
+      type="phone"
+      minute={30}
+      method="direct"
+      price={1400}
+      id={9}
+      unit="second" // 정확히 초 단위로 명시
+      onClick={(t) => console.log(t)}
+    />
 
-            {/* 전화 상담 탭 - 두 번째 항목: 30초 전화 상담 [선불] */}
-            <TimeProductItem
-              type="phone"
-              minute={30}
-              method="cash" // => [선불]
-              price={prepay.phone}
-              id={10}
-              onClick={() => {
-                // 선불 결제 금액 수정 모달
-                setShowPrepay(true)
-              }}
-            />
-            <GreyDivider />
+    {/* 전화 상담 탭 - 두 번째 항목: 30초 전화 상담 [선불] */}
+    <TimeProductItem
+      type="phone"
+      minute={30}
+      method="cash"
+      price={prepay.phone}
+      id={10}
+      unit="second" // 정확히 초 단위로 명시
+      onClick={() => setShowPrepay(true)}
+    />
+
+    <GreyDivider />
 
             {/* 나머지 전화 상담 메뉴 (기존) */}
             {menu.map((m) => {

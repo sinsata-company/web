@@ -10,13 +10,11 @@ export interface ITimeProductItemProps extends MenuItemProps {
 }
 
 const TimeProductItem = (props: ITimeProductItemProps) => {
-  const { method, price, minute, type } = props;
+  const { method, price, minute, type, unit = 'minute' } = props;
 
-  // 분기 로직: minute가 30이면 '초', 아니면 '분'
-  const unitLabel = minute === 30 ? '초' : '분'
+  const unitLabel = unit === 'second' ? '초' : '분'; // 명확히 구분!
 
-  // 결제 방식 표기: method === 'cash' -> '[선불]', 아니면 '[후불]'
-  const paymentLabel = method === 'cash' ? '[선불]' : '[후불]'
+  const paymentLabel = method === 'cash' ? '[선불]' : '[후불]';
 
   return (
     <div
@@ -38,7 +36,7 @@ const TimeProductItem = (props: ITimeProductItemProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TimeProductItem
+export default TimeProductItem;
