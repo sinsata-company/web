@@ -10,22 +10,14 @@ import Modal from '@/components/common/Modal'
 import Input from '@/components/common/Input'
 import {
   getMenu,
+  getMenuPrepay,
   updateMenu,
+  updatePrepay,
 } from '@/app/manage/api/mypage'
-
-// 임시 스텁: 실제 API 구현이 없다면 아래 함수를 추가합니다.
-const getMenuPrepay = async () => {
-  // 예시: 프리페이 값을 반환합니다.
-  return Promise.resolve({ chatPrepay: 1400, callPrePay: 1000 })
-}
-
-const updatePrepay = async (data: { chatPrepay: number; callPrePay: number }) => {
-  console.log('updatePrepay called with', data)
-  return Promise.resolve(data)
-}
 
 export interface MenuItemProps {
   id: number
+
   type: 'chat' | 'phone'
   minute: number
   method: 'direct' | 'cash'
@@ -35,6 +27,7 @@ export interface MenuItemProps {
 const initialMenu: MenuItemProps[] = [
   {
     id: 1,
+
     type: 'chat',
     minute: 15,
     method: 'cash',
@@ -42,6 +35,7 @@ const initialMenu: MenuItemProps[] = [
   },
   {
     id: 2,
+
     type: 'chat',
     minute: 30,
     method: 'cash',
@@ -49,6 +43,7 @@ const initialMenu: MenuItemProps[] = [
   },
   {
     id: 3,
+
     type: 'chat',
     minute: 60,
     method: 'cash',
@@ -56,6 +51,7 @@ const initialMenu: MenuItemProps[] = [
   },
   {
     id: 4,
+
     type: 'phone',
     minute: 15,
     method: 'cash',
@@ -63,6 +59,7 @@ const initialMenu: MenuItemProps[] = [
   },
   {
     id: 5,
+
     type: 'phone',
     minute: 30,
     method: 'cash',
@@ -70,6 +67,7 @@ const initialMenu: MenuItemProps[] = [
   },
   {
     id: 6,
+
     type: 'phone',
     minute: 60,
     method: 'cash',
@@ -83,7 +81,10 @@ export default function TimeTabs() {
   const [showPrepay, setShowPrepay] = useState<boolean>(false)
   const [menu, setMenu] = useState<MenuItemProps[]>(initialMenu)
   const [selectedMenu, setSelectedMenu] = useState<MenuItemProps | null>(null)
-  const [prepay, setPrepay] = useState<{ chat: number; phone: number }>({
+  const [prepay, setPrepay] = useState<{
+    chat: number
+    phone: number
+  }>({
     chat: 1400,
     phone: 1000,
   })
@@ -95,7 +96,7 @@ export default function TimeTabs() {
   const updateMenuList = () => {
     if (!selectedMenu) return
     const newMenu = menu.map((m) =>
-      m.id === selectedMenu.id
+      m.id == selectedMenu.id
         ? { ...m, price: selectedMenu.price, minute: selectedMenu.minute }
         : m
     )
@@ -111,25 +112,27 @@ export default function TimeTabs() {
   useEffect(() => {
     getMenu('menu').then((res) => {
       console.log(typeof res == 'object')
-      if (res.length !== 6) {
+      if (res.length != 6) {
         return
       } else {
         setMenu(res)
       }
     })
     getMenuPrepay().then((res) => {
-      if (res.chatPrepay && res.callPrePay) {
-        setPrepay({
-          chat: res.chatPrepay,
-          phone: res.callPrePay,
-        })
+      if (res.chatPrepay && res.callPrepay) {
+        {
+          setPrepay({
+            chat: res.chatPrepay,
+            phone: res.callPrepay,
+          })
+        }
       }
     })
   }, [])
 
   return (
     <div>
-      <div className="w-full h-7 flex-col justify-start items-start gap-2.5 inline-flex">
+      <div className=" w-full h-7 flex-col justify-start items-start gap-2.5 inline-flex">
         <div
           className="w-full grid grid-cols-2"
           style={{
@@ -141,26 +144,25 @@ export default function TimeTabs() {
           <MyTabItem
             onClick={selectTab}
             label="채팅 상담"
-            selected={tab === 0}
+            selected={tab == 0}
             idx={0}
           />
           <MyTabItem
             onClick={selectTab}
             label="전화 상담"
-            selected={tab === 1}
+            selected={tab == 1}
             idx={1}
           />
         </div>
       </div>
       <div className="h-4"></div>
-      <div className="w-full flex-col justify-start items-start gap-4 inline-flex mb-12">
-        {tab === 0 && (
+      <div className="w-full  flex-col justify-start items-start gap-4 inline-flex mb-12">
+        {tab == 0 && (
           <>
-            {/* 첫 번째 채팅 상담 항목: method를 'cash'로 변경하여 선불결제로 표시 */}
             <TimeProductItem
               type="chat"
               minute={30}
-              method="cash"
+              method="direct"
               price={prepay.chat}
               id={11}
               onClick={(t) => {
@@ -168,8 +170,8 @@ export default function TimeTabs() {
               }}
             />
             <GreyDivider />
-            {menu.map((m) => {
-              if (m.type === 'chat') {
+            {menu.map((m, idx) => {
+              if (m.type == 'chat') {
                 return (
                   <TimeProductItem onClick={onClickMenu} key={m.id} {...m} />
                 )
@@ -177,7 +179,7 @@ export default function TimeTabs() {
             })}
           </>
         )}
-        {tab === 1 && (
+        {tab == 1 && (
           <>
             <TimeProductItem
               type="phone"
@@ -193,13 +195,14 @@ export default function TimeTabs() {
               method="cash"
               price={prepay.phone}
               id={9}
+              // onClick={(t) => console.log(t)}
               onClick={(t) => {
                 setShowPrepay(true)
               }}
             />
             <GreyDivider />
-            {menu.map((m) => {
-              if (m.type === 'phone') {
+            {menu.map((m, idx) => {
+              if (m.type == 'phone') {
                 return (
                   <TimeProductItem {...m} key={m.id} onClick={onClickMenu} />
                 )
@@ -219,7 +222,7 @@ export default function TimeTabs() {
           value={selectedMenu?.minute.toString() ?? ''}
           onChange={(e) => {
             setSelectedMenu((prev) =>
-              prev ? { ...prev, minute: Number(e.target.value) || 0 } : null
+              prev ? { ...prev, minute: Number(e.target.value) ?? 0 } : null
             )
           }}
           name="단위 시간(분)"
@@ -229,7 +232,7 @@ export default function TimeTabs() {
           value={selectedMenu?.price.toString() ?? ''}
           onChange={(e) => {
             setSelectedMenu((prev) =>
-              prev ? { ...prev, price: Number(e.target.value) || 0 } : null
+              prev ? { ...prev, price: Number(e.target.value) ?? 0 } : null
             )
           }}
           name="단위 금액(원)"
@@ -324,8 +327,8 @@ const MyTabItem = ({
     >
       <div
         className={clsx(
-          'cursor-pointer grow shrink basis-0 text-center text-sm font-bold',
-          selected ? 'text-black' : 'text-zinc-400'
+          'cursor-pointer grow shrink basis-0 text-center  text-sm font-bold ',
+          selected ? 'text-yellow-400' : 'text-zinc-400'
         )}
       >
         {label}
@@ -338,7 +341,7 @@ const MyTabItem = ({
       >
         <div
           className={clsx(
-            'w-full h-px rounded-full',
+            'w-full h-px  rounded-full',
             selected ? 'bg-gradient' : 'bg-zinc-100'
           )}
         />
