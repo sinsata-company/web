@@ -116,7 +116,7 @@ export default function GroupChat() {
       <BackAppbar />
       <CategoryContainer
         onClick={(image: string) => {
-          router.push('/chats/group/' + image)
+          router.replace('/chats/group/' + image)
         }}
       />
 
