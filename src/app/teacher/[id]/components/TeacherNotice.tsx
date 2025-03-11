@@ -10,14 +10,16 @@ export default function TeacherNotice({
     <div className="w-full  flex-col justify-start items-start gap-3 inline-flex">
       <div className="text-black text-xl font-bold ">상담가 공지사항</div>
       <div className="w-full h-64 relative aspect-w-16 aspect-h-9">
-        {advisor?.noticeImgURI && (
-          <Image
-            src={advisor?.noticeImgURI ?? ''}
+        {!!advisor?.noticeImgURI && advisor?.noticeImgURI !== '[]' ? (
+            <Image
+            src={advisor?.noticeImgURI || ''}
             alt="notice-image"
             layout="fill"
             objectFit="cover"
           />
-        )}
+            ) : (
+            <div className='h-240 bg-gray-200'></div>
+            )}
       </div>
       <div className="self-stretch p-4 bg-neutral-50 rounded-2xl flex-col justify-start items-start gap-2 flex">
         <div className="self-stretch text-neutral-500 text-sm font-medium  leading-tight">

@@ -14,9 +14,21 @@ const BannersAndStatics = () => {
     reservations: 0,
   })
   useEffect(() => {
+
     getSummary().then((res) => {
+      console.log('res', res)
+      setSummary(res);
+    });
+
+    const interval = setInterval(() => {
+      getSummary().then((res) => {
       setSummary(res)
     })
+    }, 1000 * 30);
+
+    return () => {
+      clearInterval(interval);
+    }
   }, [])
   return (
     <div className="relative h-[200px]">
