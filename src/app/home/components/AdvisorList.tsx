@@ -18,6 +18,7 @@ export default function AdvisorList({
 }) {
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
   const [advisor, setAdvisor] = useState<TeacherListDto | null>(null)
+    console.log('asdasdas')
 
   const onClickPhone = (advisor: TeacherListDto) => {
     setAdvisor(advisor)
@@ -177,7 +178,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
           } else {
               setMenuObj(null);
           }
-      }, [advisor]);
+      }, []);
 
     const nav = useRouter()
 
