@@ -10,7 +10,9 @@ export interface TeacherListDto {
   status: number
   pinNumber: string
   reviewCount: number
+  score: number | null
   rating: number
+  menu: string
 }
 
 export interface TeacherDetailDto {

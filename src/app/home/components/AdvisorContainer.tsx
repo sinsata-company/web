@@ -30,7 +30,8 @@ export default function AdvisorContainer() {
       return
     }
 
-    setAdvisorList((prev) => [...prev, ...response.content])
+    setAdvisorList((prev) => [...prev, ...response.content]);
+      console.log('advisorList', advisorList)
     setHasMore(!response.last)
   }
 

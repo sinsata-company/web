@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { TeacherListDto } from '@/app/api/data'
-import { forwardRef, useState } from 'react'
+import {forwardRef, useEffect, useState} from 'react'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { startInstantChat } from '@/app/api/chat'
@@ -166,8 +166,19 @@ interface AdvisorItemProps extends TeacherListDto {
 
 const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
   function AdvisorItem(advisor, ref) {
-    const { id, name, thumbnail, hashtag, summary, onClickPhone, teacherType } =
-      advisor
+    const { id, name, thumbnail, hashtag, summary, onClickPhone, teacherType, menu } =
+      advisor;
+
+    const [menuObj, setMenuObj] = useState<any>(null);
+
+      useEffect(() => {
+          if (!!menu && menu !== '' && menu.trim().length > 0) {
+              setMenuObj(JSON.parse(menu));
+          } else {
+              setMenuObj(null);
+          }
+      }, [advisor]);
+
     const nav = useRouter()
 
     const handleItemClick = () => {
@@ -193,6 +204,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
 
     return (
       <div
+          key={advisor?.id || ''}
         ref={ref}
         onClick={handleItemClick}
         className="w-full items-stretch flex py-4 pb-2 rounded-2xl justify-start items-start inline-flex"
@@ -245,8 +257,9 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
           <div className="flex justify-between items-center w-full">
             {/* 요금표 */}
             <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
-              {renderPriceInfo('1,400원', '30초')}
-              {renderPriceInfo('25,000원', '15분')}
+                {!!menuObj && Object.keys(menuObj).map(key => (
+                    renderPriceInfo(`${(isNaN(Number(menuObj[key])) ? 1400 : Number(menuObj[key])).toLocaleString()}원`, `${key}분`)
+                ))}
             </div>
             <div className="flex">
               {/* 리뷰 평점 */}
@@ -262,7 +275,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
               </div>
               <div>
                 <span className="text-neutral-800 text-lg font-bold ">
-                  {advisor.rating}
+                  {advisor.score || 0}
                 </span>
                 <span className="text-neutral-400 text-lg font-semibold ">
                   {' '}

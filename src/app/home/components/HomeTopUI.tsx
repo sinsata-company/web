@@ -60,8 +60,8 @@ const BannersAndStatics = () => {
         </div>
 
         <div className="mt-6 flex px-4 items-stretch justify-between gap-4">
-          <StaticItem label="누적 상담 건수" data={`${info.reservations}건`} />
-          <StaticItem label="현재 접속 상담사" data={`${info.teachers}명`} />
+          <StaticItem label="누적 상담 건수" data={`${Number(info?.reservations || '0').toLocaleString()}건`} />
+          <StaticItem label="현재 접속 상담사" data={`${Number(info?.teachers || '0').toLocaleString()}명`} />
         </div>
       </div>
     </div>
