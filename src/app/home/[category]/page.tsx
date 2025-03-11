@@ -81,13 +81,14 @@ export default function CategoryAdvisorList() {
           />
         ))}
       </div>
-      <Modal
+            <Modal
         isOpen={isPhoneModalOpen}
         onClose={() => setIsPhoneModalOpen(false)}
         title="실시간 전화 상담 안내"
         content=""
       >
         <div>
+          {/* 상담사 기본 정보 */}
           <div className="flex items-center gap-4 mb-3">
             {advisor?.thumbnail ? (
               <Image
@@ -100,68 +101,97 @@ export default function CategoryAdvisorList() {
               <Image src="/logo.jpg" width={160} height={90} alt="profile" />
             )}
 
-            <div className=" ml-2 w-full justify-between text-zinc-900 text-xl font-bold ">
+            <div className="ml-2 w-full justify-between text-zinc-900 text-xl font-bold">
               {advisor?.name} {advisor?.pinNumber}번
             </div>
           </div>
-          <div className="mb-4 flex justify-between items-center">
-            <div className="flex">
-              <Image
-                src={'/images/cash_060.png'}
-                width={24}
-                height={24}
-                alt="cash"
-              />
-              <p className="font-bold text-lg">전화 상담(후불)</p>
-            </div>
-            <p className="text-neutral-400 text-lg font-semibold ">
-              30초 당 1,400원
-            </p>
-          </div>
-          <div className="text-zinc-600 py-3">
-            하단 버튼을 눌러 전화 연결 후, 안내멘트에 따라 상담사 고유번호{' '}
-            {advisor?.pinNumber}를 입력하시면 {advisor?.name} 선생님과
-            연결됩니다.
-          </div>
-          <Button
-            onClick={() => {
-              window.location.href = `tel:060-500-8744`
-              setIsPhoneModalOpen(false)
-            }}
-            buttonType={BUTTON_TYPE.primary}
-            label={`060-500-8744로 전화 후 고유번호 입력`}
-          />
-          <div className="mt-5 mb-4 flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <Image
-                src={'/images/cash_070.png'}
-                width={24}
-                height={24}
-                alt="cash"
-              />
-              <p className="font-bold text-lg">채팅 상담(잔액차감)</p>
-            </div>
-            <p className="text-neutral-400 text-lg font-semibold ">
-              30초 당 1,400원
-            </p>
-          </div>
-          <div className="text-zinc-600 py-3">
-            하단 버튼을 누르면, 회원권에 남아있는 잔액에서 상담료가 차감됩니다.
-          </div>
-          <div className="inline-flex flex-col w-full gap-2">
-            <Button
-              onClick={async () => {
-                // window.alert(advisor?.id)
-                const result = await startInstantChat(advisor?.id ?? '')
-                router.push(`/chats/private/${result.chatRoomId}`)
+{/* ✅ 회색 작은 글씨 (위쪽 간격 mt-2, 아래쪽 간격 mb-3) */}
+<p className="text-gray-400 text-sm mt-2 mb-3">
+  전화 연결 후 989번을 입력하시면 상담사와 연결됩니다.
+</p>
 
-                // setIsPhoneModalOpen(false)
+
+        {/* (1) 전화 상담(선불) 섹션 */}
+        <div className="mt-6 mb-4">
+          {/* 첫 번째 줄: 상담 타입 */}
+          <div className="flex items-center gap-2">
+            <Image
+              src={'/images/cash_070.png'}
+              width={24}
+              height={24}
+              alt="cash"
+            />
+            <p className="font-bold text-lg">전화 상담(선불)</p>
+          </div>
+          {/* 두 번째 줄: 가격 정보 */}
+          <p className="text-neutral-400 text-sm font-semibold text-right">
+            30초 당 1,400원
+          </p>
+          <div className="w-full flex justify-center mt-2">
+            <Button
+              onClick={() => {
+                window.location.href = `tel:070-8016-9122`
+                setIsPhoneModalOpen(false)
               }}
               buttonType={BUTTON_TYPE.primary}
-              label={'채팅상담 시작하기'}
+              label={<span className="text-xl font-bold">070-8016-9122</span>}
             />
           </div>
         </div>
+
+
+        {/* (2) 전화 상담(후불) 섹션 */}
+        <div className="mt-5 mb-4">
+          <div className="flex items-center gap-2">
+            <Image
+              src={'/images/cash_060.png'}
+              width={24}
+              height={24}
+              alt="cash"
+            />
+            <p className="font-bold text-lg">전화 상담(후불)</p>
+          </div>
+          <p className="text-neutral-400 text-sm font-semibold text-right">
+            30초 당 1,400원
+          </p>
+          <div className="w-full flex justify-center mt-2">
+            <Button
+              onClick={() => {
+                window.location.href = `tel:060-500-8744`
+                setIsPhoneModalOpen(false)
+              }}
+              buttonType={BUTTON_TYPE.primary}
+              label={<span className="text-xl font-bold">060-500-8744</span>}
+            />
+          </div>
+        </div>
+
+        {/* (3) 채팅 상담(잔액차감) 섹션 */}
+        <div className="mt-5 mb-4">
+          <div className="flex items-center gap-2">
+            <Image
+              src={'/images/cash_070.png'}
+              width={24}
+              height={24}
+              alt="cash"
+            />
+            <p className="font-bold text-lg">채팅 상담(잔액차감)</p>
+          </div>
+          <p className="text-neutral-400 text-sm font-semibold text-right">
+            30초 당 1,400원
+          </p>
+          <div className="flex justify-center w-auto mt-2">
+            <Button
+              onClick={async () => {
+                const result = await startInstantChat(advisor?.id ?? '')
+                router.push(`/chats/private/${result.chatRoomId}`)
+              }}
+              buttonType={BUTTON_TYPE.primary}
+              label={<span className="text-xl font-bold">채팅상담 시작하기</span>}
+            />
+          </div>
+        </div>
+      </div>
       </Modal>
     </div>
   )
