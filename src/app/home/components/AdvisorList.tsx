@@ -259,7 +259,8 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             {/* 요금표 */}
             <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
                 {!!menuObj && Object.keys(menuObj).map(key => (
-                    renderPriceInfo(`${(isNaN(Number(menuObj[key])) ? 1400 : Number(menuObj[key])).toLocaleString()}원`, `${key}분`)
+                    renderPriceInfo(`${(isNaN(Number(menuObj[key]))) ? 1400 : Number(menuObj[key]).toLocaleString()}원`, `${key.replace("_", "")}${key === '_30' ? '초' : '분'
+                    }`)
                 ))}
             </div>
             <div className="flex">
