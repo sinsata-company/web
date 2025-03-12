@@ -19,9 +19,9 @@ const ProfileMenuItems = ({ route, title }: IMenuItem) => {
           router.push('/manage/app/my/' + route)
         }
       }}
-      className="cursor-pointer h-16 px-4 py-5 bg-white flex-col justify-center items-start gap-2.5 inline-flex"
+      className="cursor-pointer p-5 bg-white flex-col justify-center items-start gap-2.5 inline-flex"
     >
-      <div className="self-stretch h-5 text-black text-base font-normal  leading-relaxed">
+      <div className="self-stretch h-full text-black text-base font-normal  leading-relaxed">
         {title}
       </div>
       <Modal

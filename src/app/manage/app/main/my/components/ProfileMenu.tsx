@@ -39,15 +39,20 @@ const ProfileMenu = () => {
       route: 'withdraw',
       title: '회원탈퇴',
     },
+      {
+      route: 'inquiry',
+      title: '1:1 문의관리',
+    },
   ]
   return (
-    <div>
+    <div className="w-full flex-col justify-start items-start inline-flex">
+      <div className="grid grid-cols-3 gap-3 w-full my-6">
       {menus.map((menu, index) => (
-        <div key={index}>
+        <div key={index} className="border-gray-100 border-[1px] flex justify-center items-center p-0 shadow-md">
           <ProfileMenuItems route={menu.route} title={menu.title} />
         </div>
       ))}
-      <div className="h-12"></div>
+    </div>
     </div>
   )
 }
