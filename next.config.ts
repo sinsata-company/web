@@ -11,6 +11,15 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  redirects: async () => {
+    return [
+        {
+          source: '/',
+          destination: '/home',
+          statusCode: 301,
+      },
+    ];
+  },
 
   rewrites: async () => [
     {
