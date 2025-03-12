@@ -13,7 +13,7 @@ export default function Chats() {
   const [isLogin, setIsLogin] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('sst-access-token')
+    const token = (window.localStorage.getItem('sst-teacher-token') || window.localStorage.getItem('sst-access-token'))
     if (!token) {
       setIsLogin(false)
     }

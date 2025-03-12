@@ -5,7 +5,7 @@ import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-const ChatSummary = ({ chat }: { chat: ChatDto | null }) => {
+const ChatSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMessage:Function }) => {
   if (!chat) return null
   const { teacherName, teacherProfile, startAt, endAt, status } = chat
   const router = useRouter()
@@ -32,7 +32,8 @@ const ChatSummary = ({ chat }: { chat: ChatDto | null }) => {
             <Button
               label="채팅 종료"
               onClick={async () => {
-                await endChat(chat.roomId)
+                await endChat(chat.roomId);
+                sendEndMessage && sendEndMessage();
                 router.back()
               }}
               buttonType={BUTTON_TYPE.primary}

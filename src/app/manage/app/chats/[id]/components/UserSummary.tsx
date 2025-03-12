@@ -5,7 +5,7 @@ import UserLevelIcon from '@/components/common/UserLevelIcon'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-const UserSummary = ({ chat }: { chat: ChatDto | null }) => {
+const UserSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMessage: Function; }) => {
   const router = useRouter()
   return (
     <div className="px-4  flex justify-between items-center border-b-2 border-neutral-200">
@@ -42,6 +42,7 @@ const UserSummary = ({ chat }: { chat: ChatDto | null }) => {
             label="채팅 종료"
             onClick={async () => {
               await endChat(chat.roomId)
+              sendEndMessage && sendEndMessage();
               router.push('/manage/app/main/home')
             }}
             buttonType={BUTTON_TYPE.primary}

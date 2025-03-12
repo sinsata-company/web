@@ -16,3 +16,7 @@ export const getChatDetail = async (roomId: string) => {
 export const completeChat = async (roomId: string) => {
   return await basicUnpagedGet<boolean>(`/chats/${roomId}/end`)
 }
+
+export const chatMessages = async (roomId: string) => {
+  return await basicUnpagedGet(`/chats/messages/all?chatRoomId=${roomId}`);
+}

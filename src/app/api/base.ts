@@ -36,6 +36,7 @@ export async function basicGet<T>(route: string) {
   const response = await axios.get(url, {
     headers: {
       'SST-ACCESS-TOKEN': `${accessToken}`,
+      'SST-TEACHER-TOKEN': `${accessToken}`,
     },
   })
 
@@ -54,6 +55,7 @@ export async function basicPost(route: string, body: any) {
   const response = await axios.post(url, body, {
     headers: {
       'SST-ACCESS-TOKEN': `${accessToken}`,
+      'SST-TEACHER-TOKEN': `${accessToken}`,
     },
   })
 
@@ -72,6 +74,7 @@ export async function basicPut(route: string, body: any) {
   const response = await axios.put(url, body, {
     headers: {
       'SST-ACCESS-TOKEN': `${accessToken}`,
+      'SST-TEACHER-TOKEN': `${accessToken}`,
     },
   })
 
@@ -93,6 +96,7 @@ export async function basicDelete(route: string) {
   const response = await axios.delete(url, {
     headers: {
       'SST-ACCESS-TOKEN': `${accessToken}`,
+      'SST-TEACHER-TOKEN': `${accessToken}`,
     },
   })
 

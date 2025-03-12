@@ -22,7 +22,7 @@ export default function MyPage() {
   const [me, setMe] = useState<UserDto | null>(null)
 
   useEffect(() => {
-    const token = localStorage.getItem('sst-access-token')
+    const token = (window.localStorage.getItem('sst-teacher-token') || window.localStorage.getItem('sst-access-token'))
     if (!token) {
       setIsLogin(false)
     }

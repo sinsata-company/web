@@ -8,7 +8,7 @@ const AdvseContainer = () => {
   const [isLogin, setIsLogin] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('sst-access-token')
+    const token = (window.localStorage.getItem('sst-access-token') || window.localStorage.getItem('sst-teacher-token'))
     if (!token) {
       setIsLogin(false)
     }
