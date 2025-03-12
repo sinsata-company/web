@@ -17,7 +17,10 @@ export default function LogoAppbar() {
         alt="lgoo"
         onClick={() => {
           if (path.startsWith('/manage')) {
-            router.push('/manage')
+            router.push('/manage/app/main/home')
+          } else {
+              console.log('home push...')
+              router.push("/home")
           }
         }}
       />
