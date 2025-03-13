@@ -63,68 +63,51 @@ const Body = () => {
           label="회원가입 완료하기"
           buttonType={BUTTON_TYPE.primary}
           onClick={async () => {
-            let hasError = false
             if (name === '') {
               setNameError('이름을 입력해주세요')
-              hasError = true
             }
             if (phoneNum === '') {
               setPhoneNumError('전화번호를 입력해주세요')
-              hasError = true
             }
-            if (hasError) return
-
             setNameError('')
             setPhoneNumError('')
 
-            try {
-              const response = await axios.post(
-                BASE_URL + '/users/join',
-                {
-                  ...oauth,
-                  name: name,
-                  phoneNum: phoneNum,
+            const response = await axios.post(
+              BASE_URL + '/users/join',
+              {
+                ...oauth,
+                name: name,
+                phoneNum: phoneNum,
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
                 },
-                {
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                }
+              }
+            )
+            const data = response.data
+
+            if (data.mtnId) {
+              const header = response.headers
+
+              const accessToken = header['sst-access-token']
+              const accessTokenExpireAt = header['sst-access-token-expire-at']
+              const refreshToken = header['sst-refresh-token']
+              const refreshTokenExpireAt = header['sst-refresh-token-expire-at']
+
+              localStorage.setItem('sst-access-token', accessToken)
+              localStorage.setItem(
+                'sst-access-token-expire-at',
+                accessTokenExpireAt
               )
-              const data = response.data
-
-              if (data.mtnId) {
-                const header = response.headers
-
-                const accessToken = header['sst-access-token']
-                const accessTokenExpireAt = header['sst-access-token-expire-at']
-                const refreshToken = header['sst-refresh-token']
-                const refreshTokenExpireAt = header['sst-refresh-token-expire-at']
-
-                localStorage.setItem('sst-access-token', accessToken)
-                localStorage.setItem(
-                  'sst-access-token-expire-at',
-                  accessTokenExpireAt
-                )
-                localStorage.setItem('sst-refresh-token', refreshToken)
-                localStorage.setItem(
-                  'sst-refresh-token-expire-at',
-                  refreshTokenExpireAt
-                )
-                router.push('/home')
-              } else {
-                setModalOpen(true)
-              }
-            } catch (error) {
-              if (axios.isAxiosError(error)) {
-                if (error.response?.status === 403) {
-                  setModalOpen(true)
-                } else {
-                  // 다른 에러 처리
-                  console.error('API 요청 중 에러 발생:', error)
-                  alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.')
-                }
-              }
+              localStorage.setItem('sst-refresh-token', refreshToken)
+              localStorage.setItem(
+                'sst-refresh-token-expire-at',
+                refreshTokenExpireAt
+              )
+              router.push('/home')
+            } else {
+              setModalOpen(true)
             }
           }}
         />
