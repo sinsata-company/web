@@ -3,12 +3,12 @@ import axios from 'axios'
 
 import _ from 'lodash'
 
-// export const BASE_URL = 'http://localhost:8080/api/v1'
-// export const BASE_WEB = 'http://localhost:3000'
-// export const BASE_WS = 'ws://localhost:8080/chat/inbox'
-export const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
-export const BASE_WEB = 'https://www.sinsata.co.kr'
-export const BASE_WS = 'wss://api.sinsata.co.kr/chat/inbox'
+export const BASE_URL = 'http://localhost:8080/api/v1'
+export const BASE_WEB = 'http://localhost:3000'
+export const BASE_WS = 'ws://localhost:8080/chat/inbox'
+// export const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
+// export const BASE_WEB = 'https://www.sinsata.co.kr'
+// export const BASE_WS = 'wss://api.sinsata.co.kr/chat/inbox'
 
 export let token: string = ''
 
@@ -54,10 +54,27 @@ export async function basicGet<T>(route: string): Promise<ApiResponse<T>> {
   try {
     const response = await axios.get(url, {
       headers: {
-        'SST-ACCESS-TOKEN': `${accessToken}`,
-      'SST-TEACHER-TOKEN': `${accessToken}`,
+        'Content-Type': 'application/json',
+        'SST-ACCESS-TOKEN': accessToken || '',
+        'SST-TEACHER-TOKEN': accessToken || '',
       },
+      validateStatus: function (status) {
+        return status < 500; // 500 미만의 상태 코드는 에러로 처리하지 않음
+      }
     })
+
+    // 토큰이 만료된 경우 (403) 처리
+    if (response.status === 403) {
+      // 로컬 스토리지의 토큰 제거
+      localStorage.removeItem('sst-access-token');
+      localStorage.removeItem('sst-access-token-expire-at');
+      localStorage.removeItem('sst-refresh-token');
+      localStorage.removeItem('sst-refresh-token-expire-at');
+      
+      // 로그인 페이지로 리다이렉트
+      window.location.href = '/register';
+      return {} as ApiResponse<T>;
+    }
 
     if (response.status == 200) {
       const data = response.data

@@ -87,7 +87,7 @@ const CashItem = ({
         {`${formatNumberWithCommas(cashAmt)}`}캐시
       </div>
       <div
-        onClick={() => onClickCharge(cashAmt)}
+        onClick={() => onClickCharge(cashAmt + cashAmt * 0.1)} // 결제 시 10% 부가세 포함
         className="px-4 py-3 bg-gradient rounded-xl justify-start items-center gap-3 flex"
       >
         <div className="text-white text-base font-medium ">₩</div>

@@ -61,7 +61,7 @@ export default function Page() {
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
               title="상품 상세"
-              content="상품을 구매하시겠습니까? 선생님이 연락 드릴 예정입니다."
+              content="상품을 구매하시겠습니까?"
             >
               <div className="flex flex-col gap-4">
                 <Button
