@@ -9,18 +9,92 @@ import rulet1000 from '../../../../public/lottie/1000.json'
 import rulet4000 from '../../../../public/lottie/4000.json'
 import rulet7000 from '../../../../public/lottie/7000.json'
 import rulet10000 from '../../../../public/lottie/10000.json'
-import {getEvent} from '@/app/api/user'
+import {basicUnpagedGet} from '../../../api/base'
+import { UserDto } from '@/types/user'
+import axios from 'axios'
+
+export const BASE_URL = 'http://localhost:8080/api/v1'
 
 export default function AdCarousel() {
+    const router = useRouter()
     const [showModal, setShowModal] = useState(false)
     const [amount, setAmount] = useState(0)
-    const router = useRouter()
 
-    const [banner, setBanner] = useState<IBannerProps[]>([
+    const getAccessToken = () => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('sst-access-token')
+        }
+        return null
+    }
+
+    const checkEventParticipation = async () => {
+        try {
+            const accessToken = getAccessToken()
+            if (!accessToken) {
+                alert('로그인이 필요합니다.')
+                router.push('/my')
+                return null
+            }
+
+            const result = await basicUnpagedGet<UserDto>('/users/user')
+
+            // 사용자 정보와 참여 상태를 함께 반환
+            return {
+                userInfo: result,
+                canParticipate: !result.isParticipatedEvent
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 401) {
+                    alert('세션이 만료되었습니다. 다시 로그인해주세요.')
+                    router.push('/login')
+                } else {
+                    console.error('Event participation check error:', error)
+                    alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
+                }
+            }
+            return null
+        }
+    }
+
+    const updateEventParticipation = async (userInfo: any) => {
+        try {
+            const accessToken = getAccessToken()
+            if (!accessToken) return false
+
+            const response = await axios.put(`${BASE_URL}/users/update-event-status`, userInfo, {
+                headers: {
+                    'SST-ACCESS-TOKEN': `${accessToken}`,
+                    'SST-TEACHER-TOKEN': `${accessToken}`,
+                },
+            })
+            return true
+        } catch (error) {
+            console.error('Update event participation error:', error)
+            return false
+        }
+    }
+
+    const banners = [
         {
             image: '/images/banners/sst-banner-0.png',
-            onClick: () => {
-                router.push('/my')
+            onClick: async () => {
+                const result = await checkEventParticipation()
+                if (result === null) {
+                    return
+                }
+                
+                const { userInfo, canParticipate } = result
+                
+                if (canParticipate) {
+                    const updated = await updateEventParticipation(userInfo)
+                    if (updated) {
+                        setShowModal(true)
+                        setAmount(1000)
+                    }
+                } else {
+                    alert('이미 이벤트에 참여하셨습니다.')
+                }
             },
         },
         {
@@ -55,22 +129,12 @@ export default function AdCarousel() {
                 window.location.href = '/manage'
             },
         },
-    ])
-
-    useEffect(() => {
-        getEvent().then((res) => {
-            console.log(res)
-            setAmount(res)
-            if (res > 0) {
-                setShowModal(true)
-            }
-        })
-    }, [])
+    ]
 
     return (
         <div className="w-full h-60 flex-col justify-start items-start gap-2.5 inline-flex">
             <div className="self-stretch h-60 bg-zinc-100">
-                <HomeBanner banner={banner} showImageModal={() => {
+                <HomeBanner banner={banners} showImageModal={() => {
                 }}/>
             </div>
 

@@ -29,11 +29,11 @@ function BillingContent() {
   const [vaInfo, setVaInfo] = useState<VaCustomerDto | null>(null)
   const [selectedPayment, setSelectedPayment] = useState('card')
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'terms' | 'refund'>('terms');
+  const [modalType, setModalType] = useState<'terms' | 'product' | 'refund'>('terms');
   const [totalPrice, setTotalPrice] = useState(vaInfo?.price);
   
 
-  const getModalContent = (type: 'terms' | 'refund') => {
+  const getModalContent = (type: 'terms' | 'product' | 'refund') => {
     switch (type) {
       case 'terms':
         return {
@@ -76,9 +76,9 @@ function BillingContent() {
   const [agreements, setAgreements] = useState({
     all: false,
     terms: false,
-    purchase: false,
-    refund: false,
-  })
+    product: false,
+    refund: false
+  });
 
   const [address, setAddress] = useState({
     zipCode: '',
@@ -114,7 +114,7 @@ function BillingContent() {
     setAgreements({
       all: checked,
       terms: checked,
-      purchase: checked,
+      product: checked,
       refund: checked,
     })
   }
@@ -152,7 +152,7 @@ function BillingContent() {
     // 약관동의 체크
     const isAgreementChecked = 
       agreements.terms && 
-      agreements.purchase && 
+      agreements.product && 
       agreements.refund;
 
     // 결제방법 선택 체크
@@ -224,13 +224,13 @@ function BillingContent() {
           <textarea
             className="w-full h-32 border rounded-lg p-2"
             placeholder=" 본관(ex.김해김씨), 이름, 생년월일, 현재 거주 중인 집주소, 고민 내용"
-            value={vaInfo?.name}
+            value={vaInfo?.details}
             onChange={(e) => {
               // vaInfo 업데이트
               if (vaInfo) {
                 setVaInfo({
                   ...vaInfo,
-                  name: e.target.value
+                  details : e.target.value
                 });
               }
               
@@ -355,20 +355,28 @@ function BillingContent() {
           <div className="flex flex-col gap-2 ml-4 w-full">
             {[
               { key: 'terms', label: '신사타 서비스 이용 약관 동의' },
+              { key: 'product', label: '상품 구매 조건 확인 및 구매 동의' },
               { key: 'refund', label: '청약철회 등 환불 안내 확인 동의' },
             ].map((agreement) => (
               <label key={agreement.key} className="flex items-center gap-2 w-full justify-between">
                 <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    checked={agreements[agreement.key as keyof typeof agreements]}
-                    onChange={(e) => 
-                      setAgreements(prev => ({
-                        ...prev,
+                    checked={agreements[agreement.key as keyof typeof agreements] || false}
+                    onChange={(e) => {
+                      const newAgreements = {
+                        ...agreements,
                         [agreement.key]: e.target.checked,
-                        all: false,
-                      }))
-                    }
+                      };
+                      // Check if all individual checkboxes are checked
+                      const allChecked = ['terms', 'product', 'refund'].every(
+                        (key) => key === agreement.key ? e.target.checked : newAgreements[key as keyof typeof agreements]
+                      );
+                      setAgreements({
+                        ...newAgreements,
+                        all: allChecked,
+                      });
+                    }}
                     className="form-checkbox"
                   />
                   <span>{agreement.label}</span>
@@ -449,11 +457,11 @@ function BillingContent() {
           <div className="relative bg-white rounded-lg w-11/12 max-w-2xl max-h-[90vh] overflow-hidden">
             <div className="p-4 border-b">
               <h2 className="text-xl font-bold">
-                {getModalContent(modalType).title}
+                {getModalContent(modalType)?.title || ''}
               </h2>
             </div>
             <div className="p-4 overflow-y-auto max-h-[60vh]">
-              {getModalContent(modalType).content}
+              {getModalContent(modalType)?.content}
             </div>
             <div className="p-4 border-t text-center">
               <button 

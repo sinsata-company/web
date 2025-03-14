@@ -7,5 +7,6 @@ export interface UserDto {
   level: string
   mtnId: string
   phoneNum: string
+  isParticipatedEvent: boolean
   createdAt: string
 }

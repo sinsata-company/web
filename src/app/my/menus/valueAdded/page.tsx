@@ -14,8 +14,10 @@ import { useEffect, useState } from 'react'
 
 export default function Page() {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false)
-  const [vas, setVas] = useState<VaCustomerDto[]>([])
+  const [isOpen, setIsOpen] = useState(false);
+  const [vas, setVas] = useState<VaCustomerDto[]>([]);
+  const [selectedVa, setSelectedVa] = useState<VaCustomerDto | null>(null);
+
   useEffect(() => {
     getVaList(0).then((res) => {
       setVas(res.content)
@@ -55,60 +57,61 @@ export default function Page() {
                 <Button
                   label="구매하기"
                   onClick={() => {
-                    setIsOpen(true)
+                    setSelectedVa(va);
+                    setIsOpen(true);
                   }}
                   buttonType={BUTTON_TYPE.primarySm}
                 />
               </div>
             </div>
-            <Modal
-              isOpen={isOpen}
-              onClose={() => setIsOpen(false)}
-              title={
-                <div className="grid grid-cols-2 w-full">
-                  <span>상품 상세 (VAT 별도)</span>
-                  <span className="text-right">{formatNumberWithCommas(va.price)}원</span>
-                </div>
-              }
-              content="상품을 구매하시겠습니까?"
-            >
-             <div className="flex flex-col gap-2">
-                <div className="flex flex-row gap-2">
-                  <Button
-                    label="채팅문의"
-                    onClick={() => {
-                      console.log('채팅문의')
-                      setIsOpen(false)
-                    }}
-                    buttonType={BUTTON_TYPE.primary}
-                    className="flex-1"
-                  />
-                  <Button
-                    label="구매하기"
-                    onClick={() => {
-                      router.push(`/my/menus/valueAdded/billing?vaId=${encodeURIComponent(JSON.stringify(va))}`);
-                      setIsOpen(false)
-                    }}
-                    buttonType={BUTTON_TYPE.primary}
-                    className="flex-1"
-                  />
-                </div>
-                <Button
-                  label="취소"
-                  onClick={() => {
-                    setIsOpen(false)
-                  }}
-                  buttonType={BUTTON_TYPE.secondary}
-                  className="w-full"
-                />
-              </div>
-            </Modal>
           </div>
         )
-        {
-          /* return <div key={va.id}>{va.price}</div> */
-        }
       })}
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={
+          <div className="grid grid-cols-2 w-full">
+            <span>상품 상세 (VAT 별도)</span>
+            <span className="text-right">{formatNumberWithCommas(selectedVa?.price || 0)}원</span>
+          </div>
+        }
+        content="상품을 구매하시겠습니까?"
+      >
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row gap-2">
+            <Button
+              label="채팅문의"
+              onClick={() => {
+                console.log('채팅문의');
+                setIsOpen(false);
+              }}
+              buttonType={BUTTON_TYPE.primary}
+              className="flex-1"
+            />
+            <Button
+              label="구매하기"
+              onClick={() => {
+                if (selectedVa) {
+                  router.push(`/my/menus/valueAdded/billing?vaId=${encodeURIComponent(JSON.stringify(selectedVa))}`);
+                }
+                setIsOpen(false);
+              }}
+              buttonType={BUTTON_TYPE.primary}
+              className="flex-1"
+            />
+          </div>
+          <Button
+            label="취소"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+            buttonType={BUTTON_TYPE.secondary}
+            className="w-full"
+          />
+        </div>
+      </Modal>
     </div>
   )
 }
