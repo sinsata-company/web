@@ -7,20 +7,20 @@ interface SearchContextType {
   setSearchTerm: (term: string) => void;
 }
 
-const searchContext = createContext<SearchContextType | undefined>(undefined);
+const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
 export function SearchProvider({ children }: { children: ReactNode }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <searchContext.Provider value={{ searchTerm, setSearchTerm }}>
+    <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
       {children}
-    </searchContext.Provider>
+    </SearchContext.Provider>
   );
 }
 
 export function useSearch() {
-  const context = useContext(searchContext);
+  const context = useContext(SearchContext);
   if (context === undefined) {
     throw new Error('useSearch must be used within a SearchProvider');
   }
