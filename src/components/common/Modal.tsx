@@ -3,10 +3,10 @@ import React from 'react'
 
 interface ModalProps {
   isOpen: boolean
-  onClose: React.MouseEventHandler<HTMLImageElement>
-  title: string
-  content: string
-  children: React.ReactNode
+  onClose: () => void
+  title: string | React.ReactNode
+  content?: string | React.ReactNode
+  children?: React.ReactNode
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -21,8 +21,8 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="max-w-[500px] bg-white rounded-lg shadow-lg w-4/5 px-4 py-8">
-        <div className="flex w-full justify-between items-center">
-          <div className="text-zinc-900 text-xl font-bold ">{title}</div>
+        <div className="flex w-full items-center">
+          <div className="flex-grow text-zinc-900 text-xl font-bold">{title}</div>
           <Image
             src={'/images/ic_close_black.svg'}
             width={24}
@@ -30,9 +30,10 @@ const Modal: React.FC<ModalProps> = ({
             alt="close"
             color="black"
             onClick={onClose}
+            className="ml-2 cursor-pointer"
           />
         </div>
-        <div className=" mt-4 text-neutral-500 text-base font-normal  leading-snug">
+        <div className="mt-4 text-neutral-500 text-base font-normal leading-snug">
           {content}
         </div>
         <div className="mt-4">{children}</div>

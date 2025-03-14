@@ -127,22 +127,15 @@ const LottieAnimation: ({amount, onClose, isOpen}: {
                 width="80%"
                 isStopped={!start}
                 style={{maxWidth: '720px', aspectRatio: '720 / 1280'}}
-                onComplete={() => {
-                    console.log("complte...")
-                    setEnd(true);
-                }}
-
-                eventListeners={
-                    [
-                        {
-                            eventName: 'complete',
-                            callback: () => {
-                                console.log('the animation completed:');
-                                setEnd(true)
-                            },
+                eventListeners={[
+                    {
+                        eventName: 'complete',
+                        callback: () => {
+                            console.log('the animation completed:');
+                            setEnd(true);
                         },
-                    ]
-                }
+                    },
+                ]}
             />
         </div>
     )

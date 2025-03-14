@@ -1,10 +1,9 @@
 'use client'
 
 import BTB from '@/components/common/Btb'
-
 import MainAppbar from '@/components/common/MainAppbar'
-
 import dynamic from 'next/dynamic'
+import { SearchProvider } from '@/contexts/SearchContext'
 
 const AdCarousel = dynamic(() => import('./components/AdCarousel'), {
   ssr: false,
@@ -21,15 +20,16 @@ const AdvisorContainer = dynamic(
 
 export default function HomePage() {
   return (
-    <div>
-      <MainAppbar />
-      <AdCarousel />
-      <BannersAndStatics />
-      <div className="h-6"></div>
-      <div className="h-6"></div>
-      <AdvisorContainer />
-
-      <BTB />
-    </div>
+    <SearchProvider>
+      <div>
+        <MainAppbar />
+        <AdCarousel />
+        <BannersAndStatics />
+        <div className="h-6"></div>
+        <div className="h-6"></div>
+        <AdvisorContainer />
+        <BTB />
+      </div>
+    </SearchProvider>
   )
 }

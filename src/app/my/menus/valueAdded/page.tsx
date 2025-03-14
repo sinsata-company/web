@@ -5,11 +5,15 @@ import { VaDto } from '@/app/api/data'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Modal from '@/components/common/Modal'
 import { formatNumberWithCommas } from '@/utils/numberFormatter'
+import { useRouter } from 'next/navigation'
 
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
+
+
 export default function Page() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
   const [vas, setVas] = useState<VaCustomerDto[]>([])
   useEffect(() => {
@@ -60,24 +64,42 @@ export default function Page() {
             <Modal
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
-              title="상품 상세"
+              title={
+                <div className="grid grid-cols-2 w-full">
+                  <span>상품 상세 (VAT 별도)</span>
+                  <span className="text-right">{formatNumberWithCommas(va.price)}원</span>
+                </div>
+              }
               content="상품을 구매하시겠습니까?"
             >
-              <div className="flex flex-col gap-4">
-                <Button
-                  label="구매하기"
-                  onClick={() => {
-                    console.log('구매하기')
-                    setIsOpen(false)
-                  }}
-                  buttonType={BUTTON_TYPE.primary}
-                />
+             <div className="flex flex-col gap-2">
+                <div className="flex flex-row gap-2">
+                  <Button
+                    label="채팅문의"
+                    onClick={() => {
+                      console.log('채팅문의')
+                      setIsOpen(false)
+                    }}
+                    buttonType={BUTTON_TYPE.primary}
+                    className="flex-1"
+                  />
+                  <Button
+                    label="구매하기"
+                    onClick={() => {
+                      router.push(`/my/menus/valueAdded/billing?vaId=${encodeURIComponent(JSON.stringify(va))}`);
+                      setIsOpen(false)
+                    }}
+                    buttonType={BUTTON_TYPE.primary}
+                    className="flex-1"
+                  />
+                </div>
                 <Button
                   label="취소"
                   onClick={() => {
                     setIsOpen(false)
                   }}
                   buttonType={BUTTON_TYPE.secondary}
+                  className="w-full"
                 />
               </div>
             </Modal>

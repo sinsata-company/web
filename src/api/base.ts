@@ -76,6 +76,11 @@ export async function basicGet<T>(route: string): Promise<ApiResponse<T>> {
       return {} as ApiResponse<T>;
     }
 
+    if (response.status === 500) {
+      console.error('서버 에러:', response.data);
+      throw new Error('서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    }
+
     if (response.status == 200) {
       const data = response.data
       return data

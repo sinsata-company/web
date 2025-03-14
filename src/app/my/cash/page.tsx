@@ -24,7 +24,7 @@ export default function CashChargePage() {
     requestPayment(cash, time)
 
     const url = await getPayURL(cash, time)
-    console.log(url)
+    console.log('url' + url)
     window.location.href = url
   }
 

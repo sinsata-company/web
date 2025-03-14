@@ -9,6 +9,7 @@ import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 
+
 export default function Page() {
   return (
     <Suspense>
@@ -78,6 +79,7 @@ const Body = () => {
             if (hasError) return;
 
             try {
+              /** @type {import('next').NextConfig} */
               const response = await axios.post(
                 BASE_URL + '/users/join',
                 {
@@ -115,7 +117,12 @@ const Body = () => {
                 setModalOpen(true);
               }
             } catch (error) {
-              console.error('API 요청 중 에러 발생:', error);
+              if (axios.isAxiosError(error)) {
+                if (error.response?.status === 405) {
+                  console.error('잘못된 HTTP 메서드입니다');
+                  alert('서버 오류가 발생했습니다. 관리자에게 문의해주세요.');
+                }
+              }
               setModalOpen(true);
             }
           }}
