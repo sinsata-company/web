@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useSearch } from '@/contexts/SearchContext'
+import { useSearch } from '@/components/common/SearchContext'
 
 export default function MainAppbar() {
   const pathname = usePathname()

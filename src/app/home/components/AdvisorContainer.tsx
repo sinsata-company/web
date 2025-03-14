@@ -5,7 +5,7 @@ import AdvisorList from './AdvisorList'
 import AdvisorSort from './AdvisorSort'
 import { TeacherListDto } from '@/app/api/data'
 import { getTeacherList, SearchType } from '@/app/api/teacher'
-import { useSearch } from '@/contexts/SearchContext'
+import { useSearch } from '@/components/common/SearchContext'
 
 // 초성 추출 함수
 const getChosung = (str: string) => {
