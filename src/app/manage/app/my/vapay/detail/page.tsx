@@ -76,10 +76,6 @@ function VaInputForm() {
 }
 
 export default function Page() {
-  const searchParams = useSearchParams();
-  const vaData = searchParams.get('vaData');
-  const vaInfo = vaData ? JSON.parse(decodeURIComponent(vaData)) : null;
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <VaInputForm />
