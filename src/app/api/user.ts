@@ -162,7 +162,7 @@ export const withdraw = async () => {
 
 export const getEvent = async () => {
   const res = await basicGet<number>('/users/event')
-  console.log('event : ' + res)
+  console.log(res)
   return res
 }
 
