@@ -13,6 +13,9 @@ export interface TeacherListDto {
   score: number | null
   rating: number
   menu: string
+  likedCnt: number
+  sefLiked: boolean;
+  likedTeachers: Array<{ testId: string; teacherId: string; }>
 }
 
 export interface TeacherDetailDto {
