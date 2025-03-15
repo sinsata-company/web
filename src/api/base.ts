@@ -6,9 +6,27 @@ import _ from 'lodash'
 // export const BASE_URL = 'http://localhost:8080/api/v1'
 // export const BASE_WEB = 'http://localhost:3000'
 // export const BASE_WS = 'ws://localhost:8080/chat/inbox'
-export const BASE_URL = 'https://api.sinsata.co.kr/api/v1'
-export const BASE_WEB = 'https://www.sinsata.co.kr'
-export const BASE_WS = 'wss://api.sinsata.co.kr/chat/inbox'
+
+// 환경 변수가 설정되지 않았을 경우의 기본값 설정
+const DEFAULT_CONFIG = {
+    API_BASE_URL: 'http://localhost:8080/api/v1',
+    WEB_BASE_URL: 'http://localhost:3000',
+    WS_BASE_URL: 'ws://localhost:8080/chat/inbox'
+}
+
+// 환경 변수에서 값을 가져오거나 기본값 사용
+export const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_CONFIG.API_BASE_URL
+export const BASE_WEB = process.env.NEXT_PUBLIC_WEB_BASE_URL || DEFAULT_CONFIG.WEB_BASE_URL
+export const BASE_WS = process.env.NEXT_PUBLIC_WS_BASE_URL || DEFAULT_CONFIG.WS_BASE_URL
+
+// 환경 변수 검증
+if (process.env.NODE_ENV === 'production') {
+    if (!process.env.NEXT_PUBLIC_API_BASE_URL || 
+        !process.env.NEXT_PUBLIC_WEB_BASE_URL || 
+        !process.env.NEXT_PUBLIC_WS_BASE_URL) {
+        console.warn('Some production environment variables are not set!')
+    }
+}
 
 export let token: string = ''
 

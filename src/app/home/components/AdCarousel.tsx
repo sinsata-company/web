@@ -12,8 +12,9 @@ import rulet10000 from '../../../../public/lottie/10000.json'
 import {basicUnpagedGet} from '../../../api/base'
 import { UserDto } from '@/types/user'
 import axios from 'axios'
+import { config } from '@/config'
 
-export const BASE_URL = 'http://localhost:8080/api/v1'
+const { API_BASE_URL } = config
 
 export default function AdCarousel() {
     const router = useRouter()
@@ -36,12 +37,17 @@ export default function AdCarousel() {
                 return null
             }
 
-            const result = await basicUnpagedGet<UserDto>('/users/user')
+            const response = await axios.get(`${API_BASE_URL}/users/check-event`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                }
+            })
 
             // 사용자 정보와 참여 상태를 함께 반환
             return {
-                userInfo: result,
-                canParticipate: !result.isParticipatedEvent
+                userInfo: response.data,
+                canParticipate: !response.data.isParticipatedEvent
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -62,7 +68,7 @@ export default function AdCarousel() {
             const accessToken = getAccessToken()
             if (!accessToken) return false
 
-            const response = await axios.put(`${BASE_URL}/users/update-event-status`, userInfo, {
+            const response = await axios.put(`${API_BASE_URL}/users/update-event-status`, userInfo, {
                 headers: {
                     'SST-ACCESS-TOKEN': `${accessToken}`,
                     'SST-TEACHER-TOKEN': `${accessToken}`,
