@@ -5,8 +5,8 @@ import { updateVas } from '@/app/manage/api/mypage'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import ImageInput from '@/components/common/ImageInput'
 import Input from '@/components/common/Input'
-import { useRouter, useSearchParams, useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 import { basicTeacherPut } from '@/app/manage/api/base'
 
 const INITIAL_STATE: VaDto = {
@@ -21,7 +21,7 @@ const INITIAL_STATE: VaDto = {
   productImage: ''
 }
 
-export default function Page() {
+function VaInputForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState<VaDto>(INITIAL_STATE)
@@ -144,5 +144,13 @@ export default function Page() {
         onClick={handleSubmit}
       />
     </div>
+  )
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VaInputForm />
+    </Suspense>
   )
 }
