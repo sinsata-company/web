@@ -25,12 +25,17 @@ export const requestPayment = async (amount: number, timestamp: string) => {
 }
 
 export interface VaCustomerDto {
+  id: number
   name: string
   price: 1234
   teacherName: string
   teacherThumbnail: string
   details: string
   productImage: string
+  productWay: string // 작업방법
+  productDate: string // 작업기간
+  productInfo: string // 신청정보
+
 }
 
 export const getVaList = async (page: number) => {

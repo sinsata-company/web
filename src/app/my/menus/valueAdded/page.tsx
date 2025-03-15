@@ -27,15 +27,22 @@ export default function Page() {
     <div className="flex flex-col gap-6">
       {vas.map((va) => {
         return (
-          <div className="flex w-full justify-between items-center gap-4 p-4 bg-white rounded-md shadow-md">
+          <div 
+            key={va.id}
+            className="flex w-full justify-between items-center gap-4 p-4 bg-white rounded-md shadow-md"
+          >
             <div className="flex gap-4">
-              <Image
-                src={va.productImage}
-                width={100}
-                height={100}
-                alt="asdf`"
-                className="mr-2 rounded-md"
-              />
+              {va.productImage ? (
+                <Image
+                  src={va.productImage}
+                  width={100}
+                  height={100}
+                  alt={`${va.name} 상품 이미지`}
+                  className="mr-2 rounded-md"
+                />
+              ) : (
+                <div className="w-[100px] h-[100px] bg-gray-200 mr-2 rounded-md" />
+              )}
               <div>
                 <div className="font-bold">{va.name}</div>
                 <div className="text-sm">
@@ -47,12 +54,16 @@ export default function Page() {
               </div>
             </div>
             <div className="w-24 flex flex-col justify-between items-center">
-              <Image
-                src={va.teacherThumbnail}
-                width={120}
-                height={80}
-                alt="asdf`"
-              />
+              {va.teacherThumbnail ? (
+                <Image
+                  src={va.teacherThumbnail}
+                  width={120}
+                  height={80}
+                  alt={`${va.teacherName} 프로필 이미지`}
+                />
+              ) : (
+                <div className="w-[120px] h-[80px] bg-gray-200 rounded-md" />
+              )}
               <div className="w-24 h-4">
                 <Button
                   label="구매하기"

@@ -25,6 +25,7 @@ function VaInputForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState<VaDto>(INITIAL_STATE)
+  const [images, setImages] = useState<string[]>([])
 
   useEffect(() => {
     const editData = searchParams.get('editData')
@@ -133,10 +134,14 @@ function VaInputForm() {
         onChange={handleInputChange('price')}
       />
       <ImageInput
-        count={1}
-        onDelete={() => setFormData(prev => ({ ...prev, productImage: '' }))}
-        onUploadedImage={(images) => setFormData(prev => ({ ...prev, productImage: images[0] }))}
         images={formData.productImage ? [formData.productImage] : []}
+        count={1}
+        onDelete={() => {
+          setFormData(prev => ({ ...prev, productImage: '' }))
+        }}
+        onUploadedImage={(url) => {
+          setFormData(prev => ({ ...prev, productImage: url }))
+        }}
       />
       <Button
         buttonType={BUTTON_TYPE.primary}

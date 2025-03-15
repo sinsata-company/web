@@ -138,12 +138,38 @@ function BillingContent() {
 
   // 결제하기 > 엠투넷 이동
   const onClickCharge = async (cash: number) => {
-    const time = new Date().getTime().toString()
-    requestPayment(cash, time)
+    try {
+      // 결제 시도 전 주문 정보를 먼저 저장
+      const orderData = {
+        vaInfo,
+        timestamp: new Date().getTime().toString(),
+        amount: cash,
+        status: 'PENDING' // 결제 대기 상태
+      };
 
-    const url = await getPayURL(cash, time)
-    console.log(url)
-    window.location.href = url
+      // 주문 정보 저장
+      // const savedOrder = await fetch('/api/value-added/orders', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(orderData)
+      // });
+
+      // if (!savedOrder.ok) {
+      //   throw new Error('주문 정보 저장 실패');
+      // }
+
+      // 결제 페이지로 이동
+      const time = new Date().getTime().toString();
+      requestPayment(cash, time);
+
+      const url = await getPayURL(cash, time);
+      window.location.href = url;
+    } catch (error) {
+      console.error('결제 시도 중 오류:', error);
+      alert('결제 시도 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   }
 
   // 모든 필수 정보가 입력되었는지 확인하는 함수
@@ -181,13 +207,7 @@ function BillingContent() {
                   className="p-2"
                 />
               ) : (
-                <Image
-                  src="/logo.jpg"  // 기본 이미지 경로
-                  fill
-                  style={{ objectFit: 'contain' }}
-                  alt="기본 이미지"
-                  className="p-2"
-                />
+                <div className="w-[120px] h-[100px] bg-gray-200 rounded-md" />
               )}
             </div>
             <div className="flex-1">
@@ -202,11 +222,11 @@ function BillingContent() {
             <tbody>
               <tr className="border-b">
                 <th className="py-2 text-left w-1/4">제공방법</th>
-                <td className="py-2">우편발송</td>
+                <td className="py-2">{vaInfo?.productWay}</td>
               </tr>
               <tr className="border-b">
                 <th className="py-2 text-left">작업기간</th>
-                <td className="py-2">개인 마다 기도 일은 달라 질수있습니다</td>
+                <td className="py-2">{vaInfo?.productDate}</td>
               </tr>
               <tr>
                 <th className="py-2 text-left">상품가격</th>
@@ -224,20 +244,16 @@ function BillingContent() {
           <textarea
             className="w-full h-32 border rounded-lg p-2"
             placeholder=" 본관(ex.김해김씨), 이름, 생년월일, 현재 거주 중인 집주소, 고민 내용"
-            value={vaInfo?.details}
+            value={vaInfo?.productInfo || ''}
             onChange={(e) => {
-              // vaInfo 업데이트
               if (vaInfo) {
                 setVaInfo({
                   ...vaInfo,
-                  details : e.target.value
+                  productInfo: e.target.value  // details를 productInfo로 변경
                 });
               }
-              
-              // 값이 있으면 true, 없으면 false
               setIsApplicationInfoFilled(e.target.value.trim() !== '');
             }}
-         
           />
         </div>
         <hr className="border-gray-200" />
@@ -381,15 +397,17 @@ function BillingContent() {
                   />
                   <span>{agreement.label}</span>
                 </div>
-                <button 
-                  onClick={() => {
-                    setModalType(agreement.key as 'terms' | 'refund');
-                    setIsModalOpen(true);
-                  }}
-                  className="text-blue-500 hover:text-blue-700"
-                >
-                  자세히보기
-                </button>
+                {agreement.key !== 'product' && (
+                  <button 
+                    onClick={() => {
+                      setModalType(agreement.key as 'terms' | 'refund');
+                      setIsModalOpen(true);
+                    }}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    자세히보기
+                  </button>
+                )}
               </label>
             ))}
           </div>

@@ -32,7 +32,11 @@ export default function Page() {
             <div key={i} className="flex justify-between items-center p-4 bg-white rounded-lg">
               <div className="flex gap-1 items-center flex-1">
                 <div className="w-20 h-20 rounded-md relative">
-                  <Image src={v.productImage} alt="image" layout="fill" />
+                  <Image 
+                    src={v.productImage || '/images/logo.jpg'}
+                    alt="image" 
+                    layout="fill" 
+                  />
                 </div>
                 <div>
                   <div>상품명 : {v.productName}</div>
