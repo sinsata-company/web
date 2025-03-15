@@ -87,14 +87,18 @@ export interface IMessage {
 }
 
 export interface VaDto {
-  createdDateTime: string
-  modifiedDateTime: string
-  id: number
+  createdDateTime?: string
+  modifiedDateTime?: string
+  id?: number
   productName: string
   productDetails: string
   productImage: string
   price: number
-  teachers: Teachers
+  productDate: string
+  productWay: string
+  productInfo: string
+  productNote: string
+  teachers?: Teachers
 }
 
 export interface Teachers {

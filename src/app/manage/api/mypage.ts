@@ -86,19 +86,36 @@ export const getVas = async (): Promise<VaDto[]> => {
 export const updateVas = async ({
   name,
   details,
+  dt,
+  way,
+  info,
+  note,
   price,
   image,
 }: {
   name: string
   details: string
+  dt : string,
+  way : string,
+  info : string,
+  note : string,
   price: string
   image: string
 }): Promise<string> => {
   const result = await basicTeacherPost('/manage/my/va', {
     name,
     details,
+    dt,
+    way,
+    info,
+    note,
     price,
     image,
   })
   return result
 }
+
+export const getVaById = async (id: string) => {
+  const response = await basicTeacherGet<VaDto>(`/vas/${id}`);
+  return response;
+};
