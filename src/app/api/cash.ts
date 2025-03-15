@@ -42,6 +42,5 @@ export interface VaCustomerDto {
 
 export const getVaList = async (page: number) => {
   const result = await basicGet<VaCustomerDto>(`/cash/va/list?page=${page}`)
-  console.log('result : ' + JSON.stringify(result));
   return result
 }

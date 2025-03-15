@@ -12,6 +12,7 @@ import rulet10000 from '../../../../public/lottie/10000.json'
 import {basicUnpagedGet} from '../../../api/base'
 import { UserDto } from '@/types/user'
 import axios from 'axios'
+import { getEvent } from '@/app/api/user'
 import { config } from '@/config'
 
 const { API_BASE_URL } = config
@@ -44,6 +45,7 @@ export default function AdCarousel() {
             //     }
             // })
 
+            //getEvent()
             const response = await basicUnpagedGet<UserDto>('/users/user')
 
             // 사용자 정보와 참여 상태를 함께 반환
@@ -51,6 +53,8 @@ export default function AdCarousel() {
                 userInfo: response,
                 canParticipate: !response.isParticipatedEvent
             }
+
+            
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 401) {
@@ -82,6 +86,7 @@ export default function AdCarousel() {
             return false
         }
     }
+    
 
     const banners = [
         {
@@ -91,14 +96,21 @@ export default function AdCarousel() {
                 if (result === null) {
                     return
                 }
-                
+
                 const { userInfo, canParticipate } = result
                 
                 if (canParticipate) {
                     const updated = await updateEventParticipation(userInfo)
                     if (updated) {
-                        setShowModal(true)
-                        setAmount(1000)
+                        getEvent().then((res) => {
+                            console.log(res)
+                            setAmount(res)
+                            if (res > 0) {
+                                setShowModal(true)
+                            }
+                        })
+                        //setShowModal(true)
+                        //setAmount(a)
                     }
                 } else {
                     alert('이미 이벤트에 참여하셨습니다.')
