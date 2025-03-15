@@ -37,17 +37,19 @@ export default function AdCarousel() {
                 return null
             }
 
-            const response = await axios.get(`${API_BASE_URL}/users/check-event`, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                }
-            })
+            // const response = await axios.get(`${API_BASE_URL}/users/user`, {
+            //     headers: {
+            //         'Authorization': `Bearer ${accessToken}`,
+            //         'Content-Type': 'application/json',
+            //     }
+            // })
+
+            const response = await basicUnpagedGet<UserDto>('/users/user')
 
             // 사용자 정보와 참여 상태를 함께 반환
             return {
-                userInfo: response.data,
-                canParticipate: !response.data.isParticipatedEvent
+                userInfo: response,
+                canParticipate: !response.isParticipatedEvent
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
