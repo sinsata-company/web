@@ -28,6 +28,7 @@ export interface VaCustomerDto {
   id: number
   name: string
   price: 1234
+  teacherId: string
   teacherName: string
   teacherThumbnail: string
   details: string
@@ -35,10 +36,12 @@ export interface VaCustomerDto {
   productWay: string // 작업방법
   productDate: string // 작업기간
   productInfo: string // 신청정보
+  address: string
 
 }
 
 export const getVaList = async (page: number) => {
   const result = await basicGet<VaCustomerDto>(`/cash/va/list?page=${page}`)
+  console.log('result : ' + JSON.stringify(result));
   return result
 }

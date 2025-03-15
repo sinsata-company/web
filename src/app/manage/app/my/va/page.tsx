@@ -32,11 +32,18 @@ export default function Page() {
             <div key={i} className="flex justify-between items-center p-4 bg-white rounded-lg">
               <div className="flex gap-1 items-center flex-1">
                 <div className="w-20 h-20 rounded-md relative">
-                  <Image 
-                    src={v.productImage || '/images/logo.jpg'}
-                    alt="image" 
-                    layout="fill" 
-                  />
+                  {v.productImage ? (
+                    <Image 
+                      src={v.productImage}
+                      alt={`${v.productName} 이미지`}
+                      layout="fill"
+                      className="object-cover rounded-md" 
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 rounded-md flex items-center justify-center">
+                      <span className="text-gray-400 text-xs">이미지 없음</span>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <div>상품명 : {v.productName}</div>
@@ -70,7 +77,7 @@ export default function Page() {
             buttonType={BUTTON_TYPE.primary}
             className="text-sm px-3 py-1"
             onClick={() => {
-              router.push('/manage/app/my/va/input')
+              router.push('/manage/app/my/vapay/')
             }}
           />
           <Button

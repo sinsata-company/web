@@ -104,6 +104,20 @@ export interface VaDto {
   teachers?: Teachers
 }
 
+export interface VaPayDto {
+  createdDateTime?: string
+  modifiedDateTime?: string
+  id?: number
+  productName: string
+  productImage: string
+  price: number
+  productInfo: string
+  userName: string
+  nickName: string
+  address: string
+  teachers?: Teachers
+}
+
 export interface Teachers {
   id: string
   pinNumber: string

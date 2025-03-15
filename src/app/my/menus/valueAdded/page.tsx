@@ -68,7 +68,10 @@ export default function Page() {
                 <Button
                   label="구매하기"
                   onClick={() => {
-                    setSelectedVa(va);
+                    setSelectedVa({
+                      ...va,
+                      teacherId: va.teacherId // teacher 객체에서 id를 가져옴
+                    });
                     setIsOpen(true);
                   }}
                   buttonType={BUTTON_TYPE.primarySm}
@@ -105,6 +108,7 @@ export default function Page() {
               label="구매하기"
               onClick={() => {
                 if (selectedVa) {
+                  console.log('selectedVa :' + selectedVa);
                   router.push(`/my/menus/valueAdded/billing?vaId=${encodeURIComponent(JSON.stringify(selectedVa))}`);
                 }
                 setIsOpen(false);

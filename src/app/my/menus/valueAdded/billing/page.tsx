@@ -12,6 +12,9 @@ import { formatNumberWithCommas } from '@/utils/numberFormatter'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { getPayURL } from '@/app/api/http/mtn'
 import { cashDto } from '@/types/cashTables'
+import { BASE_URL } from '@/api/base'
+import { basicPost } from '@/app/api/base';
+
 
 declare global {
   interface Window {
@@ -119,25 +122,38 @@ function BillingContent() {
     })
   }
 
+  // address 상태가 변경될 때 vaInfo도 업데이트하는 함수 추가
+  const updateAddress = (newAddress: typeof address) => {
+    setAddress(newAddress);
+    
+    if (vaInfo) {
+      const formattedAddress = `배송지 도로명\n${newAddress.roadAddress}\n상세주소\n${newAddress.detailAddress}\n우편번호\n${newAddress.zipCode}`;
+      setVaInfo({
+        ...vaInfo,
+        address: formattedAddress
+      });
+    }
+  };
+
+  // handleAddressSearch 함수 수정
   const handleAddressSearch = () => {
-    // 스크립트 로드 확인
     if (window.daum && window.daum.Postcode) {
       new window.daum.Postcode({
         oncomplete: function(data: any) {
-          setAddress(prev => ({
-            ...prev,
+          updateAddress({
+            ...address,
             zipCode: data.zonecode,
             roadAddress: data.roadAddress,
-          }))
+          });
         }
-      }).open()
+      }).open();
     } else {
-      alert('우편번호 서비스를 불러오는 중입니다. 잠시 후 다시 시도해주세요.')
+      alert('우편번호 서비스를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
     }
-  }
+  };
 
   // 결제하기 > 엠투넷 이동
-  const onClickCharge = async (cash: number) => {
+  const onClickCharge = async (cash: number, vaInfo: VaCustomerDto) => {
     try {
       // 결제 시도 전 주문 정보를 먼저 저장
       const orderData = {
@@ -148,13 +164,7 @@ function BillingContent() {
       };
 
       // 주문 정보 저장
-      // const savedOrder = await fetch('/api/value-added/orders', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(orderData)
-      // });
+      const savedOrder = await basicPost(`/users/va/purchase`, vaInfo);
 
       // if (!savedOrder.ok) {
       //   throw new Error('주문 정보 저장 실패');
@@ -289,10 +299,10 @@ function BillingContent() {
             <input
               type="text"
               value={address.detailAddress}
-              onChange={(e) => setAddress(prev => ({
-                ...prev,
+              onChange={(e) => updateAddress({
+                ...address,
                 detailAddress: e.target.value
-              }))}
+              })}
               placeholder="상세 주소"
               className="w-full p-2 border rounded"
             />
@@ -456,12 +466,11 @@ function BillingContent() {
           label="결제하기"
           buttonType={isAllRequiredFieldsFilled() ? BUTTON_TYPE.primary : BUTTON_TYPE.inactive}
           onClick={() => {
-            if (isAllRequiredFieldsFilled()) {
-              // 결제 처리 로직
-              console.log('결제하기')
-              onClickCharge(vaInfo?.price 
-                ? Math.floor(vaInfo.price * 1.1) // 부가세 10% 포함, 소수점 버림
-                : 0)
+            if (isAllRequiredFieldsFilled() && vaInfo) {  // vaInfo null 체크 추가
+              onClickCharge(
+                Math.floor(vaInfo.price * 1.1), // 부가세 10% 포함, 소수점 버림
+                vaInfo
+              )
             }
           }}
           className="w-full"
