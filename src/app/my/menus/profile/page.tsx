@@ -45,9 +45,9 @@ export default function Page() {
         buttonType={BUTTON_TYPE.primary}
       />
 
-        <div className="mt-5">
-            <h2>찜 목록</h2>
-        </div>
+        {/*<div className="mt-5">*/}
+        {/*    <h2>찜 목록</h2>*/}
+        {/*</div>*/}
     </div>
   )
 }
