@@ -7,6 +7,7 @@ export const enum BUTTON_TYPE {
   inactive,
   inprogress,
   primarySm,
+  dangerous = 5,
 }
 
 type buttonStyleType = {
@@ -35,6 +36,10 @@ const buttonStyle: Record<BUTTON_TYPE, buttonStyleType> = {
     background: 'bg-teal-400/10 px-2 py-4 rounded-xl ',
     text: 'text-teal-400',
   },
+  [BUTTON_TYPE.dangerous]: {
+    background: 'bg-red-400 px-2 py-4 rounded-xl ',
+    text: 'text-white ',
+  },
 }
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -47,7 +52,8 @@ export function Button({ className, buttonType, label, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={clsx(
-        'w-full flex-col justify-center items-center gap-1 inline-flex cursor-pointer',
+        'w-full flex-col justify-center items-center gap-1 inline-flex cursor-pointer ',
+        className,
         buttonStyle[buttonType].background
       )}
     >

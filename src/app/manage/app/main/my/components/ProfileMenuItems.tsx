@@ -27,27 +27,6 @@ const ProfileMenuItems = ({route, title, icon}: IMenuItem) => {
             <div className="self-stretch h-full text-black text-base font-normal  leading-relaxed">
                 <p>{title}</p>
             </div>
-            <Modal
-                isOpen={showModal}
-                onClose={(e) => {
-                    e.stopPropagation()
-
-                    setShowModal(false)
-                    console.log(showModal)
-                }}
-                title="회원탈퇴"
-                content="탈퇴 후에는 복구되지 않습니다. 하단 버튼을 눌러 카카오톡 상담을 이용하신 후 절차에 따라 회원탈퇴를 안내해드리겠습니다."
-            >
-                <Button
-                    buttonType={BUTTON_TYPE.primary}
-                    onClick={() => {
-                        window.open('http://pf.kakao.com/_rMFxbn', '_blank')
-                        // 탈퇴 API 호출
-                        setShowModal(false)
-                    }}
-                    label="탈퇴하기"
-                />
-            </Modal>
         </div>
     )
 }
