@@ -74,15 +74,17 @@ const ProfileMenu = () => {
     const router = useRouter();
 
     return (
-        <div className="w-full flex-col justify-start items-start inline-flex">
-            <div className="grid grid-cols-3 gap-3 w-full my-6">
-                {menus.map((menu, index) => (
-                    <div key={index} className="flex justify-center items-start p-0">
-                        <ProfileMenuItems icon={menu.icon} route={menu.route} title={menu.title}/>
-                    </div>
-                ))}
+        <>
+            <div className="w-full flex-col justify-start items-start inline-flex">
+                <div className="grid grid-cols-3 gap-3 w-full my-6">
+                    {menus.map((menu, index) => (
+                        <div key={index} className="flex justify-center items-start p-0">
+                            <ProfileMenuItems icon={menu.icon} route={menu.route} title={menu.title}/>
+                        </div>
+                    ))}
+                </div>
             </div>
-            <div className="w-full mt-10">
+            <div className="w-full mt-2 mb-[60px] p-6">
                 <Button
                     className="w-full h-[45px]"
                     onClick={() => {
@@ -93,7 +95,7 @@ const ProfileMenu = () => {
                     buttonType={BUTTON_TYPE.dangerous}
                 />
             </div>
-        </div>
+        </>
     )
 }
 
