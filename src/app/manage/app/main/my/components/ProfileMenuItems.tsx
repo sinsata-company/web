@@ -24,7 +24,7 @@ const ProfileMenuItems = ({route, title, icon}: IMenuItem) => {
             <div className="rounded-lg flex justify-center items-center bg-gray-200 p-3">
                 {icon}
             </div>
-            <div className="self-stretch h-full text-black text-base font-normal  leading-relaxed">
+            <div className="self-stretch h-full text-black text-base font-normal  leading-relaxed text-center break-keep">
                 <p>{title}</p>
             </div>
         </div>

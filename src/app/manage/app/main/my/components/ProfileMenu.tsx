@@ -77,7 +77,7 @@ const ProfileMenu = () => {
         <div className="w-full flex-col justify-start items-start inline-flex">
             <div className="grid grid-cols-3 gap-3 w-full my-6">
                 {menus.map((menu, index) => (
-                    <div key={index} className="flex justify-center items-center p-0">
+                    <div key={index} className="flex justify-center items-start p-0">
                         <ProfileMenuItems icon={menu.icon} route={menu.route} title={menu.title}/>
                     </div>
                 ))}
