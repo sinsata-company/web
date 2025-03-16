@@ -35,6 +35,7 @@ export interface TeacherDetailDto {
   menu: string
   reviews: any[]
   pinNumber: string
+  likedCnt: number | null;
 }
 
 export interface CashHistoryDto {
