@@ -98,8 +98,8 @@ export default function Page() {
             <Button
               label="채팅문의"
               onClick={() => {
-                console.log('채팅문의');
                 setIsOpen(false);
+                router.push(`/chats/inquiry`);
               }}
               buttonType={BUTTON_TYPE.primary}
               className="flex-1"

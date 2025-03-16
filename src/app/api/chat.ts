@@ -1,4 +1,4 @@
-import { basicUnpagedGet } from '@/api/base'
+import { basicUnpagedGet, basicPost } from '@/api/base'
 import { CashHistoryDto, ChatDto, ChatRoomRes } from './data'
 
 export const getMyChats = async () => {
@@ -19,4 +19,9 @@ export const completeChat = async (roomId: string) => {
 
 export const chatMessages = async (roomId: string) => {
   return await basicUnpagedGet(`/chats/messages/all?chatRoomId=${roomId}`);
+}
+
+export const createInquiryChat = async (): Promise<ChatDto> => {
+  const result = await basicPost<ChatDto>('/chats/inquiry', {})
+  return result
 }

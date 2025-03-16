@@ -12,10 +12,12 @@ import {Heart} from "lucide-react";
 import {basicPost} from "@/api/base";
 
 export default function AdvisorList({
-                                        advisorList,changeLiked,
+                                        advisorList,
+                                        changeLiked,
                                         lastAdvisorElementRef,
                                     }: {
     advisorList: TeacherListDto[]
+    changeLiked: Function;
     lastAdvisorElementRef?: (node: HTMLDivElement | null) => void
 }) {
     const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)

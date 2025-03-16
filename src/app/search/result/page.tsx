@@ -39,8 +39,13 @@ const Container = () => {
 
         setTeachers(result?.map((item: any) => ({
             ...item,
-            sefLiked: !!user && item.likedTeachers.some((liked: any) => liked.testId === user?.userId && liked.teacherId === item.id)
+            selfLiked: !!user && Array.isArray(item.likedTeachers) && 
+                item.likedTeachers.some((liked: any) => liked.testId === user?.userId && liked.teacherId === item.id)
         })) as any)
+    }
+
+    const changeLiked = async () => {
+        await getRecommendResult()
     }
 
     return (
@@ -52,7 +57,7 @@ const Container = () => {
                         이런 선생님들은 어떠세요?
                     </div>
                 </div>
-                <AdvisorList advisorList={teachers}/>
+                <AdvisorList advisorList={teachers} changeLiked={changeLiked}/>
             </div>
         </>
     )

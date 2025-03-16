@@ -25,6 +25,8 @@ export interface TeacherDetailDto {
   hashtag: string
   images: string[]
   introduction: string
+  totalReviews: number
+  totalRating: number
   strongField: any
   canChat: boolean
   canCall: boolean

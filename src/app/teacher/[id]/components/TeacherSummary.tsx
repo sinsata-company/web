@@ -21,7 +21,7 @@ return (
     {/* 헤더 영역: 상담사명과 전화하기 버튼 */}
     <div className="flex w-full justify-between gap-2">
       <div className="flex flex-col flex-grow gap-4">
-        <div className="text-black text-xl font-bold">상담사명</div>
+        <div className="text-black text-xl font-bold">{advisor?.name}</div>
       </div>
       <div
         onClick={() => setIsPhoneModalOpen(true)}
@@ -40,9 +40,18 @@ return (
     </div>
 
     {/* 상담사 정보 영역 */}
-    <div className="w-full mt-2 text-xl flex justify-between items-center gap-2">
-      <p className="text-zinc-900 font-bold">{advisor?.name}</p>
-      <p className="text-zinc-900 font-bold">{advisor?.pinNumber}번</p>
+    <div className="w-full mt-2 text-base flex justify-between items-center">
+      <div className="flex gap-4">
+        <p className="text-zinc-900 font-bold">
+          최근후기 <span className="text-gray-500">({advisor?.totalReviews})</span>
+        </p>
+        <p className="text-zinc-900 font-bold">
+          최근문의 <span className="text-gray-500">(0)</span>
+        </p>
+      </div>
+      <p className="text-zinc-900 font-bold">
+        {advisor?.pinNumber}<span className="text-base">번</span>
+      </p>
     </div>
 
     {/* 모달: 전화 및 채팅 상담 안내 */}
