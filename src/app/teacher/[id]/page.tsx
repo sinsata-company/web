@@ -24,6 +24,7 @@ export default function TeacherPage() {
     const router = useRouter()
     const param = useParams()
     const teacherId = String(param.id)
+    const [isLogined, setIsLogined] = useState(false);
 
     useEffect(() => {
         getInfo()
@@ -32,6 +33,8 @@ export default function TeacherPage() {
     const getInfo = async () => {
         const response = await getTeacherDetail(teacherId);
         const myInfo = await getMyInfo();
+
+        setIsLogined(!!myInfo);
 
         const selfLiked = !!myInfo?.likedTeachers && (myInfo?.likedTeachers.some((item: any) => {
             return item.teacherId === teacherId;
@@ -45,6 +48,10 @@ export default function TeacherPage() {
     }
 
     const changeSelfLiked = async () => {
+        if (!isLogined) {
+            alert("로그인 후 이용 해주세요.");
+            return router.push("/register");
+        }
         try {
             await basicPost("/users/changeLiked", {id: advisor?.id});
         } catch (error) {
