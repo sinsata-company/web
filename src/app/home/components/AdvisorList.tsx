@@ -243,9 +243,6 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                         height={96}
                         alt="profile"
                     />
-                    <div className="w-full flex items-center justify-end absolute bottom-1 right-1 bg-red z-30 gap-[3px]">
-                        <Heart className="cursor-pointer" color="#f54747" fill={newSelfLiked ? "#f54747" : "none"} size={16} enableBackground={1} onClick={() => changeSelfLiked()}/>
-                    </div>
                     <TeacherTypeLabel teacherType={teacherType}/>
                 </div>
 
