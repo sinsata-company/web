@@ -44,7 +44,7 @@ export default function AdvisorContainer() {
         console.log('id', id);
         setAdvisorList((prevState) => ([...prevState].map((item: TeacherListDto) => {
             if (item.id === id) {
-                item.sefLiked = !item.sefLiked
+                item.selfLiked = !item.selfLiked
             }
             return item;
         })))
@@ -63,7 +63,7 @@ export default function AdvisorContainer() {
 
         setAdvisorList((prev) => ([...prev, ...response.content].map((item:TeacherListDto) => ({
             ...item,
-            sefLiked: !!user && item.likedTeachers.some((liked: any) => liked.testId === user?.userId && liked.teacherId === item.id)
+            selfLiked: !!user && item.likedTeachers.some((liked: any) => liked.testId === user?.userId && liked.teacherId === item.id)
         }))));
         if (advisorList.length === 0) return;
         setHasMore(!response.last)

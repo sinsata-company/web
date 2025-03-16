@@ -176,12 +176,12 @@ interface AdvisorItemProps extends TeacherListDto {
 
 const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
     function AdvisorItem(advisor, ref) {
-        const {id, name, thumbnail, hashtag, summary, sefLiked, onClickPhone, teacherType, menu, changeLiked} =
+        const {id, name, thumbnail, hashtag, summary, selfLiked, onClickPhone, teacherType, menu, changeLiked} =
             advisor;
 
         const [menuObj, setMenuObj] = useState<any>(null);
 
-        const [newSelfLiked, setSelfLiked] = useState<boolean>(sefLiked);
+        const [newSelfLiked, setSelfLiked] = useState<boolean>(selfLiked);
 
         const changeSelfLiked = async () => {
             try {

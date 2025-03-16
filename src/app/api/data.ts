@@ -14,7 +14,7 @@ export interface TeacherListDto {
   rating: number
   menu: string
   likedCnt: number
-  sefLiked: boolean;
+  selfLiked: boolean;
   likedTeachers: Array<{ testId: string; teacherId: string; }>
 }
 
@@ -36,6 +36,7 @@ export interface TeacherDetailDto {
   reviews: any[]
   pinNumber: string
   likedCnt: number | null;
+  selfLiked: boolean;
 }
 
 export interface CashHistoryDto {

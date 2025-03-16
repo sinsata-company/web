@@ -9,4 +9,5 @@ export interface UserDto {
   phoneNum: string
   isParticipatedEvent: boolean
   createdAt: string
+  likedTeachers: Array<any>;
 }
