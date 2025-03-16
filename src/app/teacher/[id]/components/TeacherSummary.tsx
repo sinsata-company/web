@@ -43,7 +43,7 @@ return (
     <div className="w-full mt-2 text-base flex justify-between items-center">
       <div className="flex gap-4">
         <p className="text-zinc-900 font-bold">
-          최근후기 <span className="text-gray-500">({advisor?.totalReviews})</span>
+          최근후기 <span className="text-gray-500">({advisor?.totalReviews || 0})</span>
         </p>
         <p className="text-zinc-900 font-bold">
           최근문의 <span className="text-gray-500">(0)</span>
