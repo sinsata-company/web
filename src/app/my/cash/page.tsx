@@ -55,7 +55,7 @@ export default function CashChargePage() {
           </div>
         </div>
         <div className="self-stretch flex-col justify-start items-start gap-3 flex">
-          <div className="text-zinc-900 text-xl font-bold ">캐시 충전</div>
+          <div className="text-zinc-900 text-xl font-bold ">캐시 충전(VAT 별도)</div>
           <div className="self-stretch p-4 rounded-2xl border-2 border-indigo-400 flex-col justify-start items-start gap-4 flex">
             {menus.map((item, index) => (
               <CashItem key={index} {...item} onClickCharge={onClickCharge} />
