@@ -10,6 +10,7 @@ interface CalendarProps {
   month: number
   selectedDate: Moment | null // 선택된 시작 날짜
   onDateSelect: (date: Moment) => void // 날짜 선택 이벤트
+  disablePastDates?: boolean  // 새로운 prop 추가
 }
 
 export default function IWCalendar({
@@ -17,6 +18,7 @@ export default function IWCalendar({
   year,
   selectedDate,
   onDateSelect,
+  disablePastDates = true  // 기본값 false로 설정
 }: CalendarProps) {
   // 현재 날짜 상태
   const [currentDate, setCurrentDate] = useState(
@@ -41,6 +43,7 @@ export default function IWCalendar({
   }
 
   const isPastDate = (date: moment.Moment) => {
+    if (!disablePastDates) return false;  // disablePastDates가 false면 과거 날짜 체크 안함
     return date.isBefore(moment(), 'day')
   }
 
@@ -84,20 +87,20 @@ export default function IWCalendar({
             style={{
               margin: '5px 0px',
             }}
-            onClick={() => onDateSelect(day)} // 날짜 선택 이벤트 트리거
+            onClick={() => !isPastDate(day) && onDateSelect(day)}
             className={`${
               day.isSame(currentDate, 'month')
                 ? 'text-black'
-                : 'text-neutral-400 '
+                : 'text-neutral-400'
             }  
-            
-             h-5 text-center text-xs font-medium font-montserrat leading-none cursor-pointer flex items-center justify-center`}
+            ${isPastDate(day) ? 'line-through opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+             h-5 text-center text-xs font-medium font-montserrat leading-none flex items-center justify-center`}
           >
             <span
               className={`
                 ${
                   day.isSame(selectedDate, 'day')
-                    ? 'w-5 h-full bg-gradient rounded-full flex items-center justify-center text-white' // 시작일과 종료일 색상
+                    ? 'w-5 h-full bg-gradient rounded-full flex items-center justify-center text-white'
                     : ''
                 }`}
             >

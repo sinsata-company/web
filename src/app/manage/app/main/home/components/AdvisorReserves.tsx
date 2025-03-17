@@ -8,7 +8,11 @@ import { ReserveDto } from '@/app/api/data'
 import { getReserveByDate } from '@/app/manage/api/homepage'
 import { useRouter } from 'next/navigation'
 
-const AdvisorReserves = () => {
+interface AdvisorReservesProps {
+  disablePastDates: boolean;
+}
+
+const AdvisorReserves = ({ disablePastDates }: AdvisorReservesProps) => {
   const router = useRouter()
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
   const [now, setNow] = useState<Moment>(moment())
@@ -42,6 +46,7 @@ const AdvisorReserves = () => {
           month={now.month() + 1}
           selectedDate={selectedDate}
           onDateSelect={onclickDate}
+          disablePastDates={disablePastDates}
         />
       </div>
       <ReserveList reserves={reserves} />

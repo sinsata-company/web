@@ -87,8 +87,23 @@ export default function Settings(){
 
   const isTimeUnavailable = (date: Moment, time: string): boolean => {
     const dateStr = date.format('YYYY-MM-DD')
-    const unavailableDate = unavailableTimes.find(ut => ut.date === dateStr)
     return unavailableTimes.some(ut => ut.date === dateStr && ut.time === time)
+  }
+
+  const isPastTime = (time: string): boolean => {
+    if (!selectedDate) return false;
+    
+    // 오늘 날짜가 아니면 과거 시간 체크 불필요
+    if (!selectedDate.isSame(moment(), 'day')) return false;
+
+    const [hours, minutes] = time.split(':').map(Number)
+    const timeToCheck = moment().set({
+      hours,
+      minutes,
+      seconds: 0,
+      milliseconds: 0
+    })
+    return timeToCheck.isBefore(moment())
   }
 
   const handleSetUnavailable = async () => {
@@ -154,24 +169,32 @@ export default function Settings(){
 
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-4">시간 선택</h2>
-            <div className="h-[400px] overflow-y-auto">
-              <div className="grid grid-cols-4 gap-2">
-                {timeSlots.map((time) => (
+            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-[400px] overflow-y-auto p-2">
+              {timeSlots.map((time) => {
+                const isUnavailable = selectedDate && isTimeUnavailable(selectedDate, time);
+                const isPast = isPastTime(time);
+                
+                return (
                   <button
                     key={time}
                     onClick={() => toggleTimeSelection(time)}
-                    className={`p-2 rounded ${
-                      selectedDate && isTimeUnavailable(selectedDate, time)
-                        ? 'bg-red-500 text-white'
-                        : selectedTimes.includes(time)
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200'
-                    }`}
+                    disabled={isPast}
+                    className={`
+                      p-2 rounded-lg text-sm font-medium transition-colors
+                      ${isPast 
+                        ? 'line-through opacity-50 cursor-not-allowed bg-gray-100 text-gray-400' 
+                        : isUnavailable
+                          ? 'bg-red-500 text-white hover:bg-red-600'
+                          : selectedTimes.includes(time)
+                            ? 'bg-blue-500 text-white hover:bg-blue-600'
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                      }
+                    `}
                   >
                     {time}
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>

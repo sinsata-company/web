@@ -17,6 +17,7 @@ import IWCalendar from '@/app/teacher/[id]/reserve/components/Calendar'
 import { getUnavailableTimesForUser } from '@/app/api/teacher'
 import moment from 'moment'
 import { UnavailableTime } from '@/app/api/data'
+import TimeSelect from './components/TimeSelect'
 
 export default function TeacherReservePage() {
   const router = useRouter()
@@ -41,6 +42,7 @@ export default function TeacherReservePage() {
     
     try {
       const times = await getUnavailableTimesForUser(teacherId, date.format('YYYY-MM-DD'))
+      console.log('times : ' + times);
       setUnavailableTimes(times)
     } catch (error) {
       console.error('Error fetching unavailable times:', error)
@@ -50,6 +52,7 @@ export default function TeacherReservePage() {
   const isTimeUnavailable = (date: Moment | null, time: string): boolean => {
     if (!date) return false;
     const dateStr = date.format('YYYY-MM-DD')
+    
     return unavailableTimes.some(ut => ut.date === dateStr && ut.time === time)
   }
 
@@ -95,32 +98,47 @@ export default function TeacherReservePage() {
               month={now.month() + 1}
               selectedDate={selectedDate}
               onDateSelect={onDateSelect}
+              disablePastDates={true}
+              minDate={now.startOf('day')}
             />
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">시간 선택</h2>
-          <div className="h-[400px] overflow-y-auto">
-            <div className="grid grid-cols-4 gap-2">
-              {timeSlots.map((time) => (
+          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-[400px] overflow-y-auto p-2">
+            {timeSlots.map((time) => {
+              const isUnavailable = selectedDate && isTimeUnavailable(selectedDate, time);
+              const isPastTime = selectedDate?.isSame(moment(), 'day') && 
+                moment(time, 'HH:mm').isBefore(moment());
+              const isDisabled = isUnavailable || isPastTime;
+              
+              return (
                 <button
                   key={time}
-                  onClick={() => setSelectedTime(time)}
-                  disabled={isTimeUnavailable(selectedDate, time)}
-                  className={`p-2 rounded ${
-                    isTimeUnavailable(selectedDate, time)
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : selectedTime === time
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200'
-                  }`}
+                  onClick={() => !isDisabled && setSelectedTime(time)}
+                  disabled={isDisabled}
+                  className={`
+                    p-3 rounded-lg text-sm font-medium transition-colors
+                    ${isDisabled
+                      ? 'line-through opacity-50 bg-gray-100 text-gray-400 cursor-not-allowed' 
+                      : time === selectedTime
+                        ? 'bg-blue-500 text-white hover:bg-blue-600'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                    }
+                  `}
                 >
                   {time}
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
+          {selectedDate && (
+            <div className="mt-4 text-sm text-gray-500">
+              <p>• 취소선이 있는 시간은 선택할 수 없는 시간입니다.</p>
+              <p>• 오늘 날짜의 경우 현재 시간 이전은 선택할 수 없습니다.</p>
+            </div>
+          )}
         </div>
       </div>
 
