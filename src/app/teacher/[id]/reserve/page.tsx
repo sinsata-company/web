@@ -14,13 +14,14 @@ import { makeReserve } from '@/app/api/reserve'
 import Modal from '@/components/common/Modal'
 import ReserveTypeSelector from './components/ReserveTypeSelector'
 import IWCalendar from '@/app/teacher/[id]/reserve/components/Calendar'
-import { getUnavailableTimes } from '@/app/api/teacher'
+import { getUnavailableTimesForUser } from '@/app/api/teacher'
 import moment from 'moment'
 import { UnavailableTime } from '@/app/api/data'
 
 export default function TeacherReservePage() {
   const router = useRouter()
-  const param = useParams()
+  const params = useParams()
+  const teacherId = params.id as string
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
   const [selectedTime, setSelectedTime] = useState<string>('')
   const [selectedHour, setSelectedHour] = useState<number>(15)
@@ -39,14 +40,15 @@ export default function TeacherReservePage() {
     setSelectedTime('')
     
     try {
-      const times = await getUnavailableTimes(date.format('YYYY-MM-DD'))
+      const times = await getUnavailableTimesForUser(teacherId, date.format('YYYY-MM-DD'))
       setUnavailableTimes(times)
     } catch (error) {
       console.error('Error fetching unavailable times:', error)
     }
   }
 
-  const isTimeUnavailable = (date: Moment, time: string): boolean => {
+  const isTimeUnavailable = (date: Moment | null, time: string): boolean => {
+    if (!date) return false;
     const dateStr = date.format('YYYY-MM-DD')
     return unavailableTimes.some(ut => ut.date === dateStr && ut.time === time)
   }
@@ -72,7 +74,7 @@ export default function TeacherReservePage() {
         reserveTime: `${selectedDate.format('YYYY-MM-DD')} ${selectedTime}:00`,
         reserveMinutes: selectedHour,
         reserveType: type === '전화' ? 'CALL' : 'CHAT',
-      }, param.id as string)
+      }, teacherId)
       
       setReserveComplete(true)
     } catch (error) {
@@ -105,9 +107,9 @@ export default function TeacherReservePage() {
                 <button
                   key={time}
                   onClick={() => setSelectedTime(time)}
-                  disabled={selectedDate && isTimeUnavailable(selectedDate, time)}
+                  disabled={isTimeUnavailable(selectedDate, time)}
                   className={`p-2 rounded ${
-                    selectedDate && isTimeUnavailable(selectedDate, time)
+                    isTimeUnavailable(selectedDate, time)
                       ? 'bg-gray-300 cursor-not-allowed'
                       : selectedTime === time
                       ? 'bg-blue-500 text-white'

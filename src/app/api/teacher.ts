@@ -67,6 +67,11 @@ export const getUnavailableTimes = async (date: string) => {
   const data = response as UnavailableTimeResponse[]  
   return data
 }
+export const getUnavailableTimesForUser = async (teacherId: string, date: string) => {
+  const response = await basicGet(`/unavailable-times?teacherId=${teacherId}&date=${date}`)
+  const data = response as UnavailableTimeResponse[]  
+  return data
+}
 
 export const saveUnavailableTimes = async (
   date: string, 
