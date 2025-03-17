@@ -159,3 +159,10 @@ export interface UnavailableTimeResponse {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface UnavailableTime {
+  id: number;
+  teacherId: number;
+  date: string;
+  time: string;
+}

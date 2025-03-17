@@ -5,22 +5,14 @@ import IWCalendar from '@/app/teacher/[id]/reserve/components/Calendar'
 import moment, { Moment } from 'moment'
 import { useRouter } from 'next/navigation'
 import { saveUnavailableTimes, getUnavailableTimes } from '@/app/api/teacher'
-import { UnavailableTimeResponse } from '@/app/api/data'
-import { toast } from 'react-hot-toast'
-
-interface UnavailableTime {
-  id: number;
-  teacherId: number;
-  date: string;
-  time: string;
-}
+import { UnavailableTime } from '@/app/api/data'
 
 export default function Settings(){
   const router = useRouter()
   const [selectedDate, setSelectedDate] = useState<Moment | null>(moment())
   const [now, setNow] = useState<Moment>(moment())
   const [selectedTimes, setSelectedTimes] = useState<string[]>([])
-  const [unavailableTimes, setUnavailableTimes] = useState<{ [key: string]: string[] }>({})
+  const [unavailableTimes, setUnavailableTimes] = useState<UnavailableTime[]>([])
   const [teacherId, setTeacherId] = useState<number>(/* 교사 ID 설정 */)
 
   // 컴포넌트 마운트 시 오늘 날짜의 예약 불가 시간 로드
@@ -58,17 +50,11 @@ export default function Settings(){
   }
 
   const toggleTimeSelection = (time: string) => {
-    if (!selectedDate) return;
-
-    // 이미 불가능한 시간인 경우, 해당 시간을 제거
-    if (isTimeUnavailable(selectedDate, time)) {
-      const dateKey = selectedDate.format('YYYY-MM-DD');
-      const updatedTimes = unavailableTimes[dateKey]?.filter(t => t !== time) || [];
-      
-      setUnavailableTimes(prev => ({
-        ...prev,
-        [dateKey]: updatedTimes
-      }));
+    if (selectedDate && isTimeUnavailable(selectedDate, time)) {
+      // 불가능한 시간을 선택한 경우, unavailableTimes에서도 제거
+      setUnavailableTimes(prev => 
+        prev.filter(ut => !(ut.date === selectedDate.format('YYYY-MM-DD') && ut.time === time))
+      );
       return;
     }
 
@@ -80,47 +66,64 @@ export default function Settings(){
     );
   };
 
-  const handleSetUnavailableTimes = async () => {
+  const handleRemoveUnavailableTime = async (time: string) => {
     if (!selectedDate) return;
 
-    const dateKey = selectedDate.format('YYYY-MM-DD');
-    
     try {
-      // 현재 UI에서 선택된 시간만 전송
-      const response = await fetch('/api/unavailable-times', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          date: dateKey,
-          times: selectedTimes,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to set unavailable times');
+      const response = await saveUnavailableTimes(selectedDate.format('YYYY-MM-DD'), [time], 'remove');
+      if (!response) {
+        throw new Error('Failed to remove unavailable time');
       }
 
-      // 성공적으로 설정되면 unavailableTimes 상태 업데이트
-      setUnavailableTimes(prev => ({
-        ...prev,
-        [dateKey]: selectedTimes
-      }));
-      
-      // 선택된 시간 초기화
-      setSelectedTimes([]);
-      
-      toast.success('상담불가 시간이 설정되었습니다.');
+      // 성공 시 목록 다시 불러오기
+      const updatedTimes = await getUnavailableTimes(selectedDate.format('YYYY-MM-DD'));
+      setUnavailableTimes(updatedTimes);
+      setSelectedTimes(prev => prev.filter(t => t !== time)); // 선택된 시간에서도 제거
     } catch (error) {
-      console.error('Error setting unavailable times:', error);
-      toast.error('상담불가 시간 설정에 실패했습니다.');
+      console.error('Error removing unavailable time:', error);
+      alert('상담 불가 시간 해제에 실패했습니다.');
     }
   };
 
-  const isTimeUnavailable = (date: Moment, time: string) => {
-    const dateKey = date.format('YYYY-MM-DD');
-    return unavailableTimes[dateKey]?.includes(time) || false;
+  const isTimeUnavailable = (date: Moment, time: string): boolean => {
+    const dateStr = date.format('YYYY-MM-DD')
+    const unavailableDate = unavailableTimes.find(ut => ut.date === dateStr)
+    return unavailableTimes.some(ut => ut.date === dateStr && ut.time === time)
+  }
+
+  const handleSetUnavailable = async () => {
+    if (!selectedDate) return;
+
+    try {
+      // 현재 선택된 날짜의 모든 불가능 시간
+      const currentDateUnavailableTimes = unavailableTimes
+        .filter(ut => ut.date === selectedDate.format('YYYY-MM-DD'))
+        .map(ut => ut.time);
+      
+      // 현재 불가능한 시간들과 새로 선택된 시간들을 합침
+      const finalTimes = [...new Set([
+        ...currentDateUnavailableTimes,
+        ...selectedTimes
+      ])];
+
+      const response = await saveUnavailableTimes(
+        selectedDate.format('YYYY-MM-DD'), finalTimes
+      );
+
+      if (!response) {
+        throw new Error('Failed to save unavailable times');
+      }
+
+      // 저장 후 해당 날짜의 불가능 시간 다시 불러오기
+      const updatedTimes = await getUnavailableTimes(selectedDate.format('YYYY-MM-DD'));
+      setUnavailableTimes(updatedTimes);
+      
+      alert('상담 불가 시간이 설정되었습니다.');
+      setSelectedTimes([]);
+    } catch (error) {
+      console.error('Error saving unavailable times:', error);
+      alert('상담 불가 시간 설정에 실패했습니다.');
+    }
   };
 
   return (
@@ -139,12 +142,14 @@ export default function Settings(){
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-4">날짜 선택</h2>
-            <IWCalendar
-              year={now.year()}
-              month={now.month() + 1}
-              selectedDate={selectedDate}
-              onDateSelect={onDateSelect}
-            />
+            <div className="[&_button]:text-xl [&_td]:text-xl [&_th]:text-xl">
+              <IWCalendar
+                year={now.year()}
+                month={now.month() + 1}
+                selectedDate={selectedDate}
+                onDateSelect={onDateSelect}
+              />
+            </div>
           </div>
 
           <div className="bg-white p-4 rounded-lg shadow">
@@ -157,7 +162,7 @@ export default function Settings(){
                     onClick={() => toggleTimeSelection(time)}
                     className={`p-2 rounded ${
                       selectedDate && isTimeUnavailable(selectedDate, time)
-                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        ? 'bg-red-500 text-white'
                         : selectedTimes.includes(time)
                         ? 'bg-blue-500 text-white'
                         : 'bg-gray-100 hover:bg-gray-200'
@@ -174,10 +179,10 @@ export default function Settings(){
         <div className="bg-white border-t border-gray-200 p-4">
           <div className="max-w-7xl mx-auto">
             <button
-              onClick={handleSetUnavailableTimes}
-              disabled={!selectedDate || selectedTimes.length === 0}
+              onClick={handleSetUnavailable}
+              disabled={!selectedDate}
               className={`w-full px-6 py-3 rounded-lg ${
-                !selectedDate || selectedTimes.length === 0
+                !selectedDate
                   ? 'bg-gray-300 cursor-not-allowed'
                   : 'bg-red-500 hover:bg-red-600 text-white'
               }`}
