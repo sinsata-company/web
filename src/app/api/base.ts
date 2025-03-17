@@ -48,10 +48,11 @@ export async function basicGet<T>(route: string) {
   }
 }
 
-export async function basicPost(route: string, body: any) {
+export async function basicPost<T>(route: string, body: any) {
   const url = `${BASE_URL}${route}` // 데이터를 가져올 서버의 URL
   // TODO jwt 갱신하거나 로그아웃 하는 방안
   const accessToken = getAccessToken()
+  console.log('accessToken : ' + accessToken);
   const response = await axios.post(url, body, {
     headers: {
       'SST-ACCESS-TOKEN': `${accessToken}`,

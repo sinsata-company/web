@@ -143,3 +143,19 @@ export interface Teachers {
   createdDateTime: string
   modifiedDateTime: string
 }
+
+export interface UnavailableTimeDTO {
+  teacherId: number;
+  date: string;      // 'YYYY-MM-DD' 형식
+  times: string[];   // 'HH:mm' 형식의 시간 배열
+}
+
+// 응답 타입이 필요한 경우를 위한 추가 인터페이스
+export interface UnavailableTimeResponse {
+  id: number;
+  teacherId: number;
+  date: string;
+  time: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
