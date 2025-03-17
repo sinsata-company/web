@@ -4,13 +4,17 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 
-export default function BTB() {
+const Btb = () => {
   return (
-    <div className="bottom-0 left-0 fixed w-full h-16 px-5 py-2.5 bg-white shadow justify-between items-center inline-flex">
-      <BTBItem name="홈" image="home" />
-      <BTBItem name="검색" image="search" />
-      <BTBItem name="채팅" image="chats" />
-      <BTBItem name="My" image="my" />
+    <div className="fixed bottom-0 left-0 right-0 flex justify-center w-full">
+      <div className="w-[550px] max-w-full">
+        <div className="h-16 px-5 py-2.5 bg-white shadow flex justify-between items-center">
+          <BTBItem name="홈" image="home" />
+          <BTBItem name="검색" image="search" />
+          <BTBItem name="채팅" image="chats" />
+          <BTBItem name="My" image="my" />
+        </div>
+      </div>
     </div>
   )
 }
@@ -44,3 +48,5 @@ const BTBItem = ({ name, image }: { name: string; image: string }) => {
     </div>
   )
 }
+
+export default Btb
