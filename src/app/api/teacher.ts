@@ -1,7 +1,8 @@
 import axios from 'axios'
-import { basicGet, basicNotAuthorizedGet, basicPost } from './base'
+import { basicGet, basicNotAuthorizedGet } from './base'
+import { basicPost } from '../../../src/api/base'
 import { PageRes } from './type'
-import { TeacherDetailDto, TeacherListDto, UnavailableTimeResponse } from './data'
+import { TeacherDetailDto, TeacherListDto, UnavailableTimeDTO, UnavailableTimeResponse } from './data'
 
 export enum SearchType {
   NEW = 'NEW',
@@ -61,21 +62,22 @@ export const getRecommendation = async (requestId: string) => {
   return data
 }
 
-export const getUnavailableTimes = async (teacherId: string, date: string) => {
-  const response = await basicGet(`/unavailable-times?teacherId=${teacherId}&date=${date}`)
-  const data = response as UnavailableTimeResponse[]
+export const getUnavailableTimes = async (date: string) => {
+  const response = await basicGet(`/unavailable-times?date=${date}`)
+  const data = response as UnavailableTimeResponse[]  
   return data
 }
 
-export const saveUnavailableTimes = async (date: string, times: string[]) => {
-  try {
-    const response = await basicPost('/teachers/unavailable-times', {  
-      date,
-      times,
-    })
-    return response.data
-  } catch (error) {
-    console.error('Error in saveUnavailableTimes:', error)
-    throw error
-  }
+export const saveUnavailableTimes = async (
+  date: string, 
+  times: string[], 
+  action: 'add' | 'remove' | 'update' = 'add'
+) => {
+  const response = await basicPost('/unavailable-times', { 
+    date, 
+    times,
+    action 
+  })
+  const data = response as string
+  return data
 }

@@ -1,23 +1,42 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import IWCalendar from '@/app/teacher/[id]/reserve/components/Calendar'
 import moment, { Moment } from 'moment'
 import { useRouter } from 'next/navigation'
-import { saveUnavailableTimes } from '@/app/api/teacher'
+import { saveUnavailableTimes, getUnavailableTimes } from '@/app/api/teacher'
+import { UnavailableTimeResponse } from '@/app/api/data'
+import { toast } from 'react-hot-toast'
 
 interface UnavailableTime {
+  id: number;
+  teacherId: number;
   date: string;
-  times: string[];
+  time: string;
 }
 
 export default function Settings(){
   const router = useRouter()
-  const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
+  const [selectedDate, setSelectedDate] = useState<Moment | null>(moment())
   const [now, setNow] = useState<Moment>(moment())
   const [selectedTimes, setSelectedTimes] = useState<string[]>([])
-  const [unavailableTimes, setUnavailableTimes] = useState<UnavailableTime[]>([])
+  const [unavailableTimes, setUnavailableTimes] = useState<{ [key: string]: string[] }>({})
   const [teacherId, setTeacherId] = useState<number>(/* 교사 ID 설정 */)
+
+  // 컴포넌트 마운트 시 오늘 날짜의 예약 불가 시간 로드
+  useEffect(() => {
+    const fetchUnavailableTimes = async () => {
+      try {
+        const times = await getUnavailableTimes(moment().format('YYYY-MM-DD'));
+        console.log(times)
+        setUnavailableTimes(times);
+      } catch (error) {
+        console.error('Error fetching unavailable times:', error);
+      }
+    };
+    
+    fetchUnavailableTimes();
+  }, []);
 
   const timeSlots = Array.from({ length: 48 }, (_, i) => {
     const hour = Math.floor(i / 2)
@@ -25,41 +44,83 @@ export default function Settings(){
     return `${hour.toString().padStart(2, '0')}:${minute}`
   })
 
-  const onDateSelect = (date: Moment) => {
-    setSelectedDate(date)
-    setSelectedTimes([])
+  const onDateSelect = async (date: Moment) => {
+    setSelectedDate(date);
+    setSelectedTimes([]);
+    
+    try {
+      const times = await getUnavailableTimes(date.format('YYYY-MM-DD'));
+      setUnavailableTimes(times); // 직접 API 응답을 저장
+    } catch (error) {
+      console.error('Error fetching unavailable times:', error);
+      alert('예약 정보를 불러오는데 실패했습니다.');
+    }
   }
 
   const toggleTimeSelection = (time: string) => {
+    if (!selectedDate) return;
+
+    // 이미 불가능한 시간인 경우, 해당 시간을 제거
+    if (isTimeUnavailable(selectedDate, time)) {
+      const dateKey = selectedDate.format('YYYY-MM-DD');
+      const updatedTimes = unavailableTimes[dateKey]?.filter(t => t !== time) || [];
+      
+      setUnavailableTimes(prev => ({
+        ...prev,
+        [dateKey]: updatedTimes
+      }));
+      return;
+    }
+
+    // 새로운 시간 토글
     setSelectedTimes(prev => 
       prev.includes(time) 
         ? prev.filter(t => t !== time)
         : [...prev, time]
-    )
-  }
+    );
+  };
 
-  const isTimeUnavailable = (date: Moment, time: string): boolean => {
-    const dateStr = date.format('YYYY-MM-DD')
-    const unavailableDate = unavailableTimes.find(ut => ut.date === dateStr)
-    return unavailableDate?.times.includes(time) ?? false
-  }
+  const handleSetUnavailableTimes = async () => {
+    if (!selectedDate) return;
 
-  const handleSetUnavailable = async () => {
-    if (!selectedDate || selectedTimes.length === 0) return;
-
+    const dateKey = selectedDate.format('YYYY-MM-DD');
+    
     try {
-      const response = await saveUnavailableTimes(selectedDate.format('YYYY-MM-DD'), selectedTimes)
-      if (!response) {
-        throw new Error('Failed to save unavailable times');
+      // 현재 UI에서 선택된 시간만 전송
+      const response = await fetch('/api/unavailable-times', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: dateKey,
+          times: selectedTimes,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to set unavailable times');
       }
-   
-      // 성공 처리
-      alert('상담 불가 시간이 설정되었습니다.');
+
+      // 성공적으로 설정되면 unavailableTimes 상태 업데이트
+      setUnavailableTimes(prev => ({
+        ...prev,
+        [dateKey]: selectedTimes
+      }));
+      
+      // 선택된 시간 초기화
       setSelectedTimes([]);
+      
+      toast.success('상담불가 시간이 설정되었습니다.');
     } catch (error) {
-      console.error('Error saving unavailable times:', error);
-      alert('상담 불가 시간 설정에 실패했습니다.');
+      console.error('Error setting unavailable times:', error);
+      toast.error('상담불가 시간 설정에 실패했습니다.');
     }
+  };
+
+  const isTimeUnavailable = (date: Moment, time: string) => {
+    const dateKey = date.format('YYYY-MM-DD');
+    return unavailableTimes[dateKey]?.includes(time) || false;
   };
 
   return (
@@ -96,12 +157,11 @@ export default function Settings(){
                     onClick={() => toggleTimeSelection(time)}
                     className={`p-2 rounded ${
                       selectedDate && isTimeUnavailable(selectedDate, time)
-                        ? 'bg-red-500 text-white cursor-not-allowed'
+                        ? 'bg-red-500 text-white hover:bg-red-600'
                         : selectedTimes.includes(time)
                         ? 'bg-blue-500 text-white'
                         : 'bg-gray-100 hover:bg-gray-200'
                     }`}
-                    disabled={selectedDate && isTimeUnavailable(selectedDate, time)}
                   >
                     {time}
                   </button>
@@ -114,7 +174,7 @@ export default function Settings(){
         <div className="bg-white border-t border-gray-200 p-4">
           <div className="max-w-7xl mx-auto">
             <button
-              onClick={handleSetUnavailable}
+              onClick={handleSetUnavailableTimes}
               disabled={!selectedDate || selectedTimes.length === 0}
               className={`w-full px-6 py-3 rounded-lg ${
                 !selectedDate || selectedTimes.length === 0
