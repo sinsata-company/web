@@ -307,7 +307,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 </span>
                                 <span className="text-neutral-400 text-lg font-semibold ">
                   {' '}
-                                    ({advisor.reviewCount})
+                                    ({(advisor?.scoreLen || 0).toLocaleString()})
                 </span>
                             </div>
                         </div>

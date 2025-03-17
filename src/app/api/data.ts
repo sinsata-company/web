@@ -11,6 +11,7 @@ export interface TeacherListDto {
   pinNumber: string
   reviewCount: number
   score: number | null
+  scoreLen: number | null
   rating: number
   menu: string
   likedCnt: number
