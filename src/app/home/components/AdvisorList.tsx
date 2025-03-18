@@ -280,11 +280,11 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                     <div className="flex justify-between items-center w-full">
                         {/* 요금표 */}
                         <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
-                            {!!menuObj && Object.keys(menuObj).slice(0, 2).map(key => (
+                            {!!menuObj && Object.keys(menuObj).slice(0, 2).map((key:string,  index:number) => (
                                 <div key={key}>
                                     {renderPriceInfo(
                                         `${(isNaN(Number(menuObj[key]))) ? 1400 : Number(menuObj[key]).toLocaleString()}원`,
-                                        `${key.replace("_", "")}${key === '15' ? '초' : '분'}`
+                                        `${key.replace("_", "")}${index === 0 ? '초' : '분'}`
                                     )}
                                 </div>
                             ))}
