@@ -1,6 +1,6 @@
 'use client'
 
-import { canUseId, getKeyByEmail, login, loginByEmail } from '@/app/api/user'
+import { canUseIdAndMessage, getKeyByEmail, login, loginByEmail } from '@/app/api/user'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Input from '@/components/common/Input'
 import LogoAppbar from '@/components/common/LogoAppbar'
@@ -37,9 +37,9 @@ export default function Page() {
   const nav = useRouter()
 
   const onSubmit = async () => {
-    const canUse = await canUseId(name)
+    const canUse = await canUseIdAndMessage(name)
     if (isLogin) {
-      if (!canUse) {
+      if (!canUse?.status) {
         setNameError('')
         const data = await getKeyByEmail(name, password, 'EMAIL')
 
@@ -59,11 +59,11 @@ export default function Page() {
         return
       }
     } else {
-      if (!canUse) {
-        setNameError('이미 사용중인 아이디입니다.')
+      if (!canUse?.status) {
+        setNameError(canUse?.message || '이미 사용중인 아이디입니다.')
         return
       }
-      if (validate() && name && canUse && password) {
+      if (validate() && name && canUse?.status && password) {
         const data = await getKeyByEmail(name, password, 'EMAIL')
         if (data.isRegistered) {
           await login(data)

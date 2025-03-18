@@ -23,7 +23,10 @@ const Body = () => {
   const [phoneNum, setPhoneNum] = useState('')
   const [nameError, setNameError] = useState('')
   const [phoneNumError, setPhoneNumError] = useState('')
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+      message: ''
+  });
 
   const query = useSearchParams()
   const key = query.get('key')
@@ -93,7 +96,7 @@ const Body = () => {
                   },
                 }
               );
-              
+
               const data = response.data;
               if (data.mtnId) {
                 const header = response.headers;
@@ -115,15 +118,22 @@ const Body = () => {
                 router.push('/home');
               } else {
                 setModalOpen(true);
+                setModalData({
+                    message: data?.errorMessage || ''
+                });
               }
             } catch (error) {
               if (axios.isAxiosError(error)) {
                 if (error.response?.status === 405) {
                   console.error('잘못된 HTTP 메서드입니다');
-                  alert('서버 오류가 발생했습니다. 관리자에게 문의해주세요.');
+                  // alert('서버 오류가 발생했습니다. 관리자에게 문의해주세요.');
+                  return;
                 }
               }
               setModalOpen(true);
+              setModalData({
+                    message: "서버 오류가 발생했습니다. 관리자에게 문의해주세요."
+                });
             }
           }}
         />
@@ -133,15 +143,15 @@ const Body = () => {
         onClose={() => {
           setModalOpen(false)
         }}
-        title="전화번호 중복"
-        content="이미 기재하신 전화번호로 가입된 계정이 존재합니다. 다른 로그인 방법을 시도해주세요."
+        title="등록 오류"
+        content={modalData?.message || '이미 기재하신 전화번호로 가입된 계정이 존재합니다. 다른 로그인 방법을 시도해주세요.'}
       >
         <Button
           label="확인"
           buttonType={BUTTON_TYPE.primary}
           onClick={() => {
             setModalOpen(false)
-            router.push('/register')
+            // router.push('/register')
           }}
         />
       </Modal>
