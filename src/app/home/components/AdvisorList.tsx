@@ -284,7 +284,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                 <div key={key}>
                                     {renderPriceInfo(
                                         `${(isNaN(Number(menuObj[key]))) ? 1400 : Number(menuObj[key]).toLocaleString()}원`,
-                                        `${key.replace("_", "")}${key === '_30' ? '초' : '분'}`
+                                        `${key.replace("_", "")}${key === '15' ? '초' : '분'}`
                                     )}
                                 </div>
                             ))}
