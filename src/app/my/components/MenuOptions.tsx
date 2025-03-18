@@ -115,7 +115,7 @@ const MenuOptions = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="회원탈퇴"
-        content="회원탈퇴를 하시겠습니까? 한 번 탈퇴한 계정은 영구 삭제되며, 다시 복구되지 않습니다."
+        content={<p>회원탈퇴를 하시겠습니까? 한 번 탈퇴한 계정은 영구 삭제되며, <br />다시 복구되지 않습니다 (탈퇴시 7일간 회원가입이 불가능 합니다.)</p>}
       >
         <div className="flex justify-end gap-4">
           <Button
