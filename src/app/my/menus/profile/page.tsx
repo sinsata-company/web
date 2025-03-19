@@ -39,8 +39,13 @@ export default function Page() {
       <Button
         label="수정하기"
         onClick={async () => {
-          await updateprofile({ nickname, phoneNum: phoneNumber })
+          try {
+              await updateprofile({ nickname, phoneNum: phoneNumber })
           reload()
+          } catch (error) {
+              console.log('error', error);
+              alert("이미 중복되는 전화번호가 존재합니다.");
+          }
         }}
         buttonType={BUTTON_TYPE.primary}
       />
