@@ -41,6 +41,7 @@ export default function Page() {
         onClick={async () => {
           try {
               await updateprofile({ nickname, phoneNum: phoneNumber })
+              alert("수정이 완료되었습니다.")
           reload()
           } catch (error) {
               console.log('error!!', error);
