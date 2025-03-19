@@ -43,7 +43,7 @@ export default function Page() {
               await updateprofile({ nickname, phoneNum: phoneNumber })
           reload()
           } catch (error) {
-              console.log('error', error);
+              console.log('error!!', error);
               alert("이미 중복되는 전화번호가 존재합니다.");
           }
         }}
