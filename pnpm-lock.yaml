@@ -139,7 +139,7 @@ importers:
         specifier: 15.1.0
         version: 15.1.0(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)
       postcss:
-        specifier: ^8
+        specifier: ^8.4.49
         version: 8.4.49
       slick-carousel:
         specifier: ^1.8.1
