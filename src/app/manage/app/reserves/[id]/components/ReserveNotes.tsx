@@ -4,6 +4,7 @@ import { ReserveDetailDto, writeNote } from '@/app/manage/api/reserve'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import GradientTitle from '@/components/common/GradientTitle'
 import Input from '@/components/common/Input'
+import { TeacherReserveHistoryDto } from '@/types/api'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -11,15 +12,12 @@ const ReserveNotes = ({
   detail,
   reload,
 }: {
-  detail: ReserveDetailDto | null
+  detail: TeacherReserveHistoryDto | undefined
   reload: () => void
 }) => {
   const [value, setValue] = useState('')
   const reserveId = usePathname().split('/').pop() as string
 
-  useEffect(() => {
-    setValue(detail?.reserveNote ?? '')
-  }, [detail])
   return (
     <div className="w-full inline-flex flex-col gap-2">
       <GradientTitle title="고객과의 상담 노트" />

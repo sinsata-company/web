@@ -9,31 +9,34 @@ import ReserveHistory from './components/ReserveHistory'
 import ReserveReview from './components/ReserveReview'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { getReserveInfo, ReserveDetailDto } from '@/app/manage/api/reserve'
+import { basicGet } from '@/api/base'
+import { useQuery } from '@tanstack/react-query'
+import { TeacherReserveHistoryDto } from '@/types/api'
+
+const api = (reserveId: string): Promise<TeacherReserveHistoryDto> => basicGet(`/reserve/history/${reserveId}`) as any;
 
 export default function Page() {
-  const [detail, setDetail] = useState<ReserveDetailDto | null>(null)
   const reserveId = usePathname().split('/').pop() as string
-  console.log(reserveId)
 
-  useEffect(() => {
-    reload()
-  }, [])
-  const reload = async () => {
-    const detail = await getReserveInfo(reserveId)
-    setDetail(detail)
-  }
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['reserve', reserveId],
+    queryFn: () => api(reserveId),
+  });
+
+  const reload = () => refetch();
+
+  console.log(data);
 
   return (
     <div>
       <BackAppbar />
-      <ReserveSummary detail={detail} />
+      <ReserveSummary detail={data} />
       <GreyDivider />
       <div className="inline-flex gap-5 flex-col px-5 w-full mb-24">
-        <ReserveStats detail={detail} />
-        <ReserveNotes detail={detail} reload={reload} />
-        <ReserveHistory detail={detail} />
-        <ReserveReview detail={detail} />
+        <ReserveStats detail={data} />
+        <ReserveNotes detail={data} reload={refetch} />
+        <ReserveHistory detail={data} />
+        <ReserveReview detail={data} />
       </div>
     </div>
   )
