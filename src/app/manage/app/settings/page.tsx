@@ -154,7 +154,7 @@ export default function Settings(){
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 gap-6 mb-6">
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-4">날짜 선택</h2>
             <div className="[&_button]:text-xl [&_td]:text-xl [&_th]:text-xl">

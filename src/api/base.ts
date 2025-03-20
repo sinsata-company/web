@@ -73,17 +73,39 @@ export async function basicUnpagedGet<T>(route: string): Promise<T> {
   }
 }
 
+export async function basicUnpagedGetForInquiry<T>(route: string): Promise<T> {
+  const url = `${BASE_URL}${route}`
+
+  const accessToken = getAccessToken()
+  const teacherToken = getTeacherToken()
+  const response = await axios.get(url, {
+    headers: {
+      'SST-ACCESS-TOKEN': `${accessToken}`,
+      'SST-TEACHER-TOKEN': `${teacherToken}`,
+    },
+  })
+
+  if (response.status == 200) {
+    const data = response.data
+    return data
+  } else {
+    throw '에러 발생'
+  }
+}
+
+
 export async function basicGet<T>(route: string): Promise<ApiResponse<T>> {
   const url = `${BASE_URL}${route}`
 
   // TODO jwt 갱신하거나 로그아웃 하는 방안
   const accessToken = getAccessToken()
+  const teacherToken = getTeacherToken()
   try {
     const response = await axios.get(url, {
       headers: {
         'Content-Type': 'application/json',
         'SST-ACCESS-TOKEN': accessToken || '',
-        'SST-TEACHER-TOKEN': accessToken || '',
+        'SST-TEACHER-TOKEN': teacherToken || '',
       },
       validateStatus: function (status) {
         return status < 500; // 500 미만의 상태 코드는 에러로 처리하지 않음

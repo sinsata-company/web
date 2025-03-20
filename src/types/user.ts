@@ -10,4 +10,5 @@ export interface UserDto {
   isParticipatedEvent: boolean
   createdAt: string
   likedTeachers: Array<any>;
+  profileImage: string
 }

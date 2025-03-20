@@ -4,6 +4,11 @@ import { getCanStatus } from '@/app/manage/api/teacher'
 import Switch from '@/components/common/Switch'
 import { useEffect, useState } from 'react'
 
+interface StatusResult {
+  canCall: boolean;
+  canChat: boolean;
+}
+
 const AdviseStatus = () => {
   const [call, setCall] = useState<boolean>(false)
   const [chat, setChat] = useState<boolean>(false)
@@ -13,7 +18,7 @@ const AdviseStatus = () => {
   }, [])
 
   const getStatus = async () => {
-    const result = await getCanStatus()
+    const result = await getCanStatus() as StatusResult
     console.log(result)
     setCall(result.canCall)
     setChat(result.canChat)
