@@ -1,21 +1,11 @@
 import { useState } from 'react'
 
-const faqs = [
-  {
-    question: '상담시 내담자가 어떤 정보를 드려야 하나요?',
-    answer: '선생님께 본인의상황을 설명해주시면 됩니다',
-  },
-  {
-    question: '선생님과 상담 받을때  주의 해야 할점이 있나요?',
-    answer: '선생님께 예의를 지켜주시고 거짓없는 대화를 해주심 됩니다',
-  },
-  {
-    question: '선생님의 자신있는 상담분야는 무엇인가요?',
-    answer: '연애관련부분에 있어서 디테일하게 풀어드립니다',
-  },
-]
+export interface Faqs {
+  question: string;
+  answer: string;
+}
 
-export default function AdviceQnA() {
+export default function AdviceQnA({ faqs }: { faqs: Faqs[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const toggleFAQ = (index: number) => {

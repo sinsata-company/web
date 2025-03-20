@@ -32,7 +32,8 @@ export interface TeacherDetailDto {
   canChat: boolean
   canCall: boolean
   notice: string
-  noticeImgURI: string
+  noticeImgURI: string,
+  qna: { question: string, answer: string }[];
   menu: string
   reviews: any[]
   pinNumber: string

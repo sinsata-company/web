@@ -43,6 +43,7 @@ export default function TeacherPage() {
         //@ts-ignore
         setAdvisor({
             ...response || {},
+            qna: (response?.qna) ? JSON.parse(response.qna as any) : [],
             selfLiked
         })
     }
@@ -120,7 +121,7 @@ export default function TeacherPage() {
                 <TeacherIntroduciton introduction={advisor?.introduction}/>
             </div>
             <div className="px-5 py-6">
-                <AdviceQnA/>
+                <AdviceQnA faqs={advisor?.qna || []} />
             </div>
         </div>
     )
