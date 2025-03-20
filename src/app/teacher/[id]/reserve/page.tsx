@@ -18,6 +18,7 @@ import { getUnavailableTimesForUser } from '@/app/api/teacher'
 import moment from 'moment'
 import { UnavailableTime } from '@/app/api/data'
 import TimeSelect from './components/TimeSelect'
+import Agreement from './components/Agreement'
 
 export default function TeacherReservePage() {
   const router = useRouter()
@@ -31,6 +32,7 @@ export default function TeacherReservePage() {
   const [reserveComplete, setReserveComplete] = useState<boolean>(false)
   const [unavailableTimes, setUnavailableTimes] = useState<UnavailableTime[]>([])
   const [now, setNow] = useState<Moment>(moment())
+  const [agreementChecked, setAgreementChecked] = useState<boolean>(false)
 
   useEffect(() => {
     getMyCash().then(setMyCash)
@@ -63,6 +65,11 @@ export default function TeacherReservePage() {
   })
 
   const handleReserve = async () => {
+    if (!agreementChecked) {
+      alert('예약 취소 정책에 동의해주세요.')
+      return
+    }
+
     if (!selectedDate || !selectedTime) return
 
     const payamt = selectedHour === 15 ? 25000 : selectedHour === 30 ? 40000 : 90000
@@ -150,14 +157,18 @@ export default function TeacherReservePage() {
       <GreyDivider />
       <ReserveTypeSelector selectedType={type} setSelectedType={setType} />
       <GreyDivider />
-
       <ReserveCashSummary
         selectedHour={selectedHour}
         myCash={myCash}
         selectedTime={selectedTime}
       />
-      <div className="h-6"></div>
-      <div className="px-4 py-12">
+      <GreyDivider />
+      <Agreement 
+        isChecked={agreementChecked}
+        onCheckedChange={setAgreementChecked}
+      />
+      <GreyDivider />
+      <div className="px-4 py-4">
         <Button
           onClick={handleReserve}
           buttonType={BUTTON_TYPE.primary}

@@ -1,3 +1,4 @@
+import { basicDelete } from '@/api/base'
 import { ChatDto } from '@/app/api/data'
 import ChatStatus from '@/app/chats/components/ChatStatus'
 import { endChat } from '@/app/manage/api/homepage'
@@ -9,6 +10,26 @@ const ChatSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMe
   if (!chat) return null
   const { teacherName, teacherProfile, startAt, endAt, status } = chat
   const router = useRouter()
+  const isReserv = status === 'RESERVE';
+
+  const cacelReserv = async () => {
+    await basicDelete(`/reserve/${chat.reserveId}`);
+  }
+
+  const cancelReservation = async () => {
+    try {
+      if (!isReserv) return;
+      await cacelReserv();
+      alert("예약이 취소되었습니다.");
+      router.back();
+    } catch (error: any) {
+      if (error?.message) {
+        alert(error.message);
+        return;
+      }
+      alert("예약 취소가 실패하였습니다.");
+    }
+  };
 
   return (
     <div className="flex justify-between items-center w-full border-b-2 border-neutral-200">
@@ -27,27 +48,37 @@ const ChatSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMe
         </div>
       </div>
       <div>
-        {status === 'PROGRESS' ? (
+        {isReserv && (
           <div className="w-[120px] mr-4">
-            <Button
-              label="채팅 종료"
-              onClick={async () => {
-                await endChat(chat.roomId);
-                sendEndMessage && sendEndMessage();
-                router.back()
-              }}
-              buttonType={BUTTON_TYPE.primary}
-            />
-          </div>
-        ) : (
-          <Image
-            src={teacherProfile ?? '/logo.jpg'}
-            width={120}
-            height={80}
-            alt="profile"
-            className="rounded-xl w-30 h-20 object-contain"
+          <Button
+            label="예약 취소"
+            onClick={cancelReservation}
+            buttonType={BUTTON_TYPE.primary}
           />
+        </div>
         )}
+
+        {status === 'PROGRESS' && (
+          <div className="w-[120px] mr-4">
+          <Button
+            label="채팅 종료"
+            onClick={async () => {
+              await endChat(chat.roomId);
+              sendEndMessage && sendEndMessage();
+              router.back()
+            }}
+            buttonType={BUTTON_TYPE.primary}
+          />
+        </div>
+        )}
+        
+        <Image
+          src={teacherProfile ?? '/logo.jpg'}
+          width={120}
+          height={80}
+          alt="profile"
+          className="rounded-xl w-30 h-20 object-contain"
+        />
       </div>
     </div>
   )

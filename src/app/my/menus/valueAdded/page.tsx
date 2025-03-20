@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { createInquiryChat, startInstantChat } from '@/app/api/chat'
 
 
 
@@ -97,9 +98,10 @@ export default function Page() {
           <div className="flex flex-row gap-2">
             <Button
               label="채팅문의"
-              onClick={() => {
+              onClick={async () => {
                 setIsOpen(false);
-                router.push(`/chats/inquiry`);
+                const result = await createInquiryChat(selectedVa?.teacherId ?? '', selectedVa?.id.toString() ?? '')
+                router.push(`/chats/inquiry/${result?.roomId}`)
               }}
               buttonType={BUTTON_TYPE.primary}
               className="flex-1"

@@ -1,3 +1,6 @@
+import { basicGet, basicPost } from "@/api/base"
+import { UserDto } from "@/types/user"
+
 export interface TeacherListDto {
   id: string
   name: string
@@ -167,4 +170,138 @@ export interface UnavailableTime {
   teacherId: number;
   date: string;
   time: string;
+}
+
+export interface ProductInquiryMessage {
+  id: string;
+  message: string;
+  authorId: string;
+  isConsultant: boolean;
+  nickname: string;
+  createdAt: string;
+  productId?: string;
+  productName?: string;
+}
+
+export interface UserLevel {
+  id: number;
+  name: string;
+  level: number;
+}
+
+export interface ChatStatus {
+  code: string;
+  name: string;
+}
+
+export interface InquiryStatus {
+  code: string;
+  name: string;
+}
+
+export interface TeacherChatInquiryItem {
+  id: string;
+  type: 'CHAT' | 'INQUIRY';
+  userId: string;
+  userName: string;
+  userLevel: UserLevel;
+  createdAt: string;
+  
+  // Chat 관련 필드
+  roomId?: string;
+  chatStatus?: ChatStatus;
+  lastMessage?: string;
+  startAt?: string;
+  endAt?: string;
+  reserveId?: number;
+  unreadCount?: number;
+  
+  // Inquiry 관련 필드
+  inquiryContent?: string;
+  inquiryStatus?: string;
+}
+
+export interface TeacherChatInquiryDto {
+  id: string;
+  type: 'CHAT' | 'INQUIRY';
+  userId: string;
+  userName: string;
+  users: UserDto;
+  userLevel: string;
+  products: VaProductDto;
+  createdAt: string;
+  
+  // Chat 관련 필드
+  roomId?: string;
+  chatStatus?: ChatStatus;
+  lastMessage?: string;
+  startAt?: string;
+  endAt?: string;
+  reserveId?: number;
+  
+  // Inquiry 관련 필드
+  inquiryContent?: string;
+  inquiryStatus?: string;
+  
+  // 통계 필드
+  totalUnreadCount: number;
+  totalPendingCount: number;
+  items: TeacherChatInquiryItem[];
+}
+
+export interface VaProductDto {
+  id: string;
+  productName: string;
+  price: number;
+  productImage: string;
+}
+
+export interface CutomerChatInquiryDto {
+  id: string;
+  type: 'CHAT' | 'INQUIRY';
+  userId: string;
+  userName: string;
+  teacherProfileImage: string;
+  title: string;
+  inquiryNumber: string;
+  unreadCount: number;
+  createdAt: string;
+  teachers: Teachers;
+  products : VaProductDto;
+  status: 'PENDING' | 'CONFIRMED';
+}
+
+export interface InquiryResponseDto {
+  id: number;
+  teacherId: string;
+  userId: string;
+  userContent: string;
+  teacherContent: string | null;
+  status: string;
+  createdAt: string;
+}
+
+// API 호출 함수
+export const getInquiryList = async (): Promise<TeacherChatInquiryDto> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inquiries`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('sst-access-token')}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch inquiry list');
+  }
+
+  return response.json();
+};
+
+// 선생님 자신이 참여한 모든 채팅 목록 조회
+export const getTeacherAll = async () => {
+  return await basicGet<TeacherChatInquiryDto>(`/chats/teacher/all`);
+};
+
+// 고객이 자신이 참여한 모든 채팅 목록 조회
+export const getCustomerAll = async () => {
+  return await basicGet<CutomerChatInquiryDto>(`/chats/customer/all`);
 }

@@ -10,6 +10,7 @@ export default {
   theme: {
   	extend: {
   		colors: {
+			'sinsata-blue': '#7595ec',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

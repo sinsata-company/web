@@ -18,7 +18,6 @@ export default function MyChat({
   isContinued,
   isTeacher,
 }: IMyChat) {
-  console.log(isTeacher)
   const path = usePathname()
 
   return (
@@ -26,8 +25,8 @@ export default function MyChat({
       <div className="flex flex-col justify-end items-end ">
         {!isTeacher && !isContinued && (
           <div className="flex items-center text-zinc-900 text-sm font-bold">
-            <UserLevelIcon level={user?.level ?? ''} />
-            {path.includes('group') ? user?.nickname : user?.name}
+            {/* <UserLevelIcon level={user?.level ?? ''} />
+            {path.includes('group') ? user?.nickname : user?.name} */}
           </div>
         )}
         <div className="h-10 shrink px-3 py-2 bg-blue-800 rounded-xl justify-end items-center gap-2.5 inline-flex">

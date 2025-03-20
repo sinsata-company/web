@@ -50,9 +50,9 @@ const MenuOptions = () => {
       },
     },
     {
-      label: '채팅상담',
+      label: '1:1문의',
       onClick: () => {
-        router.push('/chats')
+        router.push('/chats/inquiry/list')
       },
     },
     {

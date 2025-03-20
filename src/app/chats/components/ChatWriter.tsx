@@ -16,7 +16,6 @@ export default function ChatWriter({
     actionButton?: React.ReactNode
     disabled?: boolean
 }) {
-    console.log(disabled)
     const expire = window.localStorage.getItem('sst-access-token-expire-at')
     const teacherExpire = window.localStorage.getItem('sst-teacher-token-expire-at')
     const isLogin =
@@ -48,7 +47,7 @@ export default function ChatWriter({
                     disabled={disabled || !isLogin}
                     onKeyUp={(e) => {
                         if (e.key == 'Enter') {
-                            sendMessage()
+                            sendMessage('')
                             setMessage('')
                         }
                     }}

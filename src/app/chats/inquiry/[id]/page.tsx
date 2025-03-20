@@ -4,24 +4,24 @@ import CategoryContainer from '@/app/home/components/CategoryContainer'
 import BackAppbar from '@/components/common/BackAppbar'
 import {useEffect, useRef, useState} from 'react'
 import * as StompJs from '@stomp/stompjs'
-import {usePathname, useRouter} from 'next/navigation'
+import {useParams, usePathname, useRouter} from 'next/navigation'
 import {v4 as uuidv4} from 'uuid'
 import {UserDto} from '@/types/user'
 import {getMyInfo} from '@/app/api/user'
-import {ChatDto, IMessage} from '@/app/api/data'
+import {ChatDto, IMessage, TeacherDetailDto} from '@/app/api/data'
 import {chatMessages, getChatDetail} from '@/app/api/chat'
 import ChatWriter from '@/app/chats/components/ChatWriter'
-import PrivateChatScreen from '@/app/chats/private/[id]/components/PrivateChatScreen'
-import ChatSummary from '@/app/chats/private/[id]/components/ChatSummary'
-import UserSummary from './components/UserSummary'
+import PrivateChatScreen from '@/app/chats/inquiry/[id]/product/components/PrivateChatScreen'
+import ChatSummary from '@/app/chats/inquiry/[id]/product/components/ChatSummary'
 import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import {startChat} from '@/app/manage/api/homepage'
 import {BASE_WS} from '@/api/base'
+import {getTeacherDetail} from '@/app/api/teacher'
 
 export default function Page() {
     const [message, setMessage] = useState<string>('')
     const [myId, setMyId] = useState<string>('')
-
+    const [teacherInfo, setTeacherInfo] = useState<TeacherDetailDto | null>(null)
     const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
     const [user, setUser] = useState<UserDto | null>(null)
     const [chat, setChat] = useState<ChatDto | null>(null)
@@ -29,7 +29,8 @@ export default function Page() {
     const client = useRef<StompJs.Client>(null)
     const roomId = usePathname().split('/').pop() as string
     const router = useRouter()
-
+    const param = useParams()
+    const teacherId = param.id as string
     useEffect(() => {
         initialize()
     }, [])
@@ -38,11 +39,21 @@ export default function Page() {
         const user = await getMyInfo()
         const chat = await getChatDetail(roomId)
         const prevMessages = await chatMessages(roomId);
-        console.log('user', user);
+        
         setUser(user)
         setChat(chat)
         setMyId(user.userId);
         setReceivedMessages(prevMessages as Array<IMessage>)
+
+        // teacherId가 있는 경우 선생님 정보 조회
+        if (teacherId) {
+            try {
+                const teacherResponse = await getTeacherDetail(teacherId)
+                setTeacherInfo(teacherResponse)
+            } catch (error) {
+                console.error('Failed to fetch teacher info:', error)
+            }
+        }
     }
 
     const sendMessage = () => {
@@ -150,7 +161,11 @@ export default function Page() {
     //
     return (
         <div className="w-full h-full relative">
-            <UserSummary chat={chat} sendEndMessage={sendEndMessage}/>
+            <BackAppbar/>
+            <ChatSummary 
+                chat={chat} 
+                sendEndMessage={sendEndMessage}
+            />
             <PrivateChatScreen
                 chat={chat}
                 user={user}
