@@ -18,7 +18,7 @@ export const getPayURL = async (
           &membnm=${user.name}
           &item=신사타 코인 ${amount}원
           &oid=${timestamp}
-          &returnurl=${BASE_URL}/cash/returnUrl
+          &returnurl=${BASE_URL}/chats/inquiry/list 
           &formurl=${BASE_URL}/mtn/complete`
   return mtonetUrl.replace(/\s/g, '')
 }

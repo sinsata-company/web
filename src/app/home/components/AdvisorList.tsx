@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import {useRouter} from 'next/navigation'
 import {TeacherListDto} from '@/app/api/data'
-import {forwardRef, useEffect, useState} from 'react'
+import {forwardRef, useEffect, useState, useRef} from 'react'
 import Modal from '@/components/common/Modal'
 import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import {startInstantChat} from '@/app/api/chat'
@@ -22,6 +22,42 @@ export default function AdvisorList({
 }) {
     const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
     const [advisor, setAdvisor] = useState<TeacherListDto | null>(null)
+    const router = useRouter()
+    const scrollRef = useRef(0);
+
+    // 스크롤 위치 저장
+    useEffect(() => {
+        let isBack = false;
+        
+        const handlePopState = () => {
+            isBack = true;
+        };
+
+        const handleScroll = () => {
+            if (!isBack) {  // 뒤로가기가 아닐 때만 스크롤 위치 저장
+                scrollRef.current = window.scrollY;
+                sessionStorage.setItem('advisor-scroll', String(scrollRef.current));
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        window.addEventListener('scroll', handleScroll);
+        
+        // 뒤로가기로 왔을 때만 스크롤 복원
+        if (window.performance && window.performance.navigation.type === 2) {
+            const savedScroll = sessionStorage.getItem('advisor-scroll');
+            if (savedScroll) {
+                requestAnimationFrame(() => {
+                    window.scrollTo(0, parseInt(savedScroll));
+                });
+            }
+        }
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const onClickPhone = (advisor: TeacherListDto) => {
         setAdvisor(advisor)
@@ -32,7 +68,11 @@ export default function AdvisorList({
 
     };
 
-    const router = useRouter()
+    const handleItemClick = (id: string) => {
+        // 페이지 이동 전 현재 스크롤 위치 저장
+        sessionStorage.setItem('advisor-scroll', String(scrollRef.current));
+        router.push(`/teacher/${id}`);
+    };
 
     return (
         <div className="inline-flex flex-col gap-2.5 w-full text-sm">
@@ -106,7 +146,8 @@ export default function AdvisorList({
                                     setIsPhoneModalOpen(false)
                                 }}
                                 buttonType={BUTTON_TYPE.primary}
-                                label={<span className="text-xl font-bold">070-8016-9122</span>}
+                                label={<span className="text-lg font-bold">070-8016-9122</span>}
+                                className="w-64"
                             />
                         </div>
                     </div>
@@ -133,7 +174,8 @@ export default function AdvisorList({
                                     setIsPhoneModalOpen(false)
                                 }}
                                 buttonType={BUTTON_TYPE.primary}
-                                label={<span className="text-xl font-bold">060-500-8744</span>}
+                                label={<span className="text-lg font-bold">060-500-8744</span>}
+                                className="w-64"
                             />
                         </div>
                     </div>
@@ -159,7 +201,8 @@ export default function AdvisorList({
                                     router.push(`/chats/private/${result.chatRoomId}`)
                                 }}
                                 buttonType={BUTTON_TYPE.primary}
-                                label={<span className="text-xl font-bold">채팅상담 시작하기</span>}
+                                label={<span className="text-lg font-bold">채팅상담 시작하기</span>}
+                                className="w-64"
                             />
                         </div>
                     </div>
@@ -234,50 +277,41 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 <div className="flex-basis relative">
                     <Image
                         onClick={handleItemClick}
-                        style={{objectFit: 'cover', minWidth: '120px', minHeight: '96px'}}
-                        className="rounded-xl w-[120px] h-24 cursor-pointer"
+                        style={{objectFit: 'cover', minWidth: '100px', minHeight: '80px'}}
+                        className="rounded-xl w-[100px] h-20 cursor-pointer"
                         src={thumbnail || '/logo.jpg'}
                         placeholder="blur"
                         blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-                        width={120}
-                        height={96}
+                        width={100}
+                        height={80}
                         alt="profile"
                     />
                     <TeacherTypeLabel teacherType={teacherType}/>
                 </div>
 
-                <div className="pl-2 flex flex-col justify-between grow overflow-hidden">
-                    <div className=" items-center flex justify-between w-full cursor-pointer" onClick={handleItemClick}>
-                        <div className="overflow-hidden">
-                            {/* 선생님 이름 & 해쉬태그 */}
-                            <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-                                <div
-                                    className="font-extrabold leading-tight text-lg
-                  whitespace-nowrap overflow-hidden text-ellipsis max-w-full
-                  "
-                                >
-                                    {name?.replace(' 선생님', '')}
-                                </div>
-                                <span
-                                    className="
-                  leading-none text-indigo-400 text-sm font-bold
-                  whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
-                                >
-                  {hashtag}
-                </span>
-                            </div>
-                        </div>
-                        <Image
-                            onClick={handlePhoneClick}
-                            src={'/images/status_ready.svg'}
-                            width={120}
-                            height={40}
-                            alt="call"
-                            className="w-24 h-10"
-                        />
+                <div className="pl-4 flex flex-col justify-between grow overflow-hidden">
+                        <div className="items-center flex justify-between w-full cursor-pointer" onClick={handleItemClick}>
+                <div className="overflow-hidden">
+                    <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                    <div className="font-bold leading-tight text-base whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                        {advisor?.name?.replace(' 선생님', '')}
                     </div>
+                    <span className="leading-none text-indigo-500 text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                        {advisor?.hashtag}
+                    </span>
+                    </div>
+                </div>
+                <Image
+                    onClick={handlePhoneClick}
+                    src={'/images/status_ready.svg'}
+                    width={80}
+                    height={32}
+                    alt="call"
+                    className="w-20 h-8"
+                />
+                </div>
 
-                    <div className="flex justify-between items-center w-full">
+                    <div className="flex justify-between items-center w-full mt-2">
                         {/* 요금표 */}
                         <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
                             {!!menuObj && menuObj.slice(0, 2).map(([key, value]: [key: string, value: number],  index:number) => (

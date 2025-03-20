@@ -10,7 +10,7 @@ const Btb = () => {
       <div className="w-[550px] max-w-full">
         <div className="h-16 px-5 py-2.5 bg-white shadow flex justify-between items-center">
           <BTBItem name="홈" image="home" />
-          <BTBItem name="검색" image="search" />
+          <BTBItem name="찜목록" image="heart" />
           <BTBItem name="채팅" image="chats" />
           <BTBItem name="My" image="my" />
         </div>

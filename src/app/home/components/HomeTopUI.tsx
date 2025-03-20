@@ -31,13 +31,13 @@ const BannersAndStatics = () => {
     }
   }, [])
   return (
-    <div className="relative h-[200px]">
-      <div className="absolute top-[-50px] left-0 w-full h-80 ">
+    <div className="relative h-[180px]">
+      <div className="absolute top-[-80px] left-0 w-full h-80 ">
         <div
           style={{
             width: 'calc(100% - 2rem)',
           }}
-          className="mx-4  py-4 bg-white rounded-2xl flex-col justify-start items-center gap-4 inline-flex"
+          className="mx-4 py-2 bg-white rounded-2xl flex-col justify-start items-center gap-2 inline-flex"
         >
           <CategoryContainer
             onClick={(e: string) => {
@@ -45,21 +45,21 @@ const BannersAndStatics = () => {
             }}
           />
           <div className="self-stretch h-px bg-gray-200"></div>
-          <div className="justify-start items-center gap-6 inline-flex">
+          <div className="justify-start items-center gap-4 inline-flex py-1">
             <Image
               onClick={() => {
                 router.push('/chats/group/sinjeom')
               }}
               src={`/images/group-chat-button.svg`}
               alt="group-chat"
-              width={40}
-              height={40}
-              className="h-6 w-full cursor-pointer"
+              width={24}
+              height={24}
+              className="h-5 w-full cursor-pointer"
             />
           </div>
         </div>
 
-        <div className="mt-6 flex px-4 items-stretch justify-between gap-4">
+        <div className="mt-2 flex px-3 items-stretch justify-between gap-3 text-xs">
           <StaticItem label="누적 상담 건수" data={`${Number(info?.reservations || '0').toLocaleString()}건`} />
           <StaticItem label="현재 접속 상담사" data={`${Number(info?.teachers || '0').toLocaleString()}명`} />
         </div>

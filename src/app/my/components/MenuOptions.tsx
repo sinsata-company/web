@@ -90,22 +90,22 @@ const MenuOptions = () => {
   const router = useRouter()
 
   return (
-    <div className="w-full flex-col justify-start items-start inline-flex">
-      <div className="grid grid-cols-4 gap-4 w-full my-6">
+    <div className="w-full px-2.5 py-1.5">
+      <div className="grid grid-cols-4 gap-1.5 w-full">
         {menus.map((item, index) => (
           <div
             onClick={item.onClick}
             key={index}
-            className="cursor-pointer flex flex-col items-center"
+            className="cursor-pointer flex flex-col items-center py-1.5 hover:bg-gray-50 rounded transition-colors"
           >
             <Image
               src={`/images/Property 1=${index + 1}.svg`}
               alt={`Property ${index}`}
-              className="w-12 h-12"
+              className="w-6 h-6 mb-0.5"
               width={24}
               height={24}
             />
-            <div className="text-center text-neutral-800 text-lg font-semibold ">
+            <div className="text-center text-neutral-900 text-sm">
               {item.label}
             </div>
           </div>

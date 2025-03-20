@@ -19,13 +19,15 @@ const tabs = [
 export default function AdvisorSort(props: {
   getTeachers: (query: SearchType, page: number) => void
   page: number
+  path?: string
 }) {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <div className="relative w-full flex justify-between items-center px-2">
-      <div className="text-neutral-800 text-xl font-bold ">
-        상담 가능한 선생님
+    <div className={`relative w-full flex justify-between items-center px-2 
+      ${props.path && props.path.includes('heart') ? 'mt-0' : 'mt-[-75px]'}`}>
+      <div className="text-neutral-800 text-xl tracking-tight font-extrabold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+        {props.path && props.path.includes('heart') ? '찜한 선생님' : '상담 가능한 선생님'}
       </div>
       <Select
         options={tabs.map((tab, index) => ({
@@ -48,15 +50,16 @@ export default function AdvisorSort(props: {
           label: tabs[activeTab].name,
           index: activeTab,
         }}
-        classNamePrefix="react-select text-neutral-400 font-semibold"
+        classNamePrefix="react-select text-neutral-500"
         isSearchable={false}
         styles={{
           control: (base) => ({
             ...base,
-            color: '#a3a3a3',
+            color: '#525252',
             border: 'none',
             boxShadow: 'none',
-
+            fontWeight: '600',
+            fontSize: '0.95rem',
             '&:hover': {
               boxShadow: 'none',
             },
@@ -68,10 +71,21 @@ export default function AdvisorSort(props: {
             ...base,
             display: 'flex',
             alignItems: 'center',
+            fontWeight: '600',
+            color: '#525252',
             '&::before': {
               content: '""',
               display: 'block',
               width: 0,
+            },
+          }),
+          option: (base, state) => ({
+            ...base,
+            fontWeight: '600',
+            backgroundColor: state.isSelected ? '#f3f4f6' : 'white',
+            color: '#525252',
+            '&:hover': {
+              backgroundColor: '#f9fafb',
             },
           }),
         }}

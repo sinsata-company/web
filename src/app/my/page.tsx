@@ -34,44 +34,46 @@ export default function MyPage() {
   const router = useRouter()
 
   return (
-    <div className="h-screen">
+    <div className="h-screen bg-gray-50">
       <MainAppbar />
       {!isLogin ? (
-        <div className="px-4">
+        <div className="px-3">
           <SuggestLogin label="내 정보를 보기" />
         </div>
       ) : (
-        <>
+        <div className="max-w-screen-md mx-auto">
           <Membership
             level={me?.level ?? ''}
             nickname={me?.nickname ?? ''}
             createdAt={me?.createdAt ?? ''}
           />
-          <CashSummary />
-          <div className="h-4"></div>
-          <MenuOptions />
-          <TextSize />
-          <ApplyCsl />
-          {/* <MyTabContainer /> */}
-          {isLogin && (
-            <div>
-              <div className="flex justify-end px-4">
-                <button
-                  className=" text-gray-400 text-sm py-2 px-4 rounded"
-                  onClick={() => {
-                    // Handle 회원탈퇴 logic here
-                    localStorage.clear()
-                    router.push('/register')
-                  }}
-                >
-                  로그아웃
-                </button>
-              </div>
+          <div className="px-3">
+            <CashSummary />
+            <div className="h-3"></div>
+            <div className="bg-white rounded-lg shadow-sm">
+              <MenuOptions />
+              <TextSize />
+              <ApplyCsl />
             </div>
-          )}
-        </>
+            {isLogin && (
+              <div className="mt-4">
+                <div className="flex justify-end">
+                  <button
+                    className="text-gray-500 text-xs py-1.5 px-3 hover:text-gray-700"
+                    onClick={() => {
+                      localStorage.clear()
+                      router.push('/register')
+                    }}
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       )}
-      <div className="h-16"></div>
+      <div className="h-14"></div>
       <BTB />
     </div>
   )

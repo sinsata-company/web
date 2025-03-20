@@ -25,9 +25,9 @@ const Membership = ({
 }) => {
   const router = useRouter()
   return (
-    <div className="mb-4">
+    <div className="mb-2">
       {!level ? (
-        <div className="px-4 my-4">
+        <div className="px-3 my-3">
           <Button
             onClick={() => {
               router.push('/register')
@@ -38,29 +38,28 @@ const Membership = ({
         </div>
       ) : (
         <>
-          <div className="p-4 flex  items-center w-full">
+          <div className="p-3 flex items-center w-full bg-white shadow-sm rounded-lg">
             <Image
               src={`/images/membership/${level}.png`}
               alt="level"
-              width={48}
-              height={48}
+              width={36}
+              height={36}
+              className="object-contain"
             />
-            <div className="flex-col ml-3">
-              <div className="text-zinc-900 text-lg font-bold ">{nickname}</div>
-              <div className="text-zinc-500 text-lg font-bold ">
-                {moment(createdAt).format('YYYY.MM.DD')}가입
+            <div className="flex-col ml-2.5">
+              <div className="text-zinc-900 text-base font-medium">{nickname}</div>
+              <div className="text-zinc-500 text-sm">
+                {moment(createdAt).format('YYYY.MM.DD')} 가입
               </div>
             </div>
-            <div
+            <button
               onClick={() => {
                 router.push('/my/menus/profile')
               }}
-              className="cursor-pointer ml-auto px-5 py-2 bg-gray-200 rounded-md justify-center items-center inline-flex"
+              className="cursor-pointer ml-auto px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-sm text-gray-700 transition-colors"
             >
-              <div className="text-center text-neutral-800 text-md font-semibold ">
-                수정
-              </div>
-            </div>
+              수정
+            </button>
           </div>
         </>
       )}

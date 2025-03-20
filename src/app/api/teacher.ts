@@ -20,6 +20,15 @@ export const getTeacherList = async (searchType: SearchType, page: number) => {
   return data
 }
 
+export const getTeacherLikeList = async (searchType: SearchType, page: number) => {
+  const response = await basicGet(
+    `/teachers/liked?method=${searchType}&page=${page}`
+  )
+  const data = response as PageRes<TeacherListDto>
+  return data
+}
+
+
 export interface summary {
   teachers: number
   reservations: number
@@ -84,5 +93,11 @@ export const saveUnavailableTimes = async (
     action 
   })
   const data = response as string
+  return data
+}
+
+export const getMyLikeTeachers = async () => {
+  const response = await basicGet('/liked_teachers/myLikeTeachers')
+  const data = response as TeacherListDto[]
   return data
 }

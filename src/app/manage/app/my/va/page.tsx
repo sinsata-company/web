@@ -1,7 +1,7 @@
 'use client'
 
 import { VaDto } from '@/app/api/data'
-import { getVas } from '@/app/manage/api/mypage'
+import { getVas, deleteVas } from '@/app/manage/api/mypage'
 import BackAppbar from '@/components/common/BackAppbar'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Image from 'next/image'
@@ -22,6 +22,13 @@ export default function Page() {
   const handleEdit = (va: VaDto) => {
     const editData = encodeURIComponent(JSON.stringify(va))
     router.push(`/manage/app/my/va/input?editData=${editData}`)
+  }
+
+  const handleDelete = (id: number) => {
+    console.log('id', id)
+    deleteVas(id).then((res) => {
+      setVa(va.filter((v) => v.id !== id))
+    })
   }
 
   return (
@@ -59,10 +66,12 @@ export default function Page() {
                   className="min-w-[60px] px-2 text-xs"
                 />
                 <Button
-                  label="문의채팅"
+                  label="삭제"
                   buttonType={BUTTON_TYPE.secondary}
                   onClick={() => {
-                    // TODO: 채팅 기능 구현
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                      handleDelete(v?.id || 0)
+                    }
                   }}
                   className="min-w-[60px] px-2 text-xs"
                 />

@@ -1,5 +1,5 @@
 import { TeacherListDto, VaDto, VaPayDto } from '@/app/api/data'
-import { basicTeacherGet, basicTeacherPost } from './base'
+import { basicTeacherDelete, basicTeacherGet, basicTeacherPost } from './base'
 
 export const getMySummary = async () => {
   const result = (await basicTeacherGet('/manage/my/info')) as TeacherListDto
@@ -85,6 +85,11 @@ export const getVas = async (): Promise<VaDto[]> => {
 
 export const getVasPay = async (): Promise<VaPayDto[]> => {
   const result = await basicTeacherGet<VaPayDto[]>('/manage/my/vapay')
+  return result
+}
+
+export const deleteVas = async (id: number) => {
+  const result = await basicTeacherDelete(`/manage/my/va/${id}`)
   return result
 }
 

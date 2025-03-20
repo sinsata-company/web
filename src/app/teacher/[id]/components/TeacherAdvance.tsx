@@ -12,24 +12,26 @@ export default function TeacherAdvance({
   return (
     <div className="w-full flex-col justify-start items-start gap-3 inline-flex">
       <div className="flex justify-between items-center w-full space-x-4">
-        <div className="text-black text-xl font-bold flex-shrink-0">상담사가 잘 하는 분야</div>
-        <Button
-            className="w-20 h-8 text-xs"
-            onClick={() => {
-                const teacherInfo = {
-                    id: advisor?.id,
-                    name: advisor?.name,
-                    teacherType: advisor?.teacherType,
-                    pinNumber: advisor?.pinNumber,
-                    profileImage: advisor?.images[0],
-                    category: advisor?.teacherType
-                }
-                const queryParams = encodeURIComponent(JSON.stringify(teacherInfo))
-                router.push(`/chats/inquiry/${advisor?.id}/note?info=${queryParams}`)
-            }}
-            buttonType={BUTTON_TYPE.primary}
-            label="1:1 문의"
-        />
+        <div className="text-black text-xl font-bold">상담사가 잘 하는 분야</div>
+        <div className="flex-shrink-0">
+          <Button
+              className="w-25 h-10 text-xs !min-w-0 !px-3"
+              onClick={() => {
+                  const teacherInfo = {
+                      id: advisor?.id,
+                      name: advisor?.name,
+                      teacherType: advisor?.teacherType,
+                      pinNumber: advisor?.pinNumber,
+                      profileImage: advisor?.images[0],
+                      category: advisor?.teacherType
+                  }
+                  const queryParams = encodeURIComponent(JSON.stringify(teacherInfo))
+                  router.push(`/chats/inquiry/${advisor?.id}/note?info=${queryParams}`)
+              }}
+              buttonType={BUTTON_TYPE.primary}
+              label="1:1 문의"
+          />
+        </div>
       </div>
       <div className="self-stretch text-zinc-900 text-xl    whitespace-pre-line">
         {advisor?.strongField}

@@ -4,7 +4,7 @@ import BTB from '@/components/common/Btb'
 import MainAppbar from '@/components/common/MainAppbar'
 import dynamic from 'next/dynamic'
 import { SearchProvider } from '@/components/common/SearchContext'
-
+import { useScrollRestoration } from '@/hooks/useScrollRestoration'
 const AdCarousel = dynamic(() => import('./components/AdCarousel'), {
   ssr: false,
 })

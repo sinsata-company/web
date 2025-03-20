@@ -4,6 +4,7 @@ import {Button, BUTTON_TYPE} from "@/components/common/Button";
 import {ChangeEvent, useEffect, useState} from "react";
 import Modal from "@/components/common/Modal";
 import {basicPost} from "@/api/base";
+import { deleteVas, getVas } from "@/app/manage/api/mypage";
 
 export default function Page() {
     const [showModal, setShowModal] = useState(false);
@@ -54,8 +55,26 @@ export default function Page() {
                     <Button
                         className="mt-2 h-[40px] bg-red-400"
                         label="탈퇴하기"
-                        onClick={() => {
-                            setShowModal(true);
+                        onClick={async () => {
+                            try {
+                                // 부가서비스 삭제
+                                const response = await getVas();
+                                const vaList = response;
+                                
+                                // 현재 사용자의 부가서비스가 있다면 삭제
+                                if (vaList && vaList.length > 0) {
+                                    for (const va of vaList) {
+                                        await deleteVas(va.id || 0);
+                                    }
+                                }
+
+                                // 기존 회원 탈퇴 로직
+                                setShowModal(true);
+                            } catch (error) {
+                                console.error('부가서비스 삭제 중 오류 발생:', error);
+                                // 에러가 발생하더라도 회원 탈퇴는 진행
+                                setShowModal(true);
+                            }
                         }}
                         buttonType={BUTTON_TYPE.dangerous}
                     />

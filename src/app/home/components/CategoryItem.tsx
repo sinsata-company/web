@@ -23,19 +23,21 @@ export default function CategoryItem({
         onClick && onClick(image)
       }}
       className={clsx(
-        'cursor-pointer grow  bg-white rounded-xl flex-col justify-center items-center gap-1 inline-flex'
+        'cursor-pointer grow bg-white rounded-md flex-col justify-center items-center gap-0.5 inline-flex p-1',
         // color
       )}
     >
-      <div className=" flex-col justify-start items-center gap-2.5 inline-flex">
-        <div className=" justify-center items-center inline-flex overflow-hidden">
+      <div className="flex-col justify-start items-center gap-1 inline-flex">
+        <div className="justify-center items-center inline-flex overflow-hidden">
           <Image
             src={`/images/category_${image}.svg`}
-            width={100}
-            height={100}
+            width={70}
+            height={50}
             alt="category"
+            className="w-[70px] h-[55px]"
           />
         </div>
+        <span className="text-xs font-medium"></span>
       </div>
     </div>
   )

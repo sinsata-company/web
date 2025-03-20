@@ -13,6 +13,7 @@ export default function GroupChatItem() {
       onClick={() => {
         router.push('/chats/group/sinjeom')
       }}
+      className="w-full py-5 text-xl font-semibold rounded-xl"
     />
   )
 }

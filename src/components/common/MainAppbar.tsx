@@ -28,14 +28,14 @@ export default function MainAppbar() {
           alt="lgoo"
         />
       </Link>
-      {/* <Link href={'/my/cash'}>
+      { <Link href={'/my/cash'}>
         <Image
           src={'/images/btb_search.svg'}
           width={24}
           height={24}
           alt="coupon"
         />
-      </Link> */}
+      </Link> }
       <div className="relative flex items-center">
         <input
           type="text"
