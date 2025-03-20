@@ -5,6 +5,7 @@ import KakaoScript from '@/components/common/KakaoScript'
 import { UsageFooter } from '@/components/common/BizFooter'
 import { AppProvider, useAppContext } from '@/context/AppContext'
 import LayoutChild from './layout-comp'
+import QueryProvider from '@/components/providers/QueryProvider'
 
 export const metadata: Metadata = {
   title: '신사타',
@@ -66,8 +67,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="w-full h-screen">
-      <LayoutChild>{children}</LayoutChild>
-      <KakaoScript />
+      <QueryProvider>
+        <LayoutChild>{children}</LayoutChild>
+        <KakaoScript />
+      </QueryProvider>
     </html>
   )
 }
