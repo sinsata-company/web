@@ -11,10 +11,10 @@ export default function TeacherAdvance({
 
   return (
     <div className="w-full flex-col justify-start items-start gap-3 inline-flex">
-      <div className="flex justify-between items-center w-full">
-        <div className="text-black text-xl font-bold">상담사가 잘 하는 분야</div>
+      <div className="flex justify-between items-center w-full space-x-4">
+        <div className="text-black text-xl font-bold flex-shrink-0">상담사가 잘 하는 분야</div>
         <Button
-            className="w-[70px] h-[38px] text-sm"
+            className="w-20 h-8 text-xs"
             onClick={() => {
                 const teacherInfo = {
                     id: advisor?.id,
