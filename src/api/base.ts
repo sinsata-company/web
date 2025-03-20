@@ -193,18 +193,23 @@ export async function basicDelete<T>(route: string): Promise<ApiResponse<T>> {
   // TODO jwt 갱신하거나 로그아웃 하는 방안
 
   //   const accessToken = ''
-  const accessToken = getAccessToken()
-  const response = await axios.delete(url, {
-    headers: {
-      'SST-ACCESS-TOKEN': `${accessToken}`,
-      'SST-TEACHER-TOKEN': `${accessToken}`,
-    },
-  })
+  try {
+    const accessToken = getAccessToken()
+    const response = await axios.delete(url, {
+      headers: {
+        'SST-ACCESS-TOKEN': `${accessToken}`,
+        'SST-TEACHER-TOKEN': `${accessToken}`,
+      },
+    })
+    return response.data
+  } catch (error: any) {
+    console.log({ error });
+    const errorResponse = (() => {
+      if (!error.response) return "예상치 못한 오류가 발생하였습니다.";
+      return error.response.data.message;
+    })();
 
-  if (response.status == 200) {
-    const data = response.data
-    return data
-  } else {
-    throw '에러 발생'
+    throw new Error(errorResponse);
   }
+
 }
