@@ -16,18 +16,27 @@ const nextConfig: NextConfig = {
         {
           source: '/',
           destination: '/home',
-          statusCode: 301,
-      },
+          permanent: true,
+        },
     ];
   },
 
   rewrites: async () => [
     {
-      source: '/v1/nid/me', // url이 source에 해당될 경우
+      source: '/v1/nid/me',
       destination:
-        'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code?client_id=jhsF1FFbQfwtnFulzCl4', // destination으로 redirect
+        'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code?client_id=jhsF1FFbQfwtnFulzCl4',
     },
   ],
+  
+  env: {
+    NEXT_PUBLIC_FRONTEND_URL: process.env.NODE_ENV === 'development' 
+      ? 'http://localhost:3000' 
+      : 'https://www.sinsata.co.kr',
+    NEXT_PUBLIC_API_URL: process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8080'
+      : 'https://api.sinsata.co.kr',
+  }
 }
 
 export default nextConfig

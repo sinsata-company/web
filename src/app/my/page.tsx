@@ -15,11 +15,15 @@ import { UserDto } from '@/types/user'
 import MenuOptions from './components/MenuOptions'
 import ApplyCsl from './components/ApplyCsl'
 import TextSize from './components/TextSize'
+import { useAppContext } from '@/context/AppContext'
 
 export default function MyPage() {
   const [isLogin, setIsLogin] = useState(true)
 
   const [me, setMe] = useState<UserDto | null>(null)
+
+  const context = useAppContext()
+  const { fontFamily, fontSize } = context || {}
 
   useEffect(() => {
     const token = (window.localStorage.getItem('sst-teacher-token') || window.localStorage.getItem('sst-access-token'))
@@ -34,14 +38,14 @@ export default function MyPage() {
   const router = useRouter()
 
   return (
-    <div className="h-screen bg-gray-50">
+    <div className={`h-screen bg-gray-50`}>
       <MainAppbar />
       {!isLogin ? (
         <div className="px-3">
           <SuggestLogin label="내 정보를 보기" />
         </div>
       ) : (
-        <div className="max-w-screen-md mx-auto">
+        <div className={`max-w-screen-md mx-auto ${fontFamily} [&_*]:${fontSize}`}>
           <Membership
             level={me?.level ?? ''}
             nickname={me?.nickname ?? ''}

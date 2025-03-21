@@ -5,10 +5,12 @@ import { formatNumberWithCommas } from '@/utils/numberFormatter'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useAppContext } from '@/context/AppContext'
 
 export default function CashSummary() {
   const router = useRouter()
   const [myCash, setMyCash] = useState<number>(0)
+  const { fontFamily, fontSize } = useAppContext() || {}
 
   useEffect(() => {
     getMyCashFc()
@@ -18,7 +20,7 @@ export default function CashSummary() {
     setMyCash(result)
   }
   return (
-    <div className="px-4">
+    <div className={`${fontFamily} [&_*]:${fontSize} px-4`}>
       <div className="w-full px-6 py-4 bg-indigo-400 rounded-lg justify-between items-center inline-flex">
         <div className="text-white  font-semibold ">보유중인 코인</div>
         <div className="justify-start items-center gap-6 flex">

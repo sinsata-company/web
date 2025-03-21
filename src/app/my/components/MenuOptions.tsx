@@ -4,6 +4,7 @@ import Modal from '@/components/common/Modal'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useAppContext } from '@/context/AppContext'
 
 export interface MenuProps {
   label: string
@@ -88,9 +89,10 @@ const MenuOptions = () => {
   ]
 
   const router = useRouter()
+  const { fontFamily, fontSize } = useAppContext() || {}
 
   return (
-    <div className="w-full px-2.5 py-1.5">
+    <div className={`${fontFamily} [&_*]:${fontSize} w-full px-2.5 py-1.5`}>
       <div className="grid grid-cols-4 gap-1.5 w-full">
         {menus.map((item, index) => (
           <div

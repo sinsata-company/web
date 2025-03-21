@@ -18,6 +18,7 @@ export default function InquiryList() {
     const fetchInquiries = async () => {
       try {
         const response = await getCustomerAll()
+        
         setInquiries(response as unknown as CutomerChatInquiryDto[])
         const user = await getMyInfo()
         setUser(user)
