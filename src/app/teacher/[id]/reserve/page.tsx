@@ -204,6 +204,7 @@ export default function TeacherReservePage() {
       >
         <div className="flex justify-end items-center gap-4">
           <Button
+            className="h-[42px]"
             onClick={() => {
               setReserveComplete(false)
               router.push('/my')

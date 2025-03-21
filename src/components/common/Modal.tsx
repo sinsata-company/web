@@ -20,7 +20,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="max-w-[500px] bg-white rounded-lg shadow-lg w-4/5 px-4 py-8">
+      <div className="max-w-[260px] md:max-w-[500px] bg-white rounded-lg shadow-lg w-4/5 px-6 md:px-4 py-8">
         <div className="flex w-full items-center">
           <div className="flex-grow text-zinc-900 text-xl font-bold">{title}</div>
           <Image
