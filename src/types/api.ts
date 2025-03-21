@@ -33,6 +33,11 @@ export interface Sort2 {
   sorted: boolean;
 }
 
+export interface ReservationHistory {
+  content: string;
+  reservationTime: string;
+}
+
 export interface TeacherReserveHistoryDto {
   // 고객 정보
   customerName: string;
@@ -45,22 +50,22 @@ export interface TeacherReserveHistoryDto {
   // 예약 시작/종료 시간
   startTime: string;            // ISO date string format
   endTime: string;              // ISO date string format
+  type: string;
   
   // 상담 통계
   totalConsultationCount: number;
   totalConsultationMinutes: number;   
   
-  // 이전 상담 노트 목록 (노트가 있는 경우만)
-  previousConsultationNotes: string[];
+  histories: ReservationHistory[];
+  currentNote: string;
   
   // 리뷰 목록
   reviews: TeacherReviewDto[];
 }
 
-interface TeacherReviewDto {
-  id: number;
-  content: string;
-  rating: number;
+export interface TeacherReviewDto {
+  contents: string;
+  star: number;
   createdAt: string;       // ISO date string format
   reviewerName: string;    // 리뷰 작성자 이름
 }

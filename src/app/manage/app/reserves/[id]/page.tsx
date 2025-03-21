@@ -8,7 +8,6 @@ import ReserveNotes from './components/ReserveNotes'
 import ReserveHistory from './components/ReserveHistory'
 import ReserveReview from './components/ReserveReview'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import { basicGet } from '@/api/base'
 import { useQuery } from '@tanstack/react-query'
 import { TeacherReserveHistoryDto } from '@/types/api'
@@ -18,7 +17,7 @@ const api = (reserveId: string): Promise<TeacherReserveHistoryDto> => basicGet(`
 export default function Page() {
   const reserveId = usePathname().split('/').pop() as string
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['reserve', reserveId],
     queryFn: () => api(reserveId),
   });
@@ -34,7 +33,7 @@ export default function Page() {
       <GreyDivider />
       <div className="inline-flex gap-5 flex-col px-5 w-full mb-24">
         <ReserveStats detail={data} />
-        <ReserveNotes detail={data} reload={refetch} />
+        <ReserveNotes detail={data} reload={reload} />
         <ReserveHistory detail={data} />
         <ReserveReview detail={data} />
       </div>

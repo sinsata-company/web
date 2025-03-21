@@ -1,14 +1,13 @@
 'use client'
 
-import { ReserveDto } from '@/app/api/data'
 import { TeacherReserveHistoryDto } from '@/types/api'
 import GradientTitle from '@/components/common/GradientTitle'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const ReserveHistory = ({ detail }: { detail: TeacherReserveHistoryDto | undefined }) => {
-  const [histories, setHistory] = useState<string[]>([])
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const renderData = [...(detail?.histories ?? [])].reverse();
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
@@ -17,7 +16,7 @@ const ReserveHistory = ({ detail }: { detail: TeacherReserveHistoryDto | undefin
     <div className="inline-flex flex-col gap-2 w-full">
       <GradientTitle title="이전 상담 내역" />
       <div className="self-stretch flex-col justify-start items-start gap-3 flex">
-        {detail?.previousConsultationNotes.map((history, index) => (
+        {renderData.map((history, index) => (
           <div
             key={index}
             className="self-stretch p-4 bg-neutral-50 rounded-xl flex-col justify-start items-start gap-3 flex cursor-pointer"
@@ -25,8 +24,7 @@ const ReserveHistory = ({ detail }: { detail: TeacherReserveHistoryDto | undefin
           >
             <div className="self-stretch justify-between items-center inline-flex">
               <div className="text-zinc-900 text-base font-bold  leading-snug">
-                {/* {moment(history.startTime).format('YYYY년 MM월 DD일 HH:mm')} */}
-                'YYYY년 MM월 DD일 HH:mm'
+                {moment(history.reservationTime).format('YYYY년 MM월 DD일 HH:mm')}
               </div>
               <div className="w-4 h-4 flex-col justify-center items-center gap-2.5 inline-flex">
                 <img
@@ -43,7 +41,7 @@ const ReserveHistory = ({ detail }: { detail: TeacherReserveHistoryDto | undefin
                 openIndex === index ? 'max-h-40' : 'max-h-0'
               }`}
             >
-              {history ?? '상담 내용이 없습니다.'}
+              {history.content ?? '상담 내용이 없습니다.'}
             </div>
           </div>
         ))}
