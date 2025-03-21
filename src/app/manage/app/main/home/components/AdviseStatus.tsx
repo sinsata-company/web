@@ -23,6 +23,7 @@ const AdviseStatus = () => {
     setCall(result.canCall)
     setChat(result.canChat)
   }
+
   return (
     <div className=" justify-center items-center gap-6 inline-flex">
       {['전화 상담', '채팅 상담'].map((text, index) => (

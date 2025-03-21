@@ -38,6 +38,19 @@ export const getCanStatus = async () => {
 }
 
 export const updateCanStatus = async (can: boolean, type: 'call' | 'chat') => {
+  if (type === 'call' && !can) {
+    await basicPost(`/teachers/status`, {
+      status: 'ABSE',
+    });
+  }
+
+  if (type === 'call' && can) {
+    await basicPost(`/teachers/status`, {
+      status: 'IDLE',
+    });
+  }
+
+
   const result = await basicTeacherPost('/manage/home/can', {
     can,
     type,

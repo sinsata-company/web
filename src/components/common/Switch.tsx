@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 export default function Switch({
   type,
-  value,
+  value
 }: {
   type: 'call' | 'chat'
   value: boolean
