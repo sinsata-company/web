@@ -94,8 +94,16 @@ export default function PrivateChatPage() {
 
                     if (body.type === 'SYSTEM') {
                         const chatStarted = body.message.includes("시작");
+                        const chatEnded = body.message.includes("종료");
+
                         if (chatStarted) {
                             refetchChat();
+                        }
+
+                        if (chatEnded) {
+                            initialize();
+                            alert("상담이 종료되었습니다.");
+                            router.back();
                         }
                         return;
                     }

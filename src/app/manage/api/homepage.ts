@@ -1,5 +1,6 @@
 import { ReserveDto } from '@/app/api/data'
 import { basicTeacherGet } from './base'
+import { basicGet } from '@/api/base'
 
 export const getHomeCash = async () => {
   const result = await basicTeacherGet<number>('/manage/home/cash')
@@ -27,7 +28,7 @@ export const endChat = async (roomid: string) => {
 }
 
 export const endChatByUser = async (roomid: string) => {
-  const result = await basicTeacherGet<ReserveDto[]>(
+  const result = await basicGet<ReserveDto[]>(
     `/manage/home/chat/user/${roomid}/end`
   )
   return result

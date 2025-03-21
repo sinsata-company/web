@@ -17,6 +17,7 @@ import UserSummary from './components/UserSummary'
 import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import {startChat} from '@/app/manage/api/homepage'
 import {BASE_WS} from '@/api/base'
+import {useQuery} from '@tanstack/react-query'
 
 export default function Page() {
     const [message, setMessage] = useState<string>('')
@@ -24,10 +25,13 @@ export default function Page() {
 
     const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
     const [user, setUser] = useState<UserDto | null>(null)
-    const [chat, setChat] = useState<ChatDto | null>(null)
+    const roomId = usePathname().split('/').pop() as string
+    const { data: chat = null, refetch: refetchChat } = useQuery({
+        queryKey: ['chat', roomId],
+        queryFn: () => getChatDetail(roomId)
+    })
 
     const client = useRef<StompJs.Client>(null)
-    const roomId = usePathname().split('/').pop() as string
     const router = useRouter()
 
     useEffect(() => {
@@ -36,11 +40,9 @@ export default function Page() {
 
     const initialize = async () => {
         const user = await getMyInfo()
-        const chat = await getChatDetail(roomId)
         const prevMessages = await chatMessages(roomId);
         console.log('user', user);
         setUser(user)
-        setChat(chat)
         setMyId(user.userId);
         setReceivedMessages(prevMessages as Array<IMessage>)
     }
@@ -96,15 +98,25 @@ export default function Page() {
                 `/sub/channel/${roomId}`,
                 (received_message: StompJs.IFrame) => {
                     const body = JSON.parse(received_message.body)
-
-                    if (!!body?.isEnd) {
-                        console.log('finish...');
-                        router.refresh();
-                        return;
-                    }
+                    console.log({ body });
 
                     if (body.type === 'ERROR') {
                         alert(body.message);
+                        return;
+                    }
+
+                    if (body.type === 'SYSTEM') {
+                        const chatStarted = body.message.includes("시작");
+                        const chatEnded = body.message.includes("종료");
+
+                        if (chatStarted) {
+                            refetchChat();
+                        }
+
+                        if (chatEnded) {
+                            alert("상담이 종료되었습니다.");
+                            router.back();
+                        }
                         return;
                     }
 
