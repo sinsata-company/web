@@ -16,6 +16,7 @@ import {ChatDto, IMessage} from '@/app/api/data'
 import {chatMessages, getChatDetail} from '@/app/api/chat'
 import {BASE_WS} from '@/api/base'
 import { useQuery } from '@tanstack/react-query'
+import { endChatByUser } from '@/app/manage/api/homepage'
 
 export default function PrivateChatPage() {
     const [message, setMessage] = useState<string>('')
@@ -34,9 +35,12 @@ export default function PrivateChatPage() {
 
     const router = useRouter();
 
-    useEffect(() => {
-        initialize()
-    }, [])
+
+    const handleTimeout = async () => {
+        await endChatByUser(roomId);
+        alert("2분이 지나 상담이 자동으로 종료되었습니다.");
+        router.back();
+    };
 
     const initialize = async () => {
         const user = await getMyInfo();
@@ -67,9 +71,21 @@ export default function PrivateChatPage() {
     }
 
     useEffect(() => {
-        // const uuid = uuidv4()
-        // setMyId(uuid)
+        initialize()
+    }, [])
 
+    useEffect(() => {
+        const deadline = 60 * 1000 * 2
+        const timer = setTimeout(() => {
+            handleTimeout();
+        }, deadline);
+        
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [])
+
+    useEffect(() => {
         const disconnect = () => {
             client.current?.deactivate()
             console.log('Disconnected')
@@ -109,8 +125,7 @@ export default function PrivateChatPage() {
                     }
 
 
-                    // receivedMessages.push()
-                    setReceivedMessages((prevMessages) => [...prevMessages, body]) // 기존 메시지에 추가
+                    setReceivedMessages((prevMessages) => [...prevMessages, body]) 
 
                     console.log(`> Received message: ${received_message.body}`)
                 }
@@ -169,8 +184,6 @@ export default function PrivateChatPage() {
         setMessage('')
     }
 
-    // 해야될 것. 채팅 시작되지 않았을 때, 채팅 종료되었을 때 타이핑 막기 & 안내 문구 띄우기
-    //
     return (
         <div className="w-full h-full relative">
             <BackAppbar/>
