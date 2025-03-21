@@ -12,10 +12,10 @@ export default function TeacherAdvance({
   return (
     <div className="w-full flex-col justify-start items-start gap-3 inline-flex">
       <div className="flex justify-between items-center w-full space-x-4">
-        <div className="text-black text-xl font-bold">상담사가 잘 하는 분야</div>
+        <div className="text-black text-base font-bold">상담사가 잘 하는 분야</div>
         <div className="flex-shrink-0">
           <Button
-              className="w-25 h-10 text-xs !min-w-0 !px-3"
+              className="w-25 h-8 text-xs !min-w-0 !px-3"
               onClick={() => {
                   const teacherInfo = {
                       id: advisor?.id,
@@ -33,7 +33,7 @@ export default function TeacherAdvance({
           />
         </div>
       </div>
-      <div className="self-stretch text-zinc-900 text-xl    whitespace-pre-line">
+      <div className="self-stretch text-zinc-900 text-base whitespace-pre-line">
         {advisor?.strongField}
       </div>
       <div className="justify-start items-start gap-2 inline-flex">
@@ -42,9 +42,9 @@ export default function TeacherAdvance({
           return (
             <div
               key={index}
-              className="px-3 py-2 bg-indigo-400/10 rounded-full justify-center items-center gap-1 flex"
+              className="px-2 py-1 bg-indigo-400/10 rounded-full justify-center items-center gap-1 flex"
             >
-              <div className="text-indigo-400 text-sm font-bold  leading-tight">
+              <div className="text-indigo-400 text-xs font-bold leading-tight">
                 #{tag}
               </div>
             </div>

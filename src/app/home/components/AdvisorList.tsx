@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import {useRouter} from 'next/navigation'
+import {useRouter, usePathname} from 'next/navigation'
 import {TeacherListDto} from '@/app/api/data'
 import {forwardRef, useEffect, useState, useRef} from 'react'
 import Modal from '@/components/common/Modal'
@@ -23,41 +23,35 @@ export default function AdvisorList({
     const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
     const [advisor, setAdvisor] = useState<TeacherListDto | null>(null)
     const router = useRouter()
+    const pathname = usePathname()
     const scrollRef = useRef(0);
 
-    // 스크롤 위치 저장
     useEffect(() => {
-        let isBack = false;
-        
-        const handlePopState = () => {
-            isBack = true;
-        };
-
         const handleScroll = () => {
-            if (!isBack) {  // 뒤로가기가 아닐 때만 스크롤 위치 저장
-                scrollRef.current = window.scrollY;
-                sessionStorage.setItem('advisor-scroll', String(scrollRef.current));
-            }
-        };
-
-        window.addEventListener('popstate', handlePopState);
-        window.addEventListener('scroll', handleScroll);
-        
-        // 뒤로가기로 왔을 때만 스크롤 복원
-        if (window.performance && window.performance.navigation.type === 2) {
-            const savedScroll = sessionStorage.getItem('advisor-scroll');
-            if (savedScroll) {
-                requestAnimationFrame(() => {
-                    window.scrollTo(0, parseInt(savedScroll));
-                });
-            }
+            scrollRef.current = window.scrollY
+            sessionStorage.setItem(`scroll_${pathname}`, String(scrollRef.current))
         }
 
+        const handleBeforeUnload = () => {
+            sessionStorage.setItem(`scroll_${pathname}`, String(scrollRef.current))
+        }
+
+        // 스크롤 위치 복원
+        const savedScroll = sessionStorage.getItem(`scroll_${pathname}`)
+        if (savedScroll) {
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(savedScroll))
+            }, 100)
+        }
+
+        window.addEventListener('scroll', handleScroll)
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
         return () => {
-            window.removeEventListener('popstate', handlePopState);
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        }
+    }, [pathname])
 
     const onClickPhone = (advisor: TeacherListDto) => {
         setAdvisor(advisor)
@@ -69,10 +63,9 @@ export default function AdvisorList({
     };
 
     const handleItemClick = (id: string) => {
-        // 페이지 이동 전 현재 스크롤 위치 저장
-        sessionStorage.setItem('advisor-scroll', String(scrollRef.current));
-        router.push(`/teacher/${id}`);
-    };
+        sessionStorage.setItem(`scroll_${pathname}`, String(window.scrollY))
+        router.push(`/teacher/${id}`)
+    }
 
     return (
         <div className="inline-flex flex-col gap-2.5 w-full text-sm">
@@ -96,114 +89,115 @@ export default function AdvisorList({
             <Modal
                 isOpen={isPhoneModalOpen}
                 onClose={() => setIsPhoneModalOpen(false)}
-                title="실시간 전화 상담 안내"
+                title={<span className="text-base">실시간 전화 상담 안내</span>}
                 content=""
             >
-                <div>
+                <div className="p-4">
                     {/* 상담사 기본 정보 */}
-                    <div className="flex items-center gap-4 mb-3">
-                        {advisor?.thumbnail ? (
-                            <Image
-                                src={advisor?.thumbnail ?? '/logo.jpg'}
-                                width={160}
-                                height={90}
-                                alt="profile"
-                            />
-                        ) : (
-                            <Image src="/logo.jpg" width={160} height={90} alt="profile"/>
-                        )}
-
-                        <div className="ml-2 w-full justify-between text-zinc-900 text-xl font-bold">
-                            {advisor?.name} {advisor?.pinNumber}번
+                    <div className="flex items-start gap-4 p-3 bg-gray-50 rounded-lg">
+                        <Image
+                            src={advisor?.thumbnail || '/logo.jpg'}
+                            width={100}
+                            height={100}
+                            alt="profile"
+                            className="rounded-lg object-cover"
+                        />
+                        <div className="text-zinc-900 text-sm">
+                            {advisor?.pinNumber}번
                         </div>
                     </div>
-                    {/* ✅ 회색 작은 글씨 (위쪽 간격 mt-2, 아래쪽 간격 mb-3) */}
-                    <p className="text-gray-400 text-sm mt-2 mb-3">
+                    
+                    <p className="text-gray-400 text-[11px] mt-2 mb-3">
                         전화 연결 후 989번을 입력하시면 상담사와 연결됩니다.
                     </p>
 
+                    {/* 상담 옵션들 */}
+                    <div className="space-y-3">
+                        {/* (1) 전화 상담(선불) 섹션 */}
+                        <div className="p-3 border border-gray-100 rounded-lg shadow-sm">
+                            <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                    <Image
+                                        src={'/images/cash_070.png'}
+                                        width={20}
+                                        height={20}
+                                        alt="cash"
+                                    />
+                                    <p className="text-sm">전화 상담(선불)</p>
+                                </div>
+                                <p className="text-neutral-500 text-xs">
+                                    30초 당 1,400원
+                                </p>
+                            </div>
+                            <div className="flex justify-center">
+                                <Button
+                                    onClick={() => {
+                                        window.location.href = `tel:070-8016-9122`
+                                        setIsPhoneModalOpen(false)
+                                    }}
+                                    buttonType={BUTTON_TYPE.primary}
+                                    label={<span className="text-sm">070-8016-9122</span>}
+                                    className="w-36 h-7"
+                                />
+                            </div>
+                        </div>
 
-                    {/* (1) 전화 상담(선불) 섹션 */}
-                    <div className="mt-6 mb-4">
-                        {/* 첫 번째 줄: 상담 타입 */}
-                        <div className="flex items-center gap-2">
-                            <Image
-                                src={'/images/cash_070.png'}
-                                width={24}
-                                height={24}
-                                alt="cash"
-                            />
-                            <p className="font-bold text-lg">전화 상담(선불)</p>
+                        {/* (2) 전화 상담(후불) 섹션 */}
+                        <div className="p-3 border border-gray-100 rounded-lg shadow-sm">
+                            <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                    <Image
+                                        src={'/images/cash_060.png'}
+                                        width={20}
+                                        height={20}
+                                        alt="cash"
+                                    />
+                                    <p className="text-sm">전화 상담(후불)</p>
+                                </div>
+                                <p className="text-neutral-500 text-xs">
+                                    30초 당 1,400원
+                                </p>
+                            </div>
+                            <div className="flex justify-center">
+                                <Button
+                                    onClick={() => {
+                                        window.location.href = `tel:060-500-8744`
+                                        setIsPhoneModalOpen(false)
+                                    }}
+                                    buttonType={BUTTON_TYPE.primary}
+                                    label={<span className="text-sm">060-500-8744</span>}
+                                    className="w-36 h-7"
+                                />
+                            </div>
                         </div>
-                        {/* 두 번째 줄: 가격 정보 */}
-                        <p className="text-neutral-400 text-sm font-semibold text-right">
-                            30초 당 1,400원
-                        </p>
-                        <div className="w-full flex justify-center mt-2">
-                            <Button
-                                onClick={() => {
-                                    window.location.href = `tel:070-8016-9122`
-                                    setIsPhoneModalOpen(false)
-                                }}
-                                buttonType={BUTTON_TYPE.primary}
-                                label={<span className="text-lg font-bold">070-8016-9122</span>}
-                                className="w-64"
-                            />
-                        </div>
-                    </div>
 
-
-                    {/* (2) 전화 상담(후불) 섹션 */}
-                    <div className="mt-5 mb-4">
-                        <div className="flex items-center gap-2">
-                            <Image
-                                src={'/images/cash_060.png'}
-                                width={24}
-                                height={24}
-                                alt="cash"
-                            />
-                            <p className="font-bold text-lg">전화 상담(후불)</p>
-                        </div>
-                        <p className="text-neutral-400 text-sm font-semibold text-right">
-                            30초 당 1,400원
-                        </p>
-                        <div className="w-full flex justify-center mt-2">
-                            <Button
-                                onClick={() => {
-                                    window.location.href = `tel:060-500-8744`
-                                    setIsPhoneModalOpen(false)
-                                }}
-                                buttonType={BUTTON_TYPE.primary}
-                                label={<span className="text-lg font-bold">060-500-8744</span>}
-                                className="w-64"
-                            />
-                        </div>
-                    </div>
-
-                    {/* (3) 채팅 상담(잔액차감) 섹션 */}
-                    <div className="mt-5 mb-4">
-                        <div className="flex items-center gap-2">
-                            <Image
-                                src={'/images/cash_070.png'}
-                                width={24}
-                                height={24}
-                                alt="cash"
-                            />
-                            <p className="font-bold text-lg">채팅 상담(잔액차감)</p>
-                        </div>
-                        <p className="text-neutral-400 text-sm font-semibold text-right">
-                            30초 당 1,400원
-                        </p>
-                        <div className="flex justify-center w-auto mt-2">
-                            <Button
-                                onClick={async () => {
-                                    const result = await startInstantChat(advisor?.id ?? '')
-                                    router.push(`/chats/private/${result.chatRoomId}`)
-                                }}
-                                buttonType={BUTTON_TYPE.primary}
-                                label={<span className="text-lg font-bold">채팅상담 시작하기</span>}
-                                className="w-64"
-                            />
+                        {/* (3) 채팅 상담 섹션 */}
+                        <div className="p-3 border border-gray-100 rounded-lg shadow-sm">
+                            <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                    <Image
+                                        src={'/images/cash_070.png'}
+                                        width={20}
+                                        height={20}
+                                        alt="cash"
+                                    />
+                                    <p className="text-sm">채팅 상담(잔액차감)</p>
+                                </div>
+                                <p className="text-neutral-500 text-xs">
+                                    30초 당 1,400원
+                                </p>
+                            </div>
+                            <div className="flex justify-center">
+                                <Button
+                                    onClick={async () => {
+                                        const result = await startInstantChat(advisor?.id ?? '')
+                                        router.push(`/chats/private/${result.chatRoomId}`)
+                                    }}
+                                    buttonType={BUTTON_TYPE.primary}
+                                    label={<span className="text-sm">채팅상담 시작하기</span>}
+                                    className="w-36 h-7"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -272,19 +266,18 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             <div
                 key={advisor?.id || ''}
                 ref={ref}
-                className="w-full items-stretch flex py-4 pb-2 rounded-2xl justify-start items-start inline-flex"
+                className="w-full h-full flex p-3 rounded-2xl justify-start items-start"
             >
-                <div className="flex-basis relative">
+                <div className="relative w-[140px] sm:w-[173.33px] aspect-[173.33/128.88]">
                     <Image
                         onClick={handleItemClick}
-                        style={{objectFit: 'cover', minWidth: '100px', minHeight: '80px'}}
-                        className="rounded-xl w-[100px] h-20 cursor-pointer"
+                        style={{objectFit: 'cover'}}
+                        className="rounded-xl w-full h-full cursor-pointer"
                         src={thumbnail || '/logo.jpg'}
                         placeholder="blur"
                         blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-                        width={100}
-                        height={80}
                         alt="profile"
+                        fill
                     />
                     <TeacherTypeLabel teacherType={teacherType}/>
                 </div>
@@ -304,10 +297,10 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 <Image
                     onClick={handlePhoneClick}
                     src={'/images/status_ready.svg'}
-                    width={80}
-                    height={32}
+                    width={120}
+                    height={40}
                     alt="call"
-                    className="w-20 h-8"
+                    className="w-24 h-10"
                 />
                 </div>
 

@@ -7,9 +7,9 @@ export default function TeacherNotice({
   advisor: TeacherDetailDto | null
 }) {
   return (
-    <div className="w-full  flex-col justify-start items-start gap-3 inline-flex">
-      <div className="text-black text-xl font-bold ">상담가 공지사항</div>
-      <div className="w-full h-64 relative aspect-w-16 aspect-h-9">
+    <div className="w-full flex-col justify-start items-start gap-3 inline-flex">
+      <div className="text-black text-base font-bold">상담가 공지사항</div>
+      <div className="w-full h-56 relative aspect-w-16 aspect-h-9">
         {!!advisor?.noticeImgURI && advisor?.noticeImgURI !== '[]' ? (
             <Image
             src={advisor?.noticeImgURI || ''}
@@ -18,11 +18,11 @@ export default function TeacherNotice({
             objectFit="cover"
           />
             ) : (
-            <div className='h-240 bg-gray-200'></div>
+            <div className='h-224 bg-gray-200'></div>
             )}
       </div>
-      <div className="self-stretch p-4 bg-neutral-50 rounded-2xl flex-col justify-start items-start gap-2 flex">
-        <div className="self-stretch text-neutral-500 text-sm font-medium  leading-tight">
+      <div className="self-stretch p-3 bg-neutral-50 rounded-2xl flex-col justify-start items-start gap-2 flex">
+        <div className="self-stretch text-neutral-500 text-xs font-medium leading-tight">
           {advisor?.notice}
         </div>
       </div>
