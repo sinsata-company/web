@@ -40,7 +40,7 @@ export default function PrivateChatPage() {
     const handleTimeout = async () => {
         if (teacherJoined.current) return;
         await endChatByUser(roomId);
-        alert("죄송합니다 고객님\n선생님과의 연결이 원활하지 않습니다.);
+        alert("죄송합니다 고객님\n선생님과의 연결이 원활하지 않습니다.");
         router.back();
     };
 
