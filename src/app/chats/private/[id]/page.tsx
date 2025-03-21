@@ -25,6 +25,7 @@ export default function PrivateChatPage() {
     const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
     const [user, setUser] = useState<UserDto | null>(null)
     const roomId = usePathname().split('/').pop() as string
+    const teacherJoined = useRef<boolean>(false);
 
     const { data: chat = null, refetch: refetchChat } = useQuery({
         queryKey: ['chat', roomId],
@@ -37,6 +38,7 @@ export default function PrivateChatPage() {
 
 
     const handleTimeout = async () => {
+        if (teacherJoined.current) return;
         await endChatByUser(roomId);
         alert("2분이 지나 상담이 자동으로 종료되었습니다.");
         router.back();
@@ -113,6 +115,7 @@ export default function PrivateChatPage() {
                         const chatEnded = body.message.includes("종료");
 
                         if (chatStarted) {
+                            teacherJoined.current = true;
                             refetchChat();
                         }
 
