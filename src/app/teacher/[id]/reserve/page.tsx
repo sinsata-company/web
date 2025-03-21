@@ -14,16 +14,25 @@ import { makeReserve } from '@/app/api/reserve'
 import Modal from '@/components/common/Modal'
 import ReserveTypeSelector from './components/ReserveTypeSelector'
 import IWCalendar from '@/app/teacher/[id]/reserve/components/Calendar'
-import { getUnavailableTimesForUser } from '@/app/api/teacher'
+import { getTeacherDetail, getUnavailableTimesForUser } from '@/app/api/teacher'
 import moment from 'moment'
 import { UnavailableTime } from '@/app/api/data'
 import TimeSelect from './components/TimeSelect'
 import Agreement from './components/Agreement'
+import { useQuery } from '@tanstack/react-query'
 
 export default function TeacherReservePage() {
   const router = useRouter()
   const params = useParams()
   const teacherId = params.id as string
+  const { data: teacher } = useQuery({
+    queryKey: ['teacher', teacherId],
+    queryFn: () => getTeacherDetail(teacherId),
+    enabled: !!teacherId,
+  });
+
+  const chatable = teacher?.canChat || false;
+
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
   const [selectedTime, setSelectedTime] = useState<string>('')
   const [selectedHour, setSelectedHour] = useState<number>(15)
@@ -155,7 +164,12 @@ export default function TeacherReservePage() {
         setSelectedHour={setSelectedHour}
       />
       <GreyDivider />
-      <ReserveTypeSelector selectedType={type} setSelectedType={setType} />
+      <ReserveTypeSelector selectedType={type} setSelectedType={setType} chatable={chatable} />
+      {!chatable && (
+        <div className="mt-1 w-full flex justify-end px-5">
+          <span className="text-gray-400 text-sm">* 해당 선생님은 전화 상담만 진행하실 수 있습니다.</span>
+        </div>
+      )}
       <GreyDivider />
       <ReserveCashSummary
         selectedHour={selectedHour}

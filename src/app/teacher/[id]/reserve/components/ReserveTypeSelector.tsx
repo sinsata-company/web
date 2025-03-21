@@ -4,9 +4,11 @@ import { TimeItem } from './ReserveTimeSelector'
 const ReserveTypeSelector = ({
   selectedType,
   setSelectedType,
+  chatable,
 }: {
   selectedType: string
   setSelectedType: (type: string) => void
+  chatable: boolean,
 }) => {
   return (
     <div className="w-full px-5 justify-between items-center inline-flex">
@@ -16,6 +18,7 @@ const ReserveTypeSelector = ({
           onClick={setSelectedType}
           time={'채팅'}
           selected={selectedType == '채팅'}
+          disabled={!chatable}
         />
         <TimeItem
           onClick={setSelectedType}

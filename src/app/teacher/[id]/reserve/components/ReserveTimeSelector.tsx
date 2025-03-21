@@ -78,25 +78,33 @@ export const TimeItem = ({
   time,
   selected,
   onClick,
+  disabled = false,
 }: {
   time: string
   selected: boolean
-  onClick: Function
+  onClick: Function,
+  disabled?: boolean,
 }) => {
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (disabled) {
+      event.stopPropagation()
+      event.preventDefault()
+    } else {
+      onClick(time)
+    }
+  }
   return (
     <div
-      onClick={() => {
-        onClick(time)
-      }}
+      onClick={handleClick}
       className={clsx(
         'cursor-pointer h-11 p-5  rounded-lg justify-center items-center gap-2.5 inline-flex',
-        selected ? 'bg-gradient' : 'bg-neutral-50'
+        selected ? 'bg-gradient' : disabled ? 'bg-gray-200' : 'bg-neutral-50'
       )}
     >
       <div
         className={clsx(
           ' text-base font-medium ',
-          selected ? 'text-white' : 'text-zinc-900'
+          selected ? 'text-white' : disabled ? 'text-gray-400' : 'text-zinc-900'
         )}
       >
         {time}
