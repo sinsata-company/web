@@ -21,7 +21,7 @@ return (
     {/* 헤더 영역: 상담사명과 전화하기 버튼 */}
     <div className="flex w-full justify-between gap-2">
       <div className="flex flex-col flex-grow gap-4">
-        <div className="text-black text-xl font-bold">{advisor?.name}</div>
+        <div className="text-black text-lg font-bold">{advisor?.name}</div>
       </div>
       <div
         onClick={() => setIsPhoneModalOpen(true)}
@@ -29,18 +29,18 @@ return (
       >
         <Image
           src={'/images/ic_phone.svg'}
-          width={20}
-          height={20}
+          width={16}
+          height={16}
           alt="전화하기"
         />
-        <div className="text-indigo-400 text-base font-bold leading-tight">
+        <div className="text-indigo-400 text-sm font-bold leading-tight">
           전화하기
         </div>
       </div>
     </div>
 
     {/* 상담사 정보 영역 */}
-    <div className="w-full mt-2 text-base flex justify-between items-center">
+    <div className="w-full mt-2 text-sm flex justify-between items-center">
       <div className="flex gap-4">
         <p className="text-zinc-900 font-bold">
           최근후기 <span className="text-gray-500">({advisor?.totalReviews || 0})</span>
@@ -50,7 +50,7 @@ return (
         </p>
       </div>
       <p className="text-zinc-900 font-bold">
-        {advisor?.pinNumber}<span className="text-base">번</span>
+        {advisor?.pinNumber}<span className="text-sm">번</span>
       </p>
     </div>
 
@@ -67,28 +67,28 @@ return (
           {advisor?.images[0] ? (
             <Image
               src={advisor?.images[0] ?? '/logo.jpg'}
-              width={160}
-              height={160}
+              width={120}
+              height={120}
               alt="profile"
               className="object-cover"
             />
           ) : (
             <Image
               src="/logo.jpg"
-              width={160}
-              height={160}
+              width={120}
+              height={120}
               alt="profile"
               className="object-cover"
             />
           )}
 
-          <div className="ml-2 w-full justify-between text-zinc-900 text-xl font-bold">
+          <div className="ml-2 w-full justify-between text-zinc-900 text-base font-bold">
             {advisor?.name} {advisor?.pinNumber}번
           </div>
         </div>
 
         {/* 회색 안내 문구 */}
-        <p className="text-gray-400 text-sm mt-2 mb-3">
+        <p className="text-gray-400 text-xs mt-2 mb-3">
           전화 연결 후 989번을 입력하시면 상담사와 연결됩니다.
         </p>
 
@@ -97,13 +97,13 @@ return (
           <div className="flex items-center gap-2">
             <Image
               src={'/images/cash_070.png'}
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               alt="cash"
             />
-            <p className="font-bold text-lg whitespace-nowrap">전화 상담(선불)</p>
+            <p className="font-bold text-base whitespace-nowrap">전화 상담(선불)</p>
           </div>
-          <p className="text-neutral-400 text-sm font-semibold text-right">
+          <p className="text-neutral-400 text-xs font-semibold text-right">
             30초 당 1,400원
           </p>
           <div className="w-full flex justify-center mt-2">
@@ -113,7 +113,7 @@ return (
                 setIsPhoneModalOpen(false)
               }}
               buttonType={BUTTON_TYPE.primary}
-              label={<span className="text-xl font-bold">070-8016-9122</span>}
+              label={<span className="text-base font-bold">070-8016-9122</span>}
             />
           </div>
         </div>
@@ -123,13 +123,13 @@ return (
           <div className="flex items-center gap-2">
             <Image
               src={'/images/cash_060.png'}
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               alt="cash"
             />
-            <p className="font-bold text-lg whitespace-nowrap">전화 상담(후불)</p>
+            <p className="font-bold text-base whitespace-nowrap">전화 상담(후불)</p>
           </div>
-          <p className="text-neutral-400 text-sm font-semibold text-right">
+          <p className="text-neutral-400 text-xs font-semibold text-right">
             30초 당 1,400원
           </p>
           <div className="w-full flex justify-center mt-2">
@@ -139,7 +139,7 @@ return (
                 setIsPhoneModalOpen(false)
               }}
               buttonType={BUTTON_TYPE.primary}
-              label={<span className="text-xl font-bold">060-500-8744</span>}
+              label={<span className="text-base font-bold">060-500-8744</span>}
             />
           </div>
         </div>
@@ -149,13 +149,13 @@ return (
           <div className="flex items-center gap-2">
             <Image
               src={'/images/cash_070.png'}
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               alt="cash"
             />
-            <p className="font-bold text-lg whitespace-nowrap">채팅 상담(잔액차감)</p>
+            <p className="font-bold text-base whitespace-nowrap">채팅 상담(잔액차감)</p>
           </div>
-          <p className="text-neutral-400 text-sm font-semibold text-right">
+          <p className="text-neutral-400 text-xs font-semibold text-right">
             30초 당 1,400원
           </p>
           <div className="flex justify-center w-auto mt-2">
@@ -165,7 +165,7 @@ return (
                 router.push(`/chats/private/${result.chatRoomId}`)
               }}
               buttonType={BUTTON_TYPE.primary}
-              label={<span className="text-xl font-bold">채팅상담 시작하기</span>}
+              label={<span className="text-base font-bold">채팅상담 시작하기</span>}
             />
           </div>
         </div>
