@@ -15,6 +15,7 @@ import PrivateChatScreen from './components/PrivateChatScreen'
 import {ChatDto, IMessage} from '@/app/api/data'
 import {chatMessages, getChatDetail} from '@/app/api/chat'
 import {BASE_WS} from '@/api/base'
+import { useQuery } from '@tanstack/react-query'
 
 export default function PrivateChatPage() {
     const [message, setMessage] = useState<string>('')
@@ -22,10 +23,14 @@ export default function PrivateChatPage() {
 
     const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
     const [user, setUser] = useState<UserDto | null>(null)
-    const [chat, setChat] = useState<ChatDto | null>(null)
+    const roomId = usePathname().split('/').pop() as string
+
+    const { data: chat = null, refetch: refetchChat } = useQuery({
+        queryKey: ['chat', roomId],
+        queryFn: () => getChatDetail(roomId)
+    })
 
     const client = useRef<StompJs.Client>(null)
-    const roomId = usePathname().split('/').pop() as string
 
     const router = useRouter();
 
@@ -35,11 +40,8 @@ export default function PrivateChatPage() {
 
     const initialize = async () => {
         const user = await getMyInfo();
-        const chat = await getChatDetail(roomId);
         const prevMessages = await chatMessages(roomId);
-
         setUser(user)
-        setChat(chat)
         setMyId(user.userId);
         setReceivedMessages(prevMessages as Array<IMessage>);
     }
@@ -84,6 +86,21 @@ export default function PrivateChatPage() {
                         initialize();
                         return;
                     }
+
+                    if (body.type === 'ERROR') {
+                        alert(body.metadata);
+                        return;
+                    }
+
+                    if (body.type === 'SYSTEM') {
+                        const chatStarted = body.message.includes("시작");
+                        if (chatStarted) {
+                            refetchChat();
+                        }
+                        return;
+                    }
+
+
                     // receivedMessages.push()
                     setReceivedMessages((prevMessages) => [...prevMessages, body]) // 기존 메시지에 추가
 

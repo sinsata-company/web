@@ -103,6 +103,11 @@ export default function Page() {
                         return;
                     }
 
+                    if (body.type === 'ERROR') {
+                        alert(body.message);
+                        return;
+                    }
+
                     // receivedMessages.push()
                     setReceivedMessages((prevMessages) => [...prevMessages, body]) // 기존 메시지에 추가
 

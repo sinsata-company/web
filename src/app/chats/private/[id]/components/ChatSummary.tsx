@@ -1,7 +1,7 @@
 import { basicDelete } from '@/api/base'
 import { ChatDto } from '@/app/api/data'
 import ChatStatus from '@/app/chats/components/ChatStatus'
-import { endChat } from '@/app/manage/api/homepage'
+import { endChatByUser } from '@/app/manage/api/homepage'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -63,7 +63,7 @@ const ChatSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMe
           <Button
             label="채팅 종료"
             onClick={async () => {
-              await endChat(chat.roomId);
+              await endChatByUser(chat.roomId);
               sendEndMessage && sendEndMessage();
               router.back()
             }}

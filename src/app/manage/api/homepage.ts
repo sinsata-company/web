@@ -25,3 +25,10 @@ export const endChat = async (roomid: string) => {
   )
   return result
 }
+
+export const endChatByUser = async (roomid: string) => {
+  const result = await basicTeacherGet<ReserveDto[]>(
+    `/manage/home/chat/user/${roomid}/end`
+  )
+  return result
+}
