@@ -103,9 +103,9 @@ const MenuOptions = () => {
             <Image
               src={`/images/Property 1=${index + 1}.svg`}
               alt={`Property ${index}`}
-              className="w-6 h-6 mb-0.5"
-              width={24}
-              height={24}
+              width={20}
+              height={20}
+              className="w-5 h-5 mb-0.5"
             />
             <div className="text-center text-neutral-900 text-sm">
               {item.label}

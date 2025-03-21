@@ -1,14 +1,11 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useAppContext } from '@/context/AppContext'
 
 const ApplyCsl = () => {
   const router = useRouter()
-  const { fontFamily, fontSize } = useAppContext() || {}
-
   return (
     <div
-      className={`w-full h-36 relative cursor-pointer ${fontFamily} [&_*]:${fontSize}`}
+      className="w-full h-36 relative cursor-pointer"
       onClick={() => {
         router.push('/manage')
       }}

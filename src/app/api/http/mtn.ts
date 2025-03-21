@@ -25,8 +25,8 @@ export const getPayURL = async (
     &membnm=${encodedName}\
     &item=${encodedItem}\
     &oid=${timestamp}\
-    &returnurl=${apiUrl}/api/v1/mtn/complete\
-    &formurl=${frontendUrl}/chats/inquiry/list`
+    &returnurl=${frontendUrl}/chats/inquiry/list\
+    &formurl=${apiUrl}/api/v1/mtn/complete`
 
   return mtonetUrl.replace(/\s+/g, '')
 }

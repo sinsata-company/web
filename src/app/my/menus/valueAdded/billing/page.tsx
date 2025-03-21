@@ -457,25 +457,27 @@ function BillingContent() {
         </div> */}
 
     {/* 결제 금액 및 버튼 */}
-    <div className="fixed bottom-0 left-0 right-0 bg-white p-2 border-t w-full">
-        <div className="flex justify-between items-center mb-4 w-full max-w-screen-xl mx-auto">
+    <div className="bg-white p-2 rounded-lg">
+        <div className="flex justify-between items-center mb-4 w-full max-w-screen-xl mx-auto px-4 max-w-3xl mx-auto">
           <span className="text-lg">총 금액 <span className="text-sm text-gray-500">(VAT 별도)</span></span>
           <span className="text-xl font-bold">{formatNumberWithCommas(vaInfo?.price || 0)}원</span>
         </div>
-        <Button
-          label="결제하기"
-          buttonType={isAllRequiredFieldsFilled() ? BUTTON_TYPE.primary : BUTTON_TYPE.inactive}
-          onClick={() => {
-            if (isAllRequiredFieldsFilled() && vaInfo) {  // vaInfo null 체크 추가
-              onClickCharge(
-                Math.floor(vaInfo.price * 1.1), // 부가세 10% 포함, 소수점 버림
-                vaInfo
-              )
-            }
-          }}
-          className="w-full"
-          disabled={!isAllRequiredFieldsFilled()}
-        />
+        <div className="flex justify-center max-w-3xl mx-auto">
+          <Button
+            label="결제하기"
+            buttonType={isAllRequiredFieldsFilled() ? BUTTON_TYPE.primary : BUTTON_TYPE.inactive}
+            onClick={() => {
+              if (isAllRequiredFieldsFilled() && vaInfo) {  // vaInfo null 체크 추가
+                onClickCharge(
+                  Math.floor(vaInfo.price * 1.1), // 부가세 10% 포함, 소수점 버림
+                  vaInfo
+                )
+              }
+            }}
+            className="w-64"
+            disabled={!isAllRequiredFieldsFilled()}
+          />
+        </div>
       </div>
 
       {/* 모달 */}
