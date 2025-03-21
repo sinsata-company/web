@@ -3,7 +3,7 @@
 import { getMyInfo } from '@/app/api/user'
 
 import { UserDto } from '@/types/user'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import MyChat from '@/app/chats/components/MyChat'
 
 import ChatInform from './ChatInform'
@@ -21,6 +21,16 @@ export default function PrivateChatScreen({
   user: UserDto | null
   chat: ChatDto | null
 }) {
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
   return (
     <div
       style={{
@@ -47,6 +57,7 @@ export default function PrivateChatScreen({
           />
         )
       })}
+      <div ref={messagesEndRef} />
     </div>
   )
 }
