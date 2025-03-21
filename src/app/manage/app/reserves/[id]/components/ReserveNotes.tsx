@@ -1,6 +1,6 @@
 'use client'
 
-import { ReserveDetailDto, writeNote } from '@/app/manage/api/reserve'
+import { writeNote } from '@/app/manage/api/reserve'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import GradientTitle from '@/components/common/GradientTitle'
 import Input from '@/components/common/Input'

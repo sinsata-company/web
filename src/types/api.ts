@@ -42,6 +42,8 @@ export interface TeacherReserveHistoryDto {
   // 고객 정보
   customerName: string;
   customerId: string;
+
+  reservationId: number;
   
   // 현재 상담의 시작/종료 시간
   consultationStartTime: string; // ISO date string format
@@ -61,6 +63,7 @@ export interface TeacherReserveHistoryDto {
   
   // 리뷰 목록
   reviews: TeacherReviewDto[];
+  status: string;
 }
 
 export interface TeacherReviewDto {
