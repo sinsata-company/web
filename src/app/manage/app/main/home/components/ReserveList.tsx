@@ -69,12 +69,12 @@ const ReserveList = ({ reserves }: ReserveListProps) => {
          * 그 외(CALL, CHAT)는 그대로 표시
          */
         const startTime = isLiveChat
-          ? moment.utc(reserve.startAt).add(9, 'hours').format('a h시 mm분')
+          ? moment(reserve.startAt).format('a h시 mm분')
           : moment(reserve.startAt).format('a h시 mm분')
 
         const endTime = reserve.endAt
           ? isLiveChat
-            ? moment.utc(reserve.endAt).add(9, 'hours').format('a h시 mm분')
+            ? moment(reserve.endAt).format('a h시 mm분')
             : moment(reserve.endAt).format('a h시 mm분')
           : ''
 
