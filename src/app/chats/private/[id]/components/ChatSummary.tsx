@@ -11,6 +11,7 @@ const ChatSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMe
   const { teacherName, teacherProfile, startAt, endAt, status } = chat
   const router = useRouter()
   const isReserv = status === 'RESERVE';
+  const canEnded = ['RESERVE', 'REQUEST'].includes(status);
 
   const cacelReserv = async () => {
     await basicDelete(`/reserve/${chat.reserveId}`);
@@ -58,7 +59,7 @@ const ChatSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMe
         </div>
         )}
 
-        {status === 'PROGRESS' && (
+        {canEnded && (
           <div className="w-[120px] mr-4">
           <Button
             label="채팅 종료"
