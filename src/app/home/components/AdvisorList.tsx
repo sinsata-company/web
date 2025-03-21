@@ -24,34 +24,46 @@ export default function AdvisorList({
     const [advisor, setAdvisor] = useState<TeacherListDto | null>(null)
     const router = useRouter()
     const pathname = usePathname()
-    const scrollRef = useRef(0);
+    const isNavigating = useRef(false);
+    const isBackNavigation = useRef(false);
 
     useEffect(() => {
+        // 뒤로가기 감지
+        const handlePopState = () => {
+            isBackNavigation.current = true;
+            // scroll_/home 값을 advisor-scroll로 복사
+            const savedScroll = sessionStorage.getItem(`scroll_${pathname}`);
+            if (savedScroll) {
+                sessionStorage.setItem('advisor-scroll', savedScroll);
+            }
+        };
+
         const handleScroll = () => {
-            scrollRef.current = window.scrollY
-            sessionStorage.setItem(`scroll_${pathname}`, String(scrollRef.current))
-        }
+            if (!isNavigating.current) {
+                const currentScroll = window.scrollY;
+                sessionStorage.setItem(`scroll_${pathname}`, String(currentScroll));
+            }
+        };
 
-        const handleBeforeUnload = () => {
-            sessionStorage.setItem(`scroll_${pathname}`, String(scrollRef.current))
-        }
+        window.addEventListener('popstate', handlePopState);
+        window.addEventListener('scroll', handleScroll);
 
-        // 스크롤 위치 복원
-        const savedScroll = sessionStorage.getItem(`scroll_${pathname}`)
-        if (savedScroll) {
-            setTimeout(() => {
-                window.scrollTo(0, parseInt(savedScroll))
-            }, 100)
+        // 초기 마운트나 뒤로가기 시 스크롤 복원
+        if (isBackNavigation.current) {
+            const savedScroll = sessionStorage.getItem('advisor-scroll');
+            if (savedScroll) {
+                requestAnimationFrame(() => {
+                    window.scrollTo(0, parseInt(savedScroll));
+                });
+            }
+            isBackNavigation.current = false;
         }
-
-        window.addEventListener('scroll', handleScroll)
-        window.addEventListener('beforeunload', handleBeforeUnload)
 
         return () => {
-            window.removeEventListener('scroll', handleScroll)
-            window.removeEventListener('beforeunload', handleBeforeUnload)
-        }
-    }, [pathname])
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [pathname]);
 
     const onClickPhone = (advisor: TeacherListDto) => {
         setAdvisor(advisor)
@@ -63,9 +75,21 @@ export default function AdvisorList({
     };
 
     const handleItemClick = (id: string) => {
-        sessionStorage.setItem(`scroll_${pathname}`, String(window.scrollY))
-        router.push(`/teacher/${id}`)
+        isNavigating.current = true;
+        // 페이지 이동 전 현재 스크롤 위치를 advisor-scroll에도 저장
+        const currentScroll = window.scrollY;
+        sessionStorage.setItem(`scroll_${pathname}`, String(currentScroll));
+        sessionStorage.setItem('advisor-scroll', String(currentScroll));
+        router.push(`/teacher/${id}`);
     }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            isNavigating.current = false;
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, [pathname]);
 
     return (
         <div className="inline-flex flex-col gap-2.5 w-full text-sm">
@@ -282,31 +306,32 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                     <TeacherTypeLabel teacherType={teacherType}/>
                 </div>
 
-                <div className="pl-4 flex flex-col justify-between grow overflow-hidden">
+                <div className="pl-4 flex flex-col justify-between grow overflow-hidden h-[128.88px]">
+                    <div>
                         <div className="items-center flex justify-between w-full cursor-pointer" onClick={handleItemClick}>
-                <div className="overflow-hidden">
-                    <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-                    <div className="font-bold leading-tight text-base whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-                        {advisor?.name?.replace(' 선생님', '')}
+                            <div className="overflow-hidden">
+                                <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                                    <div className="font-extrabold leading-tight text-xl whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                                        {advisor?.name?.replace(' 선생님', '')}
+                                    </div>
+                                    <span className="leading-none text-indigo-500 text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                                        {advisor?.hashtag}
+                                    </span>
+                                </div>
+                            </div>
+                            <Image
+                                onClick={handlePhoneClick}
+                                src={'/images/status_ready.svg'}
+                                width={120}
+                                height={40}
+                                alt="call"
+                                className="w-24 h-10"
+                            />
+                        </div>
                     </div>
-                    <span className="leading-none text-indigo-500 text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-                        {advisor?.hashtag}
-                    </span>
-                    </div>
-                </div>
-                <Image
-                    onClick={handlePhoneClick}
-                    src={'/images/status_ready.svg'}
-                    width={120}
-                    height={40}
-                    alt="call"
-                    className="w-24 h-10"
-                />
-                </div>
 
-                    <div className="flex justify-between items-center w-full mt-2">
-                        {/* 요금표 */}
-                        <div className="flex-col inline-flex justify-between text-black text-sm font-bold">
+                    <div className="flex justify-between items-end w-full">
+                        <div className="flex-col inline-flex justify-end text-black text-sm font-bold">
                             {!!menuObj && menuObj.slice(0, 2).map(([key, value]: [key: string, value: number],  index:number) => (
                                 <div key={key}>
                                     {renderPriceInfo(
@@ -317,7 +342,6 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                             ))}
                         </div>
                         <div className="flex">
-                            {/* 리뷰 평점 */}
                             <div className="justify-start items-center gap-1 inline-flex">
                                 <div className="relative">
                                     <Image
@@ -329,13 +353,13 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                 </div>
                             </div>
                             <div>
-                <span className="text-neutral-800 text-lg font-bold ">
-                  {advisor.score || 0}
-                </span>
+                                <span className="text-neutral-800 text-lg font-bold ">
+                                    {advisor.score || 0}
+                                </span>
                                 <span className="text-neutral-400 text-lg font-semibold ">
-                  {' '}
+                                    {' '}
                                     ({(advisor?.scoreLen || 0).toLocaleString()})
-                </span>
+                                </span>
                             </div>
                         </div>
                     </div>
