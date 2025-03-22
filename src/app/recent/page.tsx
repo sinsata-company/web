@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import BTB from '@/components/common/Btb'
 import MainAppbar from '@/components/common/MainAppbar'
 import { SearchProvider } from '@/components/common/SearchContext'
@@ -16,7 +16,7 @@ const AdvisorContainer = dynamic(
   }
 )
 
-export default function HeartPage() {
+function RecentPageContent() {
   const searchParams = useSearchParams()
   const searchQuery = searchParams.get('q') || ''
   
@@ -28,15 +28,23 @@ export default function HeartPage() {
   }, [searchQuery])
 
   return (
-    <SearchProvider>
-      <div>
-        <MainAppbar />
-        <div className="p-4">
-          <p>검색어: {searchQuery}</p>
-        </div>
-        <RecentAdvisorContainer />
-        <BTB />
+    <div>
+      <MainAppbar />
+      <div className="p-4">
+        <p>검색어: {searchQuery}</p>
       </div>
+      <RecentAdvisorContainer />
+      <BTB />
+    </div>
+  )
+}
+
+export default function HeartPage() {
+  return (
+    <SearchProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <RecentPageContent />
+      </Suspense>
     </SearchProvider>
   )
 } 
