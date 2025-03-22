@@ -118,7 +118,13 @@ export default function Page() {
                 `/sub/channel/${roomId}`,
                 (received_message: StompJs.IFrame) => {
                     const body = JSON.parse(received_message.body)
-                    console.log({ body });
+                    const ignore = (() => {
+                        if (body?.metadata?.includes('채팅이 아직 수락되지 않았습니다.')) return true;
+                        return false;
+                    })()
+
+                    console.log({ body, ignore });
+                    if (ignore) return;
 
                     if (body.type === 'ERROR') {
                         alert(body.message);
