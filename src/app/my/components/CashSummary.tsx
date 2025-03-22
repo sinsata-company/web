@@ -20,9 +20,9 @@ export default function CashSummary() {
     setMyCash(result)
   }
   return (
-    <div className={`${fontFamily} [&_*]:${fontSize} px-4`}>
+    <div className="px-4">
       <div className="w-full px-6 py-4 bg-indigo-400 rounded-lg justify-between items-center inline-flex">
-        <div className="text-white  font-semibold ">보유중인 코인</div>
+        <div className="text-white font-semibold">보유중인 코인</div>
         <div className="justify-start items-center gap-6 flex">
           <Image
             src={'/images/ic_cash.svg'}

@@ -27,10 +27,10 @@ export function AppProvider({ children }: AppProviderProps) {
   const [fontSize, setFontSize] = useState('text-base')
 
   useEffect(() => {
-    const savedFont = localStorage.getItem('fontFamily')
-    const savedSize = localStorage.getItem('fontSize')
-    if (savedFont) setFontFamily(savedFont)
-    if (savedSize) setFontSize(savedSize)
+    const savedFontFamily = localStorage.getItem('fontFamily') || 'font-sans'
+    const savedFontSize = localStorage.getItem('fontSize') || 'text-base'
+    setFontFamily(savedFontFamily)
+    setFontSize(savedFontSize)
   }, [])
 
   return (

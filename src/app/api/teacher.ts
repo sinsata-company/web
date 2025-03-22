@@ -28,6 +28,15 @@ export const getTeacherLikeList = async (searchType: SearchType, page: number) =
   return data
 }
 
+export const getTeacherRecentList = async (searchType: string, page: number) => {
+  const response = await basicGet(
+    `/teachers/recent?method=${searchType}&page=${page}`
+  )
+  const data = response as PageRes<TeacherListDto>
+  return data
+}
+
+
 
 export interface summary {
   teachers: number

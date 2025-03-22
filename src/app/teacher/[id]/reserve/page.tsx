@@ -105,7 +105,7 @@ export default function TeacherReservePage() {
   return (
     <div>
       <BackAppbar />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+      <div className="grid grid-cols-1 gap-6 p-4">
         <div className="bg-white p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">날짜 선택</h2>
           <div className="[&_button]:text-2xl [&_td]:text-2xl [&_th]:text-2xl">
@@ -115,7 +115,6 @@ export default function TeacherReservePage() {
               selectedDate={selectedDate}
               onDateSelect={onDateSelect}
               disablePastDates={true}
-              minDate={now.startOf('day')}
             />
           </div>
         </div>
