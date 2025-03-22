@@ -5,9 +5,15 @@ import {UserCredential} from 'firebase/auth'
 import {isMobileDevice} from '@/utils/device'
 import {basicDelete, basicGet, basicPut} from './base'
 import { InquiryResponseDto } from '@/app/api/data'
+import { basicTeacherGet } from '../manage/api/base'
 
 export const getMyInfo = async () => {
   const result = await basicUnpagedGet<UserDto>('/users/me')
+  return result
+}
+
+export const getMyInfoByTeacher = async () => {
+  const result = await basicTeacherGet<UserDto>('/users/me/teacher')
   return result
 }
 

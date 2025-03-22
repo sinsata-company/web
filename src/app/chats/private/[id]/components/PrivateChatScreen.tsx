@@ -41,21 +41,29 @@ export default function PrivateChatScreen({
     >
       <ChatInform chat={chat} />
       {messages.map((item, idx) => {
-        return item.authorId == myId ? (
-          <MyChat
-            key={idx}
-            {...item}
-            user={user}
-            isContinued={idx > 0 && messages[idx - 1].authorId == myId}
-          />
-        ) : (
-          <TeacherChat
-            key={idx}
-            {...item}
-            chat={chat}
-            isContinued={idx > 0 && messages[idx - 1].authorId != myId}
-          />
-        )
+        const isMyMessage = item.authorId === myId;
+        
+        if (isMyMessage) {
+          return (
+            <TeacherChat
+              key={idx}
+              {...item}
+              chat={chat}
+              user={user}
+              isMyMessage={true}
+              isContinued={idx > 0 && messages[idx - 1].authorId === myId}
+            />
+          );
+        } else {
+          return (
+            <MyChat
+              key={idx}
+              {...item}
+              user={user}
+              isContinued={idx > 0 && messages[idx - 1].authorId !== myId}
+            />
+          );
+        }
       })}
       <div ref={messagesEndRef} />
     </div>

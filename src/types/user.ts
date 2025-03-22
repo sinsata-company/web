@@ -9,6 +9,7 @@ export interface UserDto {
   phoneNum: string
   isParticipatedEvent: boolean
   createdAt: string
+  type: 'USER' | 'TEACHER';
   likedTeachers: Array<any>;
   profileImage: string
 }

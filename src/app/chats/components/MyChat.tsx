@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 export interface IMyChat extends IMessage {
   user: UserDto | null
   isContinued: boolean
-  isTeacher?: boolean
+  isTeacher: boolean
 }
 
 export default function MyChat({

@@ -7,7 +7,7 @@ import * as StompJs from '@stomp/stompjs'
 import {usePathname, useRouter} from 'next/navigation'
 import {v4 as uuidv4} from 'uuid'
 import {UserDto} from '@/types/user'
-import {getMyInfo} from '@/app/api/user'
+import {getMyInfoByTeacher} from '@/app/api/user'
 import {ChatDto, IMessage} from '@/app/api/data'
 import {chatMessages, getChatDetail} from '@/app/api/chat'
 import ChatWriter from '@/app/chats/components/ChatWriter'
@@ -25,12 +25,16 @@ export default function Page() {
     const [myId, setMyId] = useState<string>('')
 
     const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
-    const [user, setUser] = useState<UserDto | null>(null)
     const roomId = usePathname().split('/').pop() as string
+
+    const { data: user = null } = useQuery({
+        queryKey: ['me'],
+        queryFn: getMyInfoByTeacher,
+    });
     const { data: chat = null, refetch: refetchChat } = useQuery({
         queryKey: ['chat', roomId],
         queryFn: () => getChatDetail(roomId)
-    })
+    });
 
     const client = useRef<StompJs.Client>(null)
     const router = useRouter()
@@ -40,11 +44,8 @@ export default function Page() {
     }, [])
 
     const initialize = async () => {
-        const user = await getMyInfo()
         const prevMessages = await chatMessages(roomId);
-        console.log('user', user);
-        setUser(user)
-        setMyId(user.userId);
+        setMyId(user?.userId || '');
         setReceivedMessages(prevMessages as Array<IMessage>)
     }
 
@@ -52,16 +53,21 @@ export default function Page() {
         if (message.trim().length < 1) return
 
         if (client.current) {
+
+            const bodyData = {
+                isTeacher: true,
+                roomId: roomId,
+                authorId: myId,
+                message: message,
+                level: user?.level,
+                nickname: user?.nickname,
+            };
             client.current?.publish({
                 destination: `/pub/message/group`,
-                body: JSON.stringify({
-                    roomId: roomId,
-                    authorId: myId,
-                    message: message,
-                    level: user?.level,
-                    nickname: user?.nickname,
-                }),
-            })
+                body: JSON.stringify(bodyData),
+            });
+
+            console.log(bodyData);
 
             console.log(`> Send message: ${message}`)
         }

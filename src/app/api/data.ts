@@ -94,6 +94,7 @@ export interface IMessage {
   message: string
   id: number
   createdAt: string
+  isTeacher: boolean
   level: string
   nickname: string
 }
