@@ -362,7 +362,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                             </div>
 
                             {/* 상담 버튼 */}
-                            <div className="mt-auto">
+                            <div className="mt-auto w-[140px]">
                                 <Button
                                     onClick={handlePhoneClick}
                                     buttonType={BUTTON_TYPE.primary}
@@ -378,16 +378,8 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                             <span className="text-sm">상담</span>
                                         </div>
                                     }
-                                    className="w-[140px] h-8 mt-2"
+                                    className="w-[100px] h-8 mt-2"
                                 />
-                                {/* <Image
-                                onClick={handlePhoneClick}
-                                src={'/images/status_ready.svg'}
-                                width={120}
-                                height={40}
-                                alt="call"
-                                className="w-24 h-10"
-                            /> */}
                             </div>
                         </div>
                     </div>
