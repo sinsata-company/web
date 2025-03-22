@@ -344,7 +344,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                         <div className="flex flex-col flex-1 h-full">
                             {/* 이름과 번호 */}
                             <div className="font-extrabold flex items-center gap-2 mb-2">
-                                <span className="text-[17px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>
+                                <span className="text-[24px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>     
                                 <span className="text-neutral-300 font-extrabold text-base">|</span>
                                 <span className="text-indigo-500 text-sm">{advisor?.pinNumber}번</span>
                             </div>
@@ -370,12 +370,12 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                         <div className="flex items-center justify-center gap-1">
                                             <Image
                                                 src="/images/ic_phone.svg"
-                                                width={12}
-                                                height={12}
+                                                width={15}
+                                                height={15}
                                                 alt="phone"
                                                 className="brightness-0 invert"
                                             />
-                                            <span className="text-sm">상담</span>
+                                            <span className="text-sm">상 담</span>
                                         </div>
                                     }
                                     className="w-[100px] h-8 mt-2"
