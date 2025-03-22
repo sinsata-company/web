@@ -48,7 +48,14 @@ export default function PrivateChatPage() {
         return now.isBefore(reservStartTime);
     })();
 
-    console.log({ reserv, isOutsideReservationTime });
+    const hasReservationEnded = (() => {
+        if (!reserv || !reserv.endAt || reserv.status !== 'ACTIVE') return false;
+        const reservEndTime = moment(reserv.endAt);
+        const now = moment();
+        return now.isAfter(reservEndTime);
+    })();
+
+    console.log({ reserv, isOutsideReservationTime, hasReservationEnded });
 
     const client = useRef<StompJs.Client>(null)
 
@@ -95,6 +102,33 @@ export default function PrivateChatPage() {
         readPrivateChat();
         initialize()
     }, [])
+
+    useEffect(() => {
+        if (!reserv || !reserv.endAt || reserv.status !== 'ACTIVE') return;
+        
+        const reservEndTime = moment(reserv.endAt);
+        const now = moment();
+        const timeUntilEnd = reservEndTime.diff(now);
+        
+        if (timeUntilEnd <= 0) {
+            handleReservationEnd();
+            return;
+        }
+        
+        const timer = setTimeout(() => {
+            handleReservationEnd();
+        }, timeUntilEnd);
+        
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [reserv]);
+
+    const handleReservationEnd = async () => {
+        alert("예약된 상담 시간이 종료되었습니다.");
+        await endChatByUser(roomId);
+        router.back();
+    };
 
     useEffect(() => {
         const deadline = 60 * 1000 * 2;
