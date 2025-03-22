@@ -40,12 +40,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     fontFamily: '',
     fontSize: '',
   }
-  console.log(fontFamily, fontSize)
   return (
     <body
-      className={` ${fontFamily} ${fontSize} antialiased relative w-full h-full max-w-[550px] mx-auto`}
+      className={`${fontFamily} ${fontSize} antialiased w-full max-w-[550px] mx-auto overflow-x-hidden overflow-y-auto`}
     >
-      <div className="relative">{children}</div>
+      <div className="relative h-[100dvh]">{children}</div>
       {/* <UsageFooter /> */}
     </body>
   )

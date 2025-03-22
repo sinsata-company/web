@@ -37,7 +37,7 @@ export default function PrivateChatScreen({
         marginTop: 15,
         height: 'calc(100vh - 120px)',
       }}
-      className="inline-flex flex-col py-2 px-5 gap-2.5 w-full overflow-y-auto "
+      className="inline-flex flex-col py-2 px-5 gap-2.5 w-full overflow-y-auto mb-[105px]"
     >
       <ChatInform chat={chat} />
       {messages.map((item, idx) => {
