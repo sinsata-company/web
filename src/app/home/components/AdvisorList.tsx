@@ -320,7 +320,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             <div 
                 key={advisor?.id || ''}
                 ref={ref}
-                className="w-[430px] h-[200px] flex flex-col bg-white overflow-hidden"
+                className="w-[380px] h-[200px] flex flex-col bg-white overflow-hidden"
             >
                 {/* 상단 영역 - 프로필 이미지와 정보 */}
                 <div className="flex-1 p-4">
@@ -378,7 +378,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                             <span className="text-sm">상담</span>
                                         </div>
                                     }
-                                    className="w-full h-8 mt-2"
+                                    className="w-[140px] h-8 mt-2"
                                 />
                                 {/* <Image
                                 onClick={handlePhoneClick}
