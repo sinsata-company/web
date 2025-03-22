@@ -11,7 +11,7 @@ const ChatSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMe
   const { teacherName, teacherProfile, startAt, endAt, status } = chat
   const router = useRouter()
   const isReserv = status === 'RESERVE';
-  const canEnded = ['RESERVE', 'REQUEST'].includes(status);
+  const canEnded = ['RESERVE', 'REQUEST', 'PROGRESS'].includes(status);
 
   const cacelReserv = async () => {
     await basicDelete(`/reserve/${chat.reserveId}`);

@@ -18,6 +18,7 @@ import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import {startChat} from '@/app/manage/api/homepage'
 import {BASE_WS} from '@/api/base'
 import {useQuery} from '@tanstack/react-query'
+import { ChatStatus } from '@/types/reservation'
 
 export default function Page() {
     const [message, setMessage] = useState<string>('')
@@ -175,12 +176,12 @@ export default function Page() {
                 myId={myId}
             />
             <ChatWriter
-                disabled={chat?.status == 'REQUEST' || chat?.status == 'END'}
+                disabled={chat?.status == ChatStatus.REQUEST || chat?.status == ChatStatus.END}
                 message={message}
                 setMessage={setMessage}
                 sendMessage={sendMessage}
                 actionButton={
-                    chat?.status == 'END' ? (
+                    chat?.status == ChatStatus.END ? (
                         <Button
                             label="메모 남기기"
                             onClick={async () => {
