@@ -10,10 +10,10 @@ const fonts = [
 ]
 
 const fontSizes = [
-  { name: 'Small', className: 'text-sm' },
-  { name: 'Base', className: 'text-base' },
-  { name: 'Large', className: 'text-lg' },
-  { name: 'XL', className: 'text-xl' },
+  { name: 'Small', className: 'text-sm [&_*]:!text-sm' },    // 14px
+  { name: 'Medium', className: 'text-base [&_*]:!text-base' }, // 16px
+  { name: 'Large', className: 'text-lg [&_*]:!text-lg' },    // 18px
+  { name: 'XL', className: 'text-xl [&_*]:!text-xl' },      // 20px
 ]
 
 export default function FontWidget() {
@@ -25,13 +25,13 @@ export default function FontWidget() {
 
   const handleFontChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFontFamily(e.target.value)
-
     localStorage.setItem('fontFamily', e.target.value)
   }
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFontSize(e.target.value)
-    localStorage.setItem('fontSize', e.target.value)
+    const selectedSize = e.target.value
+    setFontSize(selectedSize)
+    localStorage.setItem('fontSize', selectedSize)
   }
 
   return (

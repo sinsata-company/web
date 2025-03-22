@@ -9,7 +9,7 @@ import SuggestLogin from '@/components/common/SuggestLogin'
 import Modal from '@/components/common/Modal'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { getMyInfo, withdraw } from '../api/user'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Membership from './components/Membership'
 import { UserDto } from '@/types/user'
 import MenuOptions from './components/MenuOptions'
@@ -22,8 +22,19 @@ export default function MyPage() {
 
   const [me, setMe] = useState<UserDto | null>(null)
 
+  const pathname = usePathname()
+
   const context = useAppContext()
   const { fontFamily, fontSize } = context || {}
+
+  const shouldApplyFontStyles = pathname === '/my'
+
+  useEffect(() => {
+    if (!shouldApplyFontStyles) {
+      localStorage.removeItem('fontFamily')
+      localStorage.removeItem('fontSize')
+    }
+  }, [shouldApplyFontStyles])
 
   useEffect(() => {
     const token = (window.localStorage.getItem('sst-teacher-token') || window.localStorage.getItem('sst-access-token'))
@@ -45,35 +56,37 @@ export default function MyPage() {
           <SuggestLogin label="내 정보를 보기" />
         </div>
       ) : (
-        <div className={`max-w-screen-md mx-auto ${fontFamily} [&_*]:${fontSize}`}>
-          <Membership
-            level={me?.level ?? ''}
-            nickname={me?.nickname ?? ''}
-            createdAt={me?.createdAt ?? ''}
-          />
-          <div className="px-3">
-            <CashSummary />
-            <div className="h-3"></div>
-            <div className="bg-white rounded-lg shadow-sm">
-              <MenuOptions />
-              <TextSize />
-              <ApplyCsl />
-            </div>
-            {isLogin && (
-              <div className="mt-4">
-                <div className="flex justify-end">
-                  <button
-                    className="text-gray-500 text-xs py-1.5 px-3 hover:text-gray-700"
-                    onClick={() => {
-                      localStorage.clear()
-                      router.push('/register')
-                    }}
-                  >
-                    로그아웃
-                  </button>
-                </div>
+        <div className={`max-w-screen-md mx-auto ${shouldApplyFontStyles ? fontFamily : ''}`}>
+          <div className={shouldApplyFontStyles ? fontSize : ''}>
+            <Membership
+              level={me?.level ?? ''}
+              nickname={me?.nickname ?? ''}
+              createdAt={me?.createdAt ?? ''}
+            />
+            <div className="px-3">
+              <CashSummary />
+              <div className="h-3"></div>
+              <div className="bg-white rounded-lg shadow-sm">
+                <MenuOptions />
+                <TextSize />
+                <ApplyCsl />
               </div>
-            )}
+              {isLogin && (
+                <div className="mt-4">
+                  <div className="flex justify-end">
+                    <button
+                      className="text-gray-500 text-xs py-1.5 px-3 hover:text-gray-700"
+                      onClick={() => {
+                        localStorage.clear()
+                        router.push('/register')
+                      }}
+                    >
+                      로그아웃
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

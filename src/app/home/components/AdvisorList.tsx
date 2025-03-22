@@ -25,45 +25,46 @@ export default function AdvisorList({
     const router = useRouter()
     const pathname = usePathname()
     const isNavigating = useRef(false);
-    const isBackNavigation = useRef(false);
 
     useEffect(() => {
-        // 뒤로가기 감지
-        const handlePopState = () => {
-            isBackNavigation.current = true;
-            // scroll_/home 값을 advisor-scroll로 복사
-            const savedScroll = sessionStorage.getItem(`scroll_${pathname}`);
-            if (savedScroll) {
-                sessionStorage.setItem('advisor-scroll', savedScroll);
+        // 브라우저의 history state에서 스크롤 위치를 복원
+        const restoreScroll = () => {
+            if (history.state?.scrollPos) {
+                window.scrollTo(0, history.state.scrollPos);
             }
         };
 
+        // 페이지 로드/뒤로가기 시 스크롤 복원
+        window.addEventListener('load', restoreScroll);
+        window.addEventListener('popstate', restoreScroll);
+
+        // 현재 스크롤 위치를 history state에 저장
+        const saveScroll = () => {
+            const currentScroll = window.scrollY;
+            const currentState = history.state || {};
+            history.replaceState(
+                { ...currentState, scrollPos: currentScroll },
+                ''
+            );
+        };
+
+        // 스크롤 이벤트에 대한 디바운스 처리
+        let timeoutId: NodeJS.Timeout;
         const handleScroll = () => {
-            if (!isNavigating.current) {
-                const currentScroll = window.scrollY;
-                sessionStorage.setItem(`scroll_${pathname}`, String(currentScroll));
-            }
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(saveScroll, 100);
         };
 
-        window.addEventListener('popstate', handlePopState);
         window.addEventListener('scroll', handleScroll);
 
-        // 초기 마운트나 뒤로가기 시 스크롤 복원
-        if (isBackNavigation.current) {
-            const savedScroll = sessionStorage.getItem('advisor-scroll');
-            if (savedScroll) {
-                requestAnimationFrame(() => {
-                    window.scrollTo(0, parseInt(savedScroll));
-                });
-            }
-            isBackNavigation.current = false;
-        }
-
         return () => {
+            window.removeEventListener('load', restoreScroll);
+            window.removeEventListener('popstate', restoreScroll);
             window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('popstate', handlePopState);
+            clearTimeout(timeoutId);
+            saveScroll(); // 언마운트 시 마지막 스크롤 위치 저장
         };
-    }, [pathname]);
+    }, []);
 
     const onClickPhone = (advisor: TeacherListDto) => {
         setAdvisor(advisor)
@@ -75,12 +76,21 @@ export default function AdvisorList({
     };
 
     const handleItemClick = (id: string) => {
-        isNavigating.current = true;
-        // 페이지 이동 전 현재 스크롤 위치를 advisor-scroll에도 저장
         const currentScroll = window.scrollY;
-        sessionStorage.setItem(`scroll_${pathname}`, String(currentScroll));
-        sessionStorage.setItem('advisor-scroll', String(currentScroll));
-        router.push(`/teacher/${id}`);
+        // 현재 스크롤 위치를 sessionStorage와 history state에 모두 저장
+        sessionStorage.setItem(
+            `__next_scroll_${window.history.state.idx}`,
+            JSON.stringify({
+                x: window.pageXOffset,
+                y: window.pageYOffset,
+            })
+        );
+        
+        history.replaceState(
+            { ...history.state, scrollPos: currentScroll },
+            ''
+        );
+        router.push(`/teacher/${id}`, {scroll: false});
     }
 
     useEffect(() => {
@@ -92,7 +102,7 @@ export default function AdvisorList({
     }, [pathname]);
 
     return (
-        <div className="inline-flex flex-col gap-2.5 w-full text-sm">
+        <div className="inline-flex flex-col gap-2.5 items-center w-full text-sm">
             {advisorList.map((item, idx) => {
                 if (idx === advisorList.length - 1) {
                     return (
@@ -126,8 +136,8 @@ export default function AdvisorList({
                             alt="profile"
                             className="rounded-lg object-cover"
                         />
-                        <div className="text-zinc-900 text-sm">
-                            {advisor?.pinNumber}번
+                        <div className="text-zinc-900 text-sm flex items-center">
+                            {advisor?.pinNumber}
                         </div>
                     </div>
                     
@@ -237,11 +247,10 @@ interface AdvisorItemProps extends TeacherListDto {
 
 const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
     function AdvisorItem(advisor, ref) {
-        const {id, name, thumbnail, hashtag, summary, selfLiked, onClickPhone, teacherType, menu, changeLiked} =
-            advisor;
-
+        const {id, name, thumbnail, hashtag, summary, selfLiked, onClickPhone, teacherType, menu, changeLiked} = advisor;
+        const router = useRouter()
+        const pathname = usePathname()
         const [menuObj, setMenuObj] = useState<any>(null);
-
         const [newSelfLiked, setSelfLiked] = useState<boolean>(selfLiked);
 
         const changeSelfLiked = async () => {
@@ -256,6 +265,18 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         };
 
         useEffect(() => {
+            window.history.scrollRestoration = 'manual';
+            
+            // 페이지 이동 후 저장되어 있던 위치로 스크롤 복원
+            const _scroll = sessionStorage.getItem(`__next_scroll_${window.history.state.idx}`);
+            if (_scroll) {
+                const { x, y } = JSON.parse(_scroll);
+                window.scrollTo(x, y);
+                sessionStorage.removeItem(`__next_scroll_${window.history.state.idx}`);
+            }
+        }, [pathname]);
+
+        useEffect(() => {
             if (!!menu && menu !== '' && menu.trim().length > 0) {
                 setMenuObj(JSON.parse(menu));
             } else {
@@ -263,11 +284,14 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             }
         }, []);
 
-        const nav = useRouter()
-
-        const handleItemClick = () => {
-            nav.push('/teacher/' + id)
-        }
+        const handleClick = () => {
+            const currentScroll = window.scrollY;
+            history.replaceState(
+                { ...history.state, scrollPos: currentScroll },
+                ''
+            );
+            router.push('/teacher/' + id, {scroll: false});
+        };
 
         const handlePhoneClick = (e: React.MouseEvent) => {
             e.stopPropagation()
@@ -275,93 +299,119 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         }
 
         const renderPriceInfo = (price: string, duration: string) => (
-            <div className="flex items-center gap-1">
-                <Image src={'/images/ic_cash.svg'} width={16} height={16} alt="cash"/>
-                <div className="flex items-baseline gap-1">
-                    <p>{price}</p>
-                    <p className="text-neutral-400 font-semibold font-light text-xs">
-                        {duration}
-                    </p>
+            <div className="relative flex items-center h-3">
+                <div className="flex items-center" style={{width: '78px'}}>
+                    <Image
+                        src="/images/ic_cash.svg"
+                        width={12}
+                        height={12}
+                        alt="cash"
+                        className="absolute left-0"
+                    />
+                    <span className="absolute left-[16px] text-[10px] font-bold">{price}</span>
                 </div>
+                <span className="absolute left-[82px] text-neutral-400 text-[10px] font-semibold">
+                    {duration}
+                </span>
             </div>
         )
 
         return (
-            <div
+            <div 
                 key={advisor?.id || ''}
                 ref={ref}
-                className="w-full h-full flex p-3 rounded-2xl justify-start items-start"
+                className="w-[420px] h-[186.64px] flex flex-col bg-white overflow-hidden"
             >
-                <div className="relative w-[140px] sm:w-[173.33px] aspect-[173.33/128.88]">
-                    <Image
-                        onClick={handleItemClick}
-                        style={{objectFit: 'cover'}}
-                        className="rounded-xl w-full h-full cursor-pointer"
-                        src={thumbnail || '/logo.jpg'}
-                        placeholder="blur"
-                        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-                        alt="profile"
-                        fill
-                    />
-                    <TeacherTypeLabel teacherType={teacherType}/>
-                </div>
-
-                <div className="pl-4 flex flex-col justify-between grow overflow-hidden h-[128.88px]">
-                    <div>
-                        <div className="items-center flex justify-between w-full cursor-pointer" onClick={handleItemClick}>
-                            <div className="overflow-hidden">
-                                <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-                                    <div className="font-extrabold leading-tight text-xl whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-                                        {advisor?.name?.replace(' 선생님', '')}
-                                    </div>
-                                    <span className="leading-none text-indigo-500 text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-                                        {advisor?.hashtag}
-                                    </span>
-                                </div>
-                            </div>
+                {/* 상단 영역 - 프로필 이미지와 정보 */}
+                <div className="flex-1 p-4">
+                    <div className="flex h-full gap-5">
+                        {/* 왼쪽 이미지 */}
+                        <div className="relative w-[150px] sm:w-[173.33px] h-full">
                             <Image
+                                onClick={handleClick}
+                                style={{objectFit: 'cover'}}
+                                className="rounded-xl w-full h-full cursor-pointer"
+                                src={thumbnail || '/logo.jpg'}
+                                placeholder="blur"
+                                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+                                alt="profile"
+                                fill
+                            />
+                            <TeacherTypeLabel teacherType={teacherType}/>
+                        </div>
+
+                        {/* 오른쪽 정보 */}
+                        <div className="flex flex-col flex-1 h-full">
+                            {/* 이름과 번호 */}
+                            <div className="font-extrabold flex items-center gap-2 mb-2">
+                                <span className="text-[28px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>
+                                <span className="text-neutral-300 font-extrabold !text-lg">|</span>
+                                <span className="text-indigo-500 !text-2xl">{advisor?.pinNumber}번</span>
+                            </div>
+
+                            {/* 가격 정보 */}
+                            <div className="flex-col inline-flex justify-start text-black space-y-1 mb-5 h-[48px]">
+                                {!!menuObj && menuObj.slice(0, 2).map(([key, value]: [key: string, value: number], index:number) => (
+                                    <div key={key} className="h-6">
+                                        {renderPriceInfo(
+                                            `${Number(value).toLocaleString()}원`,
+                                            `${key}${index === 0 ? '초' : '분'}`
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* 상담 버튼 */}
+                            <div className="mt-auto">
+                                <Button
+                                    onClick={handlePhoneClick}
+                                    buttonType={BUTTON_TYPE.primary}
+                                    label={
+                                        <div className="flex items-center justify-center gap-1">
+                                            <Image
+                                                src="/images/ic_phone.svg"
+                                                width={12}
+                                                height={12}
+                                                alt="phone"
+                                                className="brightness-0 invert"
+                                            />
+                                            <span className="text-sm">상담</span>
+                                        </div>
+                                    }
+                                    className="w-full h-8 mt-2"
+                                />
+                                {/* <Image
                                 onClick={handlePhoneClick}
                                 src={'/images/status_ready.svg'}
                                 width={120}
                                 height={40}
                                 alt="call"
                                 className="w-24 h-10"
-                            />
+                            /> */}
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="flex justify-between items-end w-full">
-                        <div className="flex-col inline-flex justify-end text-black text-sm font-bold">
-                            {!!menuObj && menuObj.slice(0, 2).map(([key, value]: [key: string, value: number],  index:number) => (
-                                <div key={key}>
-                                    {renderPriceInfo(
-                                        `${Number(value).toLocaleString()}원`,
-                                        `${key}${index === 0 ? '초' : '분'}`
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="flex">
-                            <div className="justify-start items-center gap-1 inline-flex">
-                                <div className="relative">
-                                    <Image
-                                        src={'/images/ic_star.svg'}
-                                        width={16}
-                                        height={16}
-                                        alt="chat"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <span className="text-neutral-800 text-lg font-bold ">
-                                    {advisor.score || 0}
-                                </span>
-                                <span className="text-neutral-400 text-lg font-semibold ">
-                                    {' '}
-                                    ({(advisor?.scoreLen || 0).toLocaleString()})
-                                </span>
-                            </div>
-                        </div>
+                {/* 하단 영역 - 해시태그와 별점 */}
+                <div className="w-[400px] h-[40px] flex items-center px-4 bg-gray-50">
+                    <div className="text-indigo-500 text-xs font-semibold leading-tight w-[180px]">
+                        {advisor?.hashtag}
+                    </div>
+                    
+                    <div className="flex items-center gap-1 ml-4">
+                        <Image
+                            src={'/images/ic_star.svg'}
+                            width={13}
+                            height={13}
+                            alt="chat"
+                        />
+                        <span className="text-neutral-800 text-xs font-bold leading-tight">
+                            {advisor.score || 0}
+                        </span>
+                        <span className="text-neutral-400 text-xs font-semibold leading-tight">
+                            ({(advisor?.scoreLen || 0).toLocaleString()})
+                        </span>
                     </div>
                 </div>
             </div>

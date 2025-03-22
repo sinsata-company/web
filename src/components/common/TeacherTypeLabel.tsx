@@ -29,7 +29,7 @@ const TeacherTypeLabel = ({
   return (
     <div
       className={clsx(
-        'absolute top-2 left-2 px-2 py-1 rounded-lg justify-center items-center inline-flex',
+        'absolute top-1 left-1 w-[40px] h-[20px] flex justify-center items-center',
         color,
         textColor
       )}

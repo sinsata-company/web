@@ -457,7 +457,7 @@ function BillingContent() {
         </div> */}
 
     {/* 결제 금액 및 버튼 */}
-    <div className="bg-white p-2 rounded-lg">
+    <div className="fixed bottom-0 left-0 right-0 bg-white p-2 border-t">
         <div className="flex justify-between items-center mb-4 w-full max-w-screen-xl mx-auto px-4 max-w-3xl mx-auto">
           <span className="text-lg">총 금액 <span className="text-sm text-gray-500">(VAT 별도)</span></span>
           <span className="text-xl font-bold">{formatNumberWithCommas(vaInfo?.price || 0)}원</span>
