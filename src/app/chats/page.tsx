@@ -6,24 +6,22 @@ import ChatItem from './components/ChatItem'
 import { useEffect, useState } from 'react'
 import SuggestLogin from '@/components/common/SuggestLogin'
 import { getMyChats } from '../api/chat'
-import { CashHistoryDto, ChatDto } from '../api/data'
+import { useQuery } from '@tanstack/react-query'
 
 export default function Chats() {
-  const [chats, setChats] = useState<ChatDto[]>([])
   const [isLogin, setIsLogin] = useState(true)
+  const { data: chats = [], refetch: refetchChats } = useQuery({
+    queryKey: ['chats'],
+    queryFn: getMyChats,
+    refetchOnMount: true,
+  })
 
   useEffect(() => {
     const token = (window.localStorage.getItem('sst-teacher-token') || window.localStorage.getItem('sst-access-token'))
     if (!token) {
       setIsLogin(false)
     }
-    getMyChats()
-      .then((res) => {
-        setChats(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    refetchChats();
   }, [])
 
   return (

@@ -9,12 +9,14 @@ export default function ChatWriter({
                                        setMessage,
                                        actionButton,
                                        disabled,
+                                       isOutsideReservationTime
                                    }: {
     sendMessage: Function
     message: string
     setMessage: Function
     actionButton?: React.ReactNode
     disabled?: boolean
+    isOutsideReservationTime?: boolean  
 }) {
     const expire = window.localStorage.getItem('sst-access-token-expire-at')
     const teacherExpire = window.localStorage.getItem('sst-teacher-token-expire-at')
@@ -22,6 +24,16 @@ export default function ChatWriter({
         (window.localStorage.getItem('sst-access-token') || window.localStorage.getItem('sst-teacher-token')) &&
         (expire && Number(expire) > Date.now() ||
         teacherExpire &&  Number(teacherExpire) > Date.now())
+
+    const onSend = () => {
+        if (isOutsideReservationTime) {
+            alert("예약 시간 외에는 메시지를 보낼 수 없습니다.")
+            return;
+        }
+        sendMessage()
+        setMessage('')
+    }
+
     return (
         <div
             className="max-w-[550px] w-full mx-auto  fixed bottom-0 left-0 right-0 w-full  px-5 pt-4 pb-10 bg-white border-t border-zinc-100 flex-col justify-start items-start gap-2.5 inline-flex">
@@ -47,8 +59,7 @@ export default function ChatWriter({
                     disabled={disabled || !isLogin}
                     onKeyUp={(e) => {
                         if (e.key == 'Enter') {
-                            sendMessage('')
-                            setMessage('')
+                            onSend()
                         }
                     }}
                     placeholder="메세지 입력"
@@ -65,10 +76,7 @@ export default function ChatWriter({
             alt="attach"
           /> */}
                     <Image
-                        onClick={() => {
-                            sendMessage()
-                            setMessage('')
-                        }}
+                        onClick={onSend}
                         src={'/images/ic_send.svg'}
                         width={24}
                         height={24}

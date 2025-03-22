@@ -14,6 +14,7 @@ export default function TeacherChat({
   isMyMessage?: boolean;
   user?: UserDto | null;
 }) {
+  console.log({ chat, user });
   const profileImageUrl = (() => {
     if (user?.type === 'TEACHER') {
       return chat?.teacherProfile;
@@ -23,7 +24,7 @@ export default function TeacherChat({
   })();
   
   return (
-    <div className=" flex flex-col justify-start gap-2 items-start">
+    <div className="flex flex-col justify-start gap-2 items-start">
       {!isContinued && (
         <div className="flex items-center text-zinc-900 text-sm font-bold">
           {isMyMessage && user ? (

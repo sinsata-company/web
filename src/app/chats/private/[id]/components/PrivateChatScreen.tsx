@@ -15,11 +15,13 @@ export default function PrivateChatScreen({
   myId,
   user,
   chat,
+  isOutsideReservationTime = false
 }: {
   messages: IMessage[]
   myId: string
   user: UserDto | null
-  chat: ChatDto | null
+  chat: ChatDto | null,
+  isOutsideReservationTime?: boolean
 }) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -39,7 +41,7 @@ export default function PrivateChatScreen({
       }}
       className="inline-flex flex-col py-2 px-5 gap-2.5 w-full overflow-y-auto mb-[105px]"
     >
-      <ChatInform chat={chat} />
+      <ChatInform chat={chat} isOutsideReservationTime={isOutsideReservationTime} />
       {messages.map((item, idx) => {
         const isMyMessage = item.authorId === myId;
         

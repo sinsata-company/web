@@ -14,15 +14,26 @@ export default function ChatItem(props: ChatDto) {
     status,
     roomId,
     teacherType,
+    unreadCount = 0
   } = props
   const router = useRouter()
+  const showNoti = unreadCount > 0;
+  const notiCount = unreadCount > 99 ? '99+' : unreadCount;
+
   return (
     <div
       onClick={() => {
         router.push(`/chats/private/${roomId}`)
       }}
-      className="w-full h-32 p-4 bg-white border rounded-xl justify-center items-start gap-3 inline-flex"
+      className="w-full h-32 p-4 bg-white border rounded-xl justify-center items-start gap-3 inline-flex relative"
     >
+      {showNoti && (
+        <div className="absolute top-2 right-2 bg-red-500 min-w-[24px] z-30 h-[24px] rounded-full flex items-center justify-center">
+          <span className="text-white text-[12px] font-bold">
+            {notiCount}
+          </span>
+        </div>
+      )}
       <div className="grow shrink basis-0 flex-col justify-start items-start gap-2 inline-flex">
         <ChatStatus status={status} />
         <div className="self-stretch h-14 flex-col justify-start items-start gap-1 flex">

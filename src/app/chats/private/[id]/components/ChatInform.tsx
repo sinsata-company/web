@@ -4,7 +4,7 @@ import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-const ChatInform = ({ chat }: { chat: ChatDto | null }) => {
+const ChatInform = ({ chat, isOutsideReservationTime }: { chat: ChatDto | null, isOutsideReservationTime: boolean }) => {
   const [elapsedTime, setElapsedTime] = useState<string>('')
   const router = useRouter()
 
@@ -35,15 +35,34 @@ const ChatInform = ({ chat }: { chat: ChatDto | null }) => {
       </div>
     )
   }
-  return chat.status === 'END' ? (
-    <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
-      상담이 종료되었습니다.
-    </div>
-  ) : chat.status === 'PROGRESS' ? (
-    <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
-      {elapsedTime} 상담 중
-    </div>
-  ) : (
+
+  if (chat.status === 'END') {
+    return (
+      <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
+        상담이 종료되었습니다.
+      </div>
+    )
+  }
+
+  if (chat.status === 'PROGRESS') {
+    return (
+      <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
+        {elapsedTime} 상담 중
+      </div>
+    )
+  }
+
+  if (isOutsideReservationTime) {
+    return (
+      <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
+        안녕하세요 신사타 입니다.
+        <br /> 예약시간외에는,채팅 입력이 불가합니다.
+        <br /> 욕설 및 비방, 선생님에게 상처를 주는 대화는 삼가해 주세요.
+      </div>
+    );
+  }
+
+  return (
     <div className="text-center px-3 text-neutral-500 text-sm font-normal  leading-tight">
       안녕하세요 신사타 입니다.
       <br /> 선생님께서 입장하시면 30초마다 1400원씩 과급됩니다.

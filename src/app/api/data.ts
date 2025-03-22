@@ -67,6 +67,7 @@ export interface ChatDto {
   endAt: string
   status: string
   reserveId: number
+  unreadCount: number;
 }
 
 export interface ChatRoomRes {

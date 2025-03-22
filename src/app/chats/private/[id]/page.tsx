@@ -9,11 +9,16 @@ import {UserDto} from '@/types/user'
 import {getMyInfo} from '@/app/api/user'
 import ChatSummary from './components/ChatSummary'
 import PrivateChatScreen from './components/PrivateChatScreen'
-import {IMessage} from '@/app/api/data'
+import {IMessage, ReserveDto} from '@/app/api/data'
 import {chatMessages, getChatDetail} from '@/app/api/chat'
-import {BASE_WS} from '@/api/base'
+import {BASE_WS, basicGet} from '@/api/base'
 import { useQuery } from '@tanstack/react-query'
 import { endChatByUser } from '@/app/manage/api/homepage'
+import moment from 'moment'
+import { start } from 'repl'
+import useReadPrivateChat from '../hooks/useReadPrivateChat'
+
+const getReserv = (id: number): Promise<ReserveDto> => basicGet(`/reserve/${id}`) as unknown as Promise<ReserveDto>;
 
 export default function PrivateChatPage() {
     const [message, setMessage] = useState<string>('')
@@ -23,11 +28,27 @@ export default function PrivateChatPage() {
     const [user, setUser] = useState<UserDto | null>(null)
     const roomId = usePathname().split('/').pop() as string
     const teacherJoined = useRef<boolean>(false);
+    const { mutate: readPrivateChat } = useReadPrivateChat(roomId);
 
     const { data: chat = null, refetch: refetchChat } = useQuery({
         queryKey: ['chat', roomId],
         queryFn: () => getChatDetail(roomId)
-    })
+    });
+
+    const { data: reserv = null } = useQuery({
+        queryKey: ['reserv', roomId],
+        queryFn: () => getReserv(chat?.reserveId as number),
+        enabled: !!(chat && chat.reserveId)
+    });
+
+    const isOutsideReservationTime  = (() => {
+        if (!reserv) return true;
+        const reservStartTime = moment(reserv.startAt);
+        const now = moment();
+        return now.isBefore(reservStartTime);
+    })();
+
+    console.log({ reserv, isOutsideReservationTime });
 
     const client = useRef<StompJs.Client>(null)
 
@@ -35,6 +56,7 @@ export default function PrivateChatPage() {
 
 
     const handleTimeout = async () => {
+        if (isOutsideReservationTime) return;
         if (teacherJoined.current) return;
         await endChatByUser(roomId);
         alert("죄송합니다 고객님\n선생님과의 연결이 원활하지 않습니다.");
@@ -70,11 +92,12 @@ export default function PrivateChatPage() {
     }
 
     useEffect(() => {
+        readPrivateChat();
         initialize()
     }, [])
 
     useEffect(() => {
-        const deadline = 60 * 1000 * 2
+        const deadline = 60 * 1000 * 2;
         const timer = setTimeout(() => {
             handleTimeout();
         }, deadline);
@@ -116,7 +139,7 @@ export default function PrivateChatPage() {
                         }
             
                         if (coinNotEnough) {
-                            alert(body.message);
+                            alert("코인이 모두 소진되어 채팅이 종료됩니다");
                             router.back();
                             return;
                         }
@@ -200,9 +223,11 @@ export default function PrivateChatPage() {
                 user={user}
                 messages={receivedMessages}
                 myId={myId}
+                isOutsideReservationTime={isOutsideReservationTime}
             />
 
             <ChatWriter
+                isOutsideReservationTime={isOutsideReservationTime}
                 disabled={chat?.status === 'END'}
                 message={message}
                 setMessage={setMessage}

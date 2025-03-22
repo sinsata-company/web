@@ -1,24 +1,23 @@
 'use client'
 
-import CategoryContainer from '@/app/home/components/CategoryContainer'
-import BackAppbar from '@/components/common/BackAppbar'
 import {useEffect, useRef, useState} from 'react'
 import * as StompJs from '@stomp/stompjs'
 import {usePathname, useRouter} from 'next/navigation'
-import {v4 as uuidv4} from 'uuid'
-import {UserDto} from '@/types/user'
 import {getMyInfoByTeacher} from '@/app/api/user'
-import {ChatDto, IMessage} from '@/app/api/data'
+import { IMessage, ReserveDto} from '@/app/api/data'
 import {chatMessages, getChatDetail} from '@/app/api/chat'
 import ChatWriter from '@/app/chats/components/ChatWriter'
 import PrivateChatScreen from '@/app/chats/private/[id]/components/PrivateChatScreen'
-import ChatSummary from '@/app/chats/private/[id]/components/ChatSummary'
 import UserSummary from './components/UserSummary'
 import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import {startChat} from '@/app/manage/api/homepage'
 import {BASE_WS} from '@/api/base'
 import {useQuery} from '@tanstack/react-query'
 import { ChatStatus } from '@/types/reservation'
+import moment from 'moment'
+import { basicTeacherGet } from '@/app/manage/api/base'
+
+const getReserv = (id: number): Promise<ReserveDto> => basicTeacherGet(`/reserve/${id}`) as unknown as Promise<ReserveDto>;
 
 export default function Page() {
     const [message, setMessage] = useState<string>('')
@@ -35,6 +34,20 @@ export default function Page() {
         queryKey: ['chat', roomId],
         queryFn: () => getChatDetail(roomId)
     });
+
+    const { data: reserv = null } = useQuery({
+        queryKey: ['reserve', chat?.reserveId],
+        queryFn: () => getReserv(chat?.reserveId as number),
+        enabled: !!(chat && chat.reserveId)
+    });
+
+    const isOutsideReservationTime  = (() => {
+        if (!reserv) return true;
+        const reservStartTime = moment(reserv.startAt);
+        const now = moment();
+        return now.isBefore(reservStartTime);
+    })();
+
 
     const client = useRef<StompJs.Client>(null)
     const router = useRouter()
@@ -176,12 +189,14 @@ export default function Page() {
         <div className="w-full h-full relative">
             <UserSummary chat={chat} sendEndMessage={sendEndMessage}/>
             <PrivateChatScreen
+                isOutsideReservationTime={isOutsideReservationTime}
                 chat={chat}
                 user={user}
                 messages={receivedMessages}
                 myId={myId}
             />
             <ChatWriter
+                isOutsideReservationTime={isOutsideReservationTime}
                 disabled={chat?.status == ChatStatus.REQUEST || chat?.status == ChatStatus.END}
                 message={message}
                 setMessage={setMessage}
