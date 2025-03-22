@@ -320,13 +320,13 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             <div 
                 key={advisor?.id || ''}
                 ref={ref}
-                className="w-[420px] h-[186.64px] flex flex-col bg-white overflow-hidden"
+                className="w-[480px] h-[200px] flex flex-col bg-white overflow-hidden"
             >
                 {/* 상단 영역 - 프로필 이미지와 정보 */}
                 <div className="flex-1 p-4">
                     <div className="flex h-full gap-5">
                         {/* 왼쪽 이미지 */}
-                        <div className="relative w-[150px] sm:w-[173.33px] h-full">
+                        <div className="relative w-[120px] sm:w-[140px] h-full">
                             <Image
                                 onClick={handleClick}
                                 style={{objectFit: 'cover'}}
@@ -344,9 +344,9 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                         <div className="flex flex-col flex-1 h-full">
                             {/* 이름과 번호 */}
                             <div className="font-extrabold flex items-center gap-2 mb-2">
-                                <span className="text-[28px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>
-                                <span className="text-neutral-300 font-extrabold !text-lg">|</span>
-                                <span className="text-indigo-500 !text-2xl">{advisor?.pinNumber}번</span>
+                                <span className="text-[15px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>
+                                <span className="text-neutral-300 font-extrabold text-base">|</span>
+                                <span className="text-indigo-500 text-lg">{advisor?.pinNumber}번</span>
                             </div>
 
                             {/* 가격 정보 */}
@@ -394,12 +394,12 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 </div>
 
                 {/* 하단 영역 - 해시태그와 별점 */}
-                <div className="w-[400px] h-[40px] flex items-center px-4 bg-gray-50">
-                    <div className="text-indigo-500 text-xs font-semibold leading-tight w-[180px]">
+                <div className="w-full h-[40px] flex items-center px-4 bg-gray-50">
+                    <div className="text-indigo-500 text-xs font-semibold leading-tight flex-1">
                         {advisor?.hashtag}
                     </div>
                     
-                    <div className="flex items-center gap-1 ml-4">
+                    <div className="flex items-center gap-1 ml-4 shrink-0">
                         <Image
                             src={'/images/ic_star.svg'}
                             width={13}
