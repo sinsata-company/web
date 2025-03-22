@@ -96,11 +96,7 @@ export default function PrivateChatPage() {
                 `/sub/channel/${roomId}`,
                 (received_message: StompJs.IFrame) => {
                     const body = JSON.parse(received_message.body);
-
-                    if (!!body?.isEnd) {
-                        initialize();
-                        return;
-                    }
+                    console.log({ chatBody: body });
 
                     if (body.type === 'ERROR') {
                         alert(body.metadata);
@@ -108,15 +104,25 @@ export default function PrivateChatPage() {
                     }
 
                     if (body.type === 'SYSTEM') {
-                        const chatStarted = body.message.includes("시작");
-                        const chatEnded = body.message.includes("종료");
+                        const chatStarted = body?.message.includes("시작");
+                        const chatEnded = body?.message.includes("종료");
+                        const coinNotEnough = body?.metadata?.includes("NOT_ENOUGH_COINS") || undefined; 
+                        console.log({ chatEnded });
 
                         if (chatStarted) {
+                            console.log('chat Started!');
                             teacherJoined.current = true;
                             refetchChat();
                         }
+            
+                        if (coinNotEnough) {
+                            alert(body.message);
+                            router.back();
+                            return;
+                        }
 
                         if (chatEnded) {
+                            console.log('chat Ended!');
                             initialize();
                             alert("상담이 종료되었습니다.");
                             router.back();
