@@ -3,11 +3,12 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import BtbAdvisorHome from '../ui/BtbAdvisorHome'
 
 export default function AdvisorBTB() {
   return (
     <div className="bottom-0 left-0 fixed w-full h-16 px-5 py-2.5 bg-white shadow justify-between items-center inline-flex">
-      <BTBItem name="홈" image="home" />
+      <BtbAdvisorHome />
       <BTBItem name="상담 내역" image="reserves" />
       <BTBItem name="내 프로필 관리" image="my" />
     </div>

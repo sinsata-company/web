@@ -16,6 +16,7 @@ import {useQuery} from '@tanstack/react-query'
 import { ChatStatus } from '@/types/reservation'
 import moment from 'moment'
 import { basicTeacherGet } from '@/app/manage/api/base'
+import useReadPrivateChat from '@/app/chats/private/hooks/useReadPrivateChat'
 
 const getReserv = (id: number): Promise<ReserveDto> => basicTeacherGet(`/reserve/${id}`) as unknown as Promise<ReserveDto>;
 
@@ -25,6 +26,7 @@ export default function Page() {
 
     const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
     const roomId = usePathname().split('/').pop() as string
+    const { mutate: readPrivateChat } = useReadPrivateChat(roomId, true);
 
     const { data: user = null } = useQuery({
         queryKey: ['me'],
@@ -54,6 +56,7 @@ export default function Page() {
 
     useEffect(() => {
         initialize()
+        readPrivateChat();
     }, [])
 
     const initialize = async () => {

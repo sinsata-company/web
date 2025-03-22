@@ -43,6 +43,10 @@ const ReserveList = ({ reserves }: ReserveListProps) => {
         const isCall = reserve.reserveType === 'CALL'
         const isChat = reserve.reserveType === 'CHAT'
 
+        // 알림 표시 로직
+        const showNoti = reserve.unreadCount && reserve.unreadCount > 0;
+        const notiCount = reserve.unreadCount && reserve.unreadCount > 99 ? '99+' : reserve.unreadCount;
+
         // 표시용 텍스트
         const consultationText = isLiveChat
           ? '실시간 채팅 요청'
@@ -63,11 +67,6 @@ const ReserveList = ({ reserves }: ReserveListProps) => {
           ? 'bg-[#E62419]/10'
           : 'bg-[#21499C]/10'
 
-        /**
-         * 실시간 채팅만 UTC로 들어온다고 가정하고
-         * moment.utc(...).add(9, 'hours') 형태로 변환
-         * 그 외(CALL, CHAT)는 그대로 표시
-         */
         const startTime = isLiveChat
           ? moment(reserve.startAt).format('a h시 mm분')
           : moment(reserve.startAt).format('a h시 mm분')
@@ -82,8 +81,15 @@ const ReserveList = ({ reserves }: ReserveListProps) => {
           <div
             key={reserve.id}
             onClick={() => router.push('/manage/app/reserves/' + reserve.id)}
-            className="h-20 p-4 bg-neutral-50 rounded-2xl border border-zinc-100 flex items-center gap-3"
+            className="h-20 p-4 bg-neutral-50 rounded-2xl border border-zinc-100 flex items-center gap-3 relative"
           >
+                {showNoti ? 
+                  <div className="absolute top-[-4px] right-[-8px] bg-red-500 min-w-[24px] h-[24px] rounded-full">
+                    <span className="text-white text-[12px] flex items-center justify-center font-bold">
+                    {notiCount}
+                    </span>
+                  </div>
+                : null}
             <div className="flex-grow flex flex-col justify-center gap-2">
               <div className="text-zinc-900 text-base font-bold">
                 고객명 : {reserve.customerName}

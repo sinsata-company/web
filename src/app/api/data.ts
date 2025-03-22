@@ -87,6 +87,7 @@ export interface ReserveDto {
   note: string
   teacherPin: string
   chatroomId?: string
+  unreadCount?: number
 }
 
 export interface IMessage {

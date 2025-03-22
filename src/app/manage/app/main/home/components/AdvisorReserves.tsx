@@ -11,21 +11,26 @@ import { useRouter } from 'next/navigation'
 interface AdvisorReservesProps {
   disablePastDates: boolean;
 }
+import { useQuery } from '@tanstack/react-query'
 
 const AdvisorReserves = ({ disablePastDates }: AdvisorReservesProps) => {
   const router = useRouter()
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
   const [now, setNow] = useState<Moment>(moment())
-  const [reserves, setReserves] = useState<ReserveDto[]>([])
+
+  const { data: reserves = [], refetch } = useQuery<ReserveDto[]>({
+    queryKey: ['reserveByDate'],
+    queryFn: () => getReserveByDate(selectedDate?.format('YYYY-MM-DD') as string),
+    enabled: !!selectedDate,
+  });
 
   useEffect(() => {
     onclickDate(now)
+    refetch();
   }, [])
 
   const onclickDate = async (date: Moment) => {
     setSelectedDate(date)
-    const result = await getReserveByDate(date.format('YYYY-MM-DD'))
-    setReserves(result)
   }
 
   return (
