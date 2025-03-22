@@ -308,9 +308,9 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                         alt="cash"
                         className="absolute left-0"
                     />
-                    <span className="absolute left-[16px] text-[10px] font-bold">{price}</span>
+                    <span className="absolute left-[16px] text-[12px] font-bold">{price}</span>
                 </div>
-                <span className="absolute left-[82px] text-neutral-400 text-[10px] font-semibold">
+                <span className="absolute left-[82px] text-neutral-400 text-[12px] font-semibold">
                     {duration}
                 </span>
             </div>
@@ -320,7 +320,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             <div 
                 key={advisor?.id || ''}
                 ref={ref}
-                className="w-[480px] h-[200px] flex flex-col bg-white overflow-hidden"
+                className="w-[430px] h-[200px] flex flex-col bg-white overflow-hidden"
             >
                 {/* 상단 영역 - 프로필 이미지와 정보 */}
                 <div className="flex-1 p-4">
@@ -344,9 +344,9 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                         <div className="flex flex-col flex-1 h-full">
                             {/* 이름과 번호 */}
                             <div className="font-extrabold flex items-center gap-2 mb-2">
-                                <span className="text-[15px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>
+                                <span className="text-[17px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>
                                 <span className="text-neutral-300 font-extrabold text-base">|</span>
-                                <span className="text-indigo-500 text-lg">{advisor?.pinNumber}번</span>
+                                <span className="text-indigo-500 text-sm">{advisor?.pinNumber}번</span>
                             </div>
 
                             {/* 가격 정보 */}
