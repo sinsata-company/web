@@ -15,8 +15,8 @@ import { useQuery } from '@tanstack/react-query'
 
 const AdvisorReserves = ({ disablePastDates }: AdvisorReservesProps) => {
   const router = useRouter()
-  const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
-  const [now, setNow] = useState<Moment>(moment())
+  const [selectedDate, setSelectedDate] = useState<Moment | null>(moment())
+  const now = moment();
 
   const { data: reserves = [], refetch } = useQuery<ReserveDto[]>({
     queryKey: ['reserveByDate'],
@@ -25,9 +25,8 @@ const AdvisorReserves = ({ disablePastDates }: AdvisorReservesProps) => {
   });
 
   useEffect(() => {
-    onclickDate(now)
     refetch();
-  }, [])
+  }, [selectedDate])
 
   const onclickDate = async (date: Moment) => {
     setSelectedDate(date)

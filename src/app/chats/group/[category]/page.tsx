@@ -8,10 +8,10 @@ import * as StompJs from '@stomp/stompjs'
 import { usePathname, useRouter } from 'next/navigation'
 import ChatScreen from './components/ChatScreen'
 import { v4 as uuidv4 } from 'uuid'
-import { UserDto } from '@/types/user'
 import { getMyInfo } from '@/app/api/user'
 import { IMessage } from '@/app/api/data'
 import { BASE_WS } from '@/api/base'
+import { useQuery } from '@tanstack/react-query'
 
 export default function GroupChat() {
   const [message, setMessage] = useState<string>('')
@@ -19,16 +19,10 @@ export default function GroupChat() {
   const client = useRef<StompJs.Client>(null)
   const category = usePathname().split('/').pop() as string
   const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
-  const [user, setUser] = useState<UserDto | null>(null)
-
-  useEffect(() => {
-    getUserDetails()
-  }, [])
-
-  const getUserDetails = async () => {
-    const user = await getMyInfo()
-    setUser(user)
-  }
+  const { data: user = null } = useQuery({
+    queryKey: ['me'],
+    queryFn: getMyInfo,
+  });
 
   const router = useRouter()
 
@@ -40,6 +34,7 @@ export default function GroupChat() {
         destination: `/pub/message/group`,
         body: JSON.stringify({
           roomId: category,
+          isGroup: true,
           authorId: myId,
           message: message,
           level: user?.level,
@@ -67,6 +62,7 @@ export default function GroupChat() {
         `/sub/channel/${category}`,
         (received_message: StompJs.IFrame) => {
           const body = JSON.parse(received_message.body)
+          console.log({ chatBody: body });
           // receivedMessages.push()
           setReceivedMessages((prevMessages) => [...prevMessages, body]) // 기존 메시지에 추가
 
