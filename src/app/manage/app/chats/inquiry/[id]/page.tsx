@@ -1,49 +1,44 @@
 'use client'
 
-import BackAppbar from '@/components/common/BackAppbar'
 import {useEffect, useRef, useState} from 'react'
 import * as StompJs from '@stomp/stompjs'
-import {useParams, usePathname, useRouter} from 'next/navigation'
-import {UserDto} from '@/types/user'
-import {getMyInfo} from '@/app/api/user'
-import {ChatDto, IMessage, TeacherDetailDto} from '@/app/api/data'
+import {usePathname} from 'next/navigation'
+import {getMyInfoByTeacher} from '@/app/api/user'
+import { IMessage } from '@/app/api/data'
 import {chatMessages, getChatDetail} from '@/app/api/chat'
 import ChatWriter from '@/app/chats/components/ChatWriter'
-import PrivateChatScreen from '@/app/chats/inquiry/[id]/product/components/PrivateChatScreen'
-import ChatSummary from '@/app/chats/inquiry/[id]/product/components/ChatSummary'
-import {Button, BUTTON_TYPE} from '@/components/common/Button'
-import {startChat} from '@/app/manage/api/homepage'
+import PrivateChatScreen from '@/app/chats/private/[id]/components/PrivateChatScreen'
+import UserSummary from './components/UserSummary'
 import {BASE_WS} from '@/api/base'
+import {useQuery} from '@tanstack/react-query'
+import useReadPrivateChat from '@/app/chats/private/hooks/useReadPrivateChat'
 
-export default function TeacherChatPage() {
+export default function Page() {
     const [message, setMessage] = useState<string>('')
     const [myId, setMyId] = useState<string>('')
     const [receivedMessages, setReceivedMessages] = useState<IMessage[]>([])
-    const [user, setUser] = useState<UserDto | null>(null)
-    const [chat, setChat] = useState<ChatDto | null>(null)
+    const roomId = usePathname().split('/').pop() as string
+    const { mutate: readPrivateChat } = useReadPrivateChat(roomId, true);
+
+    const { data: user = null } = useQuery({
+        queryKey: ['me'],
+        queryFn: getMyInfoByTeacher,
+    });
+    const { data: chat = null } = useQuery({
+        queryKey: ['chat', roomId],
+        queryFn: () => getChatDetail(roomId)
+    });
 
     const client = useRef<StompJs.Client>(null)
-    const roomId = usePathname().split('/').pop() as string
-    const router = useRouter()
 
     useEffect(() => {
         initialize()
+        readPrivateChat();
     }, [])
 
     const initialize = async () => {
-        const user = await getMyInfo()
-        const chat = await getChatDetail(roomId)
         const prevMessages = await chatMessages(roomId);
-        
-        // 선생님 권한 체크
-        // if (user.role !== 'TEACHER') {
-        //     router.push('/') // 또는 적절한 에러 페이지로 리다이렉트
-        //     return
-        // }
-        
-        setUser(user)
-        setChat(chat)
-        setMyId(user.userId)
+        setMyId(user?.userId || '');
         setReceivedMessages(prevMessages as Array<IMessage>)
     }
 
@@ -51,33 +46,18 @@ export default function TeacherChatPage() {
         if (message.trim().length < 1) return
 
         if (client.current) {
+            const bodyData = {
+                isTeacher: true,
+                roomId: roomId,
+                authorId: myId,
+                message: message,
+                level: user?.level,
+                nickname: `선생님 ${user?.nickname}`,
+            };
             client.current?.publish({
                 destination: `/pub/message/group`,
-                body: JSON.stringify({
-                    roomId: roomId,
-                    authorId: myId,
-                    message: message,
-                    level: user?.level,
-                    nickname: user?.nickname,
-                    isTeacher: true, // 선생님 메시지임을 표시
-                }),
-            })
-            console.log(`> Send message: ${message}`)
-        }
-        setMessage('')
-    }
-
-    const sendEndMessage = () => {
-        if (client.current) {
-            client.current?.publish({
-                destination: `/pub/message/group/end`,
-                body: JSON.stringify({
-                    roomId: roomId,
-                    authorId: myId,
-                    nickname: user?.nickname,
-                    isEnd: true
-                }),
-            })
+                body: JSON.stringify(bodyData),
+            });
         }
         setMessage('')
     }
@@ -94,15 +74,20 @@ export default function TeacherChatPage() {
                 `/sub/channel/${roomId}`,
                 (received_message: StompJs.IFrame) => {
                     const body = JSON.parse(received_message.body)
+                    const ignore = (() => {
+                        if (body?.metadata?.includes('채팅이 아직 수락되지 않았습니다.')) return true;
+                        return false;
+                    })()
 
-                    if (!!body?.isEnd) {
-                        console.log('finish...');
-                        router.refresh();
+                    console.log({ body, ignore });
+                    if (ignore) return;
+
+                    if (body.type === 'ERROR') {
+                        alert(body.message);
                         return;
                     }
 
                     setReceivedMessages((prevMessages) => [...prevMessages, body])
-                    console.log(`> Received message: ${received_message.body}`)
                 }
             )
         }
@@ -118,8 +103,10 @@ export default function TeacherChatPage() {
         }
 
         const connect = () => {
+            console.log('Connecting...')
             client.current = new StompJs.Client({
                 brokerURL: BASE_WS,
+
                 reconnectDelay: 200,
                 onConnect: () => {
                     console.log('connected')
@@ -134,22 +121,15 @@ export default function TeacherChatPage() {
                     console.dir(`Additional details: ${frame}`)
                 },
             })
+            console.log('Activating...')
             client.current.activate()
         }
         connect()
-
-        return () => {
-            disconnect()
-        }
     }, [])
 
     return (
         <div className="w-full h-full relative">
-            <BackAppbar/>
-            <ChatSummary 
-                chat={chat} 
-                sendEndMessage={sendEndMessage}
-            />
+            <UserSummary chat={chat} />
             <PrivateChatScreen
                 chat={chat}
                 user={user}
@@ -157,30 +137,9 @@ export default function TeacherChatPage() {
                 myId={myId}
             />
             <ChatWriter
-                disabled={chat?.status == 'REQUEST' || chat?.status == 'END'}
                 message={message}
                 setMessage={setMessage}
                 sendMessage={sendMessage}
-                actionButton={
-                    chat?.status == 'END' ? (
-                        <Button
-                            label="상담 기록 보기"
-                            onClick={() => {
-                                router.push('/teacher/consults/' + chat?.reserveId)
-                            }}
-                            buttonType={BUTTON_TYPE.primary}
-                        />
-                    ) : chat?.status == 'REQUEST' ? (
-                        <Button
-                            label="채팅 시작하기"
-                            onClick={async () => {
-                                await startChat(chat.roomId)
-                                initialize()
-                            }}
-                            buttonType={BUTTON_TYPE.primary}
-                        />
-                    ) : null
-                }
             />
         </div>
     )
