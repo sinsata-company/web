@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import CategoryContainer from './CategoryContainer'
-import StaticItem from './StaticItem'
+import AnimatedStaticItem from './AnimatedStaticItem'
 import { useRouter } from 'next/navigation'
 import { getSummary, summary } from '@/app/api/teacher'
 import { useEffect, useState } from 'react'
@@ -60,8 +60,16 @@ const BannersAndStatics = () => {
         </div>
 
         <div className="mt-2 flex px-3 items-stretch justify-between gap-3 text-xs">
-          <StaticItem label="누적 상담 건수" data={`${Number(info?.reservations || '0').toLocaleString()}건`} />
-          <StaticItem label="현재 접속 상담사" data={`${Number(info?.teachers || '0').toLocaleString()}명`} />
+          <AnimatedStaticItem 
+            label="누적 상담 건수" 
+            value={Number(info?.reservations || 0)} 
+            suffix="건" 
+          />
+          <AnimatedStaticItem 
+            label="현재 접속 상담사" 
+            value={Number(info?.teachers || 0)} 
+            suffix="명" 
+          />
         </div>
       </div>
     </div>
