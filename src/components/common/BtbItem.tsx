@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 
-const BTBItem = ({ name, image }: { name: string; image: string }) => {
+const BTBItem = ({ name, image, url }: { name: string; image: string, url?: string }) => {
     const router = useRouter()
     const pathname = usePathname()
     const selected = pathname.replace('/', '') == image
@@ -10,6 +10,10 @@ const BTBItem = ({ name, image }: { name: string; image: string }) => {
     return (
       <div
         onClick={() => {
+            if (url) {
+                router.push(url)
+                return;
+            }
           router.push('/' + image)
         }}
         className="cursor-pointer grow flex-col justify-start items-center  inline-flex max-w-[550px] mx-auto"

@@ -46,7 +46,7 @@ export default function BtbAdvisorHome() {
     return (
         <div className="cursor-pointer grow flex-col justify-start items-center  inline-flex max-w-[550px] mx-auto relative">
             <div className="relative">
-                <BTBItem name="홈" image="home" />
+                <BTBItem name="홈" image="home" url="/manage/app/main/home" />
                 {showNoti && <div className="absolute top-[-4px] right-[-8px] bg-red-500 min-w-[24px] h-[24px] rounded-full">
                   <span className="text-white text-[12px] flex items-center justify-center font-bold">
                   {notiCount}
