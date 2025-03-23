@@ -29,12 +29,12 @@ const TeacherTypeLabel = ({
   return (
     <div
       className={clsx(
-        'absolute top-1 left-1 w-[40px] h-[20px] flex justify-center items-center',
+        'absolute top-1 left-1 w-[40px] h-[20px] flex justify-center items-center rounded-lg overflow-hidden',
         color,
         textColor
       )}
     >
-      <div className=" text-xs font-bold  leading-none">
+      <div className=" text-xs font-bold w-[40px] h-[20px] flex justify-center items-center leading-none">
         {teacherTypeConverter(teacherType?.toLowerCase())}
       </div>
     </div>

@@ -253,6 +253,11 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         const [menuObj, setMenuObj] = useState<any>(null);
         const [newSelfLiked, setSelfLiked] = useState<boolean>(selfLiked);
 
+        const tags = (() => {
+            if (!hashtag) return [] as string[];
+            return hashtag.split(',').map((tag: string) => tag.trim());
+        })();
+
         const changeSelfLiked = async () => {
             try {
                 await basicPost("/users/changeLiked", { id });
@@ -320,17 +325,17 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             <div 
                 key={advisor?.id || ''}
                 ref={ref}
-                className="w-[380px] h-[200px] flex flex-col bg-white overflow-hidden"
+                className="w-full flex flex-col bg-white overflow-hidden"
             >
                 {/* 상단 영역 - 프로필 이미지와 정보 */}
-                <div className="flex-1 p-4">
+                <div className="flex-1">
                     <div className="flex h-full gap-5">
                         {/* 왼쪽 이미지 */}
-                        <div className="relative w-[120px] sm:w-[140px] h-full">
+                        <div className="relative w-[140px] sm:w-[140px] md:w-[173px] h-[128px] flex-shrink-0">
                             <Image
                                 onClick={handleClick}
                                 style={{objectFit: 'cover'}}
-                                className="rounded-xl w-full h-full cursor-pointer"
+                                className="rounded-xl w-min-[140px] md:w-min-[173px] h-full cursor-pointer"
                                 src={thumbnail || '/logo.jpg'}
                                 placeholder="blur"
                                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
@@ -341,31 +346,31 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                         </div>
 
                         {/* 오른쪽 정보 */}
-                        <div className="flex flex-col flex-1 h-full">
+                        <div className="flex flex-col flex-1 h-[128px]">
                             {/* 이름과 번호 */}
-                            <div className="font-extrabold flex items-center gap-2 mb-2">
-                                <span className="text-[24px] font-black">{advisor?.name?.replace(' 선생님', '')}</span>     
+                            <div className="font-extrabold flex items-center gap-2 mb-2 pt-1.5">
+                                <span className="text-[20px] font-bold">{advisor?.name?.replace(' 선생님', '')}</span>     
                                 <span className="text-neutral-300 font-extrabold text-base">|</span>
                                 <span className="text-indigo-500 text-sm">{advisor?.pinNumber}번</span>
                             </div>
 
                             {/* 가격 정보 */}
-                            <div className="flex-col inline-flex justify-start text-black space-y-1 mb-5 h-[48px]">
-                                {!!menuObj && menuObj.slice(0, 2).map(([key, value]: [key: string, value: number], index:number) => (
-                                    <div key={key} className="h-6">
-                                        {renderPriceInfo(
-                                            `${Number(value).toLocaleString()}원`,
-                                            `${key}${index === 0 ? '초' : '분'}`
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
+                            <div className="flex-col flex justify-between h-full text-black">
+                                <div className="flex flex-col gap-y-1.5">
+                                    {!!menuObj && menuObj.slice(0, 2).map(([key, value]: [key: string, value: number], index:number) => (
+                                        <div key={key} className="">
+                                            {renderPriceInfo(
+                                                `${Number(value).toLocaleString()}원`,
+                                                `${key}${index === 0 ? '초' : '분'}`
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
 
-                            {/* 상담 버튼 */}
-                            <div className="mt-auto w-[140px]">
                                 <Button
                                     onClick={handlePhoneClick}
                                     buttonType={BUTTON_TYPE.primary}
+                                    className="h-[32px] self-end"
                                     label={
                                         <div className="flex items-center justify-center gap-1">
                                             <Image
@@ -378,30 +383,34 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                             <span className="text-sm">상 담</span>
                                         </div>
                                     }
-                                    className="w-[100px] h-8 mt-2"
                                 />
                             </div>
+
                         </div>
                     </div>
                 </div>
 
                 {/* 하단 영역 - 해시태그와 별점 */}
-                <div className="w-full h-[40px] flex items-center px-4 bg-gray-50">
-                    <div className="text-indigo-500 text-xs font-semibold leading-tight flex-1">
-                        {advisor?.hashtag}
+                <div className="flex items-center relative w-full h-[40px] gap-x-5">
+                    <div className="flex w-[140px] md:w-[173px]">
+                        {tags.map((tag: string) => (
+                            <div key={tag} className="text-slate-400 text-sm font-bold leading-tight">
+                                #{tag}
+                            </div>
+                        ))}
                     </div>
-                    
-                    <div className="flex items-center gap-1 ml-4 shrink-0">
+
+                    <div className="flex items-center shrink-0 flex-1">
                         <Image
                             src={'/images/ic_star.svg'}
                             width={13}
                             height={13}
                             alt="chat"
                         />
-                        <span className="text-neutral-800 text-xs font-bold leading-tight">
+                        <span className="text-neutral-800 text-sm font-bold leading-tight">
                             {advisor.score || 0}
                         </span>
-                        <span className="text-neutral-400 text-xs font-semibold leading-tight">
+                        <span className="text-neutral-400 text-sm font-semibold leading-tight">
                             ({(advisor?.scoreLen || 0).toLocaleString()})
                         </span>
                     </div>
