@@ -331,7 +331,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 <div className="flex-1">
                     <div className="flex h-full gap-5">
                         {/* 왼쪽 이미지 */}
-                        <div className="relative w-[173.33px] h-[128px] flex-shrink-0">
+                        <div className="relative w-[173.33px] h-[128.88px] flex-shrink-0">
                             <Image
                                 onClick={handleClick}
                                 style={{objectFit: 'cover'}}
@@ -346,7 +346,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                         </div>
 
                         {/* 오른쪽 정보 */}
-                        <div className="flex flex-col flex-1 h-[128px]">
+                        <div className="flex flex-col flex-1 h-[128.88px]">
                             {/* 이름과 번호 */}
                             <div className="font-extrabold flex items-center gap-2 mb-2 pt-1.5">
                                 <span className="text-[20px] font-bold">{advisor?.name?.replace(' 선생님', '')}</span>     
