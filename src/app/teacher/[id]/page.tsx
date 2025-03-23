@@ -28,6 +28,13 @@ export default function TeacherPage() {
 
     useEffect(() => {
         getInfo()
+        // 상세 페이지 접근 시 항상 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0)
+        
+        // 스크롤 복원 방지
+        if ('scrollRestoration' in window.history) {
+            window.history.scrollRestoration = 'manual'
+        }
     }, [])
 
     const getInfo = async () => {

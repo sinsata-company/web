@@ -25,44 +25,19 @@ export default function AdvisorList({
     const isNavigating = useRef(false);
 
     useEffect(() => {
-        // 브라우저의 history state에서 스크롤 위치를 복원
-        const restoreScroll = () => {
-            if (history.state?.scrollPos) {
-                window.scrollTo(0, history.state.scrollPos);
+        // 메인 페이지에서만 스크롤 위치 복원
+        if (pathname === '/home') {
+            const restoreScroll = () => {
+                const scrollPos = sessionStorage.getItem('advisorListScrollPos')
+                if (scrollPos) {
+                    window.scrollTo(0, parseInt(scrollPos))
+                    sessionStorage.removeItem('advisorListScrollPos')
+                }
             }
-        };
-
-        // 페이지 로드/뒤로가기 시 스크롤 복원
-        window.addEventListener('load', restoreScroll);
-        window.addEventListener('popstate', restoreScroll);
-
-        // 현재 스크롤 위치를 history state에 저장
-        const saveScroll = () => {
-            const currentScroll = window.scrollY;
-            const currentState = history.state || {};
-            history.replaceState(
-                { ...currentState, scrollPos: currentScroll },
-                ''
-            );
-        };
-
-        // 스크롤 이벤트에 대한 디바운스 처리
-        let timeoutId: NodeJS.Timeout;
-        const handleScroll = () => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(saveScroll, 100);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('load', restoreScroll);
-            window.removeEventListener('popstate', restoreScroll);
-            window.removeEventListener('scroll', handleScroll);
-            clearTimeout(timeoutId);
-            saveScroll(); // 언마운트 시 마지막 스크롤 위치 저장
-        };
-    }, []);
+            const timer = setTimeout(restoreScroll, 100)
+            return () => clearTimeout(timer)
+        }
+    }, [pathname])
 
     const onClickPhone = (advisor: TeacherListDto) => {
         setAdvisor(advisor)
@@ -74,21 +49,11 @@ export default function AdvisorList({
     };
 
     const handleItemClick = (id: string) => {
-        const currentScroll = window.scrollY;
-        // 현재 스크롤 위치를 sessionStorage와 history state에 모두 저장
-        sessionStorage.setItem(
-            `__next_scroll_${window.history.state.idx}`,
-            JSON.stringify({
-                x: window.pageXOffset,
-                y: window.pageYOffset,
-            })
-        );
-        
-        history.replaceState(
-            { ...history.state, scrollPos: currentScroll },
-            ''
-        );
-        router.push(`/teacher/${id}`, {scroll: false});
+        // 현재 스크롤 위치를 저장
+        if (pathname === '/home') {  // 메인 페이지에서만 스크롤 위치 저장
+            sessionStorage.setItem('advisorListScrollPos', window.scrollY.toString())
+        }
+        router.push(`/teacher/${id}`)
     }
 
     useEffect(() => {
@@ -110,10 +75,19 @@ export default function AdvisorList({
                             ref={lastAdvisorElementRef}
                             onClickPhone={onClickPhone}
                             changeLiked={changeLiked}
+                            onItemClick={handleItemClick}
                         />
                     )
                 } else {
-                    return <AdvisorItem changeLiked={changeLiked} {...item} key={idx} onClickPhone={onClickPhone}/>
+                    return (
+                        <AdvisorItem 
+                            changeLiked={changeLiked} 
+                            {...item} 
+                            key={idx} 
+                            onClickPhone={onClickPhone}
+                            onItemClick={handleItemClick}
+                        />
+                    )
                 }
             })}
 
