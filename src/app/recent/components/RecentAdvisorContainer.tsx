@@ -24,7 +24,7 @@ const getChosung = (str: string) => {
     return result;
 };
 
-export default function AdvisorContainer() {
+export default function AdvisorContainer({params}: {params: {searchQuery: string}}) {
     const [advisorList, setAdvisorList] = useState<TeacherListDto[]>([])
     const [page, setPage] = useState<number>(0)
     const [sort, setSort] = useState<SearchType>(SearchType.NEW)
@@ -42,6 +42,7 @@ export default function AdvisorContainer() {
     // URL 파라미터가 변경될 때마다 검색 실행
     useEffect(() => {
         setSearchQuery(urlSearchQuery);
+        console.log(searchQuery + " , " + urlSearchQuery)
         setCurrentPage(0); // 새로운 검색시 페이지 초기화
         handleSearch();
     }, [urlSearchQuery]);
@@ -58,15 +59,11 @@ export default function AdvisorContainer() {
 
     const handleSearch = async () => {
         try {
-            const response = await basicGet<{
-                content: TeacherListDto[];
-                last: boolean;
-                totalElements: number;
-            }>(`/admin/teachers/search?searchType=${searchType}&searchQuery=${urlSearchQuery}&page=${currentPage}`);
+            const response = await basicGet<{content: TeacherListDto[]}>(`/teachers/search?searchType=${searchType}&searchQuery=${urlSearchQuery}&page=${currentPage}`);
             
+            console.log(response)
             if (response && response.content) {
                 setAdvisorList(currentPage === 0 ? response.content : [...advisorList, ...response.content]);
-                setHasMore(!response.last);
             } else {
                 setAdvisorList([]);
                 setHasMore(false);

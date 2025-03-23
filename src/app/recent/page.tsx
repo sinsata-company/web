@@ -33,7 +33,7 @@ function RecentPageContent() {
       <div className="p-4">
         <p>검색어: {searchQuery}</p>
       </div>
-      <RecentAdvisorContainer />
+      <RecentAdvisorContainer searchQuery={searchQuery}/>
       <BTB />
     </div>
   )

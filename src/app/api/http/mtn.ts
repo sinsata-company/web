@@ -15,6 +15,9 @@ export const getPayURL = async (
   const encodedName = encodeURIComponent(user.name)
   const encodedItem = encodeURIComponent(`신사타 코인 ${amount}원`)
   
+  // returnurl을 complete 페이지로 변경
+  const returnUrl = `${frontendUrl}/chats/inquiry/list`
+  
   const mtonetUrl = `https://passcall.co.kr:32837/cptl/gnrc-${
     isMobileDevice() ? 'mob' : 'pc'
   }/pay?membid=${user.mtnId}\
@@ -25,8 +28,8 @@ export const getPayURL = async (
     &membnm=${encodedName}\
     &item=${encodedItem}\
     &oid=${timestamp}\
-    &returnurl=${frontendUrl}/chats/inquiry/list\
-    &formurl=${apiUrl}/api/v1/mtn/complete`
+    &returnurl=${encodeURIComponent(returnUrl)}\
+    &formurl=${encodeURIComponent(apiUrl + '/api/v1/mtn/complete')}`
 
   return mtonetUrl.replace(/\s+/g, '')
 }

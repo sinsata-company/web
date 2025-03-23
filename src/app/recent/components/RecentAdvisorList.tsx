@@ -25,6 +25,7 @@ const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
 const [advisor, setAdvisor] = useState<TeacherListDto | null>(null)
 
 const onClickPhone = (advisor: TeacherListDto) => {
+  console.log(advisor)
 setAdvisor(advisor)
 setIsPhoneModalOpen(true)
 }
@@ -275,7 +276,7 @@ function AdvisorItem(advisor, ref) {
           onClick={handleItemClick}
           style={{objectFit: 'cover', minWidth: '120px', minHeight: '96px'}}
           className="rounded-xl w-[120px] h-24 cursor-pointer"
-          src={advisor?.thumbnail || '/logo.jpg'}
+          src={advisor?.thumbnailURI || '/logo.jpg'}
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
           width={120}
