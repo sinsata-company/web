@@ -331,11 +331,11 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 <div className="flex-1">
                     <div className="flex h-full gap-5">
                         {/* 왼쪽 이미지 */}
-                        <div className="relative w-[140px] sm:w-[140px] md:w-[173px] h-[128px] flex-shrink-0">
+                        <div className="relative w-[173.33px] h-[128px] flex-shrink-0">
                             <Image
                                 onClick={handleClick}
                                 style={{objectFit: 'cover'}}
-                                className="rounded-xl w-min-[140px] md:w-min-[173px] h-full cursor-pointer"
+                                className="rounded-xl w-min-[173.33px] h-full cursor-pointer"
                                 src={thumbnail || '/logo.jpg'}
                                 placeholder="blur"
                                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
@@ -392,7 +392,7 @@ const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
 
                 {/* 하단 영역 - 해시태그와 별점 */}
                 <div className="flex items-center relative w-full h-[40px] gap-x-5">
-                    <div className="flex w-[140px] md:w-[173px]">
+                    <div className="flex w-[173.33px]">
                         {tags.map((tag: string) => (
                             <div key={tag} className="text-slate-400 text-sm font-bold leading-tight">
                                 #{tag}
