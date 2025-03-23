@@ -1,4 +1,5 @@
-import { ChatDto, IMessage } from '@/app/api/data'
+import { ChatDto } from '@/app/api/data'
+import { basicTeacherDelete } from '@/app/manage/api/base'
 import { endChat } from '@/app/manage/api/homepage'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import UserLevelIcon from '@/components/common/UserLevelIcon'
@@ -7,6 +8,30 @@ import { useRouter } from 'next/navigation'
 
 const UserSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMessage: Function; }) => {
   const router = useRouter()
+  const isReserv = chat?.status === 'RESERVE';
+  const canEnded = ['REQUEST', 'PROGRESS'].includes(chat?.status ?? '');
+  
+  const cacelReserv = async () => {
+    if (!chat?.reserveId) return;
+    await basicTeacherDelete(`/reserve/teacher/${chat.reserveId}`);
+  }
+
+  const cancelReservation = async () => {
+    try {
+      if (!isReserv) return;
+      await cacelReserv();
+      alert("예약이 취소되었습니다.");
+      router.back();
+    } catch (error: any) {
+      if (error?.message) {
+        alert(error.message);
+        return;
+      }
+      alert("예약 취소가 실패하였습니다.");
+    }
+  };
+
+  
   return (
     <div className="px-4  flex justify-between items-center border-b-2 border-neutral-200">
       <div className="flex  items-start w-full ">
@@ -36,7 +61,16 @@ const UserSummary = ({ chat, sendEndMessage }: { chat: ChatDto | null; sendEndMe
           </div>
         </div>
       </div>
-      {chat?.status == 'PROGRESS' && (
+      {isReserv && (
+          <div className="w-[120px] mr-4">
+          <Button
+            label="예약 취소"
+            onClick={cancelReservation}
+            buttonType={BUTTON_TYPE.primary}
+          />
+        </div>
+      )}
+      {canEnded && (
         <div className="w-[120px] ">
           <Button
             label="채팅 종료"
