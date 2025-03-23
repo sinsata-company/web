@@ -1,6 +1,7 @@
 'use client'
 
-import { getCanStatus } from '@/app/manage/api/teacher'
+import { basicTeacherPost } from '@/app/manage/api/base';
+import { getCanStatus, updateCanStatus } from '@/app/manage/api/teacher'
 import Switch from '@/components/common/Switch'
 import { useEffect, useState } from 'react'
 
@@ -9,24 +10,51 @@ interface StatusResult {
   canChat: boolean;
 }
 
+export const updateServerStatus = (missing: boolean) => basicTeacherPost('/teachers/work/status', {
+  status: missing ? 'ABSE' : 'IDLE',
+});
+
 const AdviseStatus = () => {
   const [call, setCall] = useState<boolean>(false)
   const [chat, setChat] = useState<boolean>(false)
-
-  useEffect(() => {
-    getStatus()
-  }, [])
+  const [loaded, setLoaded] = useState<boolean>(false);
+  console.log({ call, chat });
 
   const getStatus = async () => {
     const result = await getCanStatus() as StatusResult
     console.log(result)
     setCall(result.canCall)
     setChat(result.canChat)
+    setLoaded(true)
   }
+
+  const updateStatus = (checked: boolean, type: 'call' | 'chat') => {
+    console.log(`update ${type} ${checked}`)
+    if (type === 'call') {
+      setCall(checked)
+    } else {
+      setChat(checked)
+    }
+    updateCanStatus(checked, type);
+  };
+
+  useEffect(() => {
+    getStatus()
+  }, [])
+
+  useEffect(() => {
+    if (!loaded) return;
+    console.warn(`[chat: ${chat}, call: ${call}]`)
+    if (!call && !chat) {
+      updateServerStatus(true);
+    } else {
+      updateServerStatus(false);
+    }
+  }, [call, chat, loaded]);
 
   return (
     <div className=" justify-center items-center gap-6 inline-flex">
-      {['전화 상담', '채팅 상담'].map((text, index) => (
+      {loaded && ['전화 상담', '채팅 상담'].map((text, index) => (
         <div key={index} className="flex items-center gap-1.5">
           <div className="text-black text-base font-semibold font-['Montserrat'] leading-none">
             {text}
@@ -38,7 +66,8 @@ const AdviseStatus = () => {
             <Switch
               type={index == 0 ? 'call' : 'chat'}
               value={index == 0 ? call : chat}
-            />
+              updateCanStatus={updateStatus}
+/>
           </div>
         </div>
       ))}

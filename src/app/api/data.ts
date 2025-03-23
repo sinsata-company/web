@@ -10,7 +10,7 @@ export interface TeacherListDto {
   thumbnail: string
   canChat: boolean
   canCall: boolean
-  status: number
+  status: string;
   pinNumber: string
   reviewCount: number
   score: number | null

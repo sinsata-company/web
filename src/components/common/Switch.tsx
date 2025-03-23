@@ -1,28 +1,35 @@
-import { updateCanStatus } from '@/app/manage/api/teacher'
 import { Switch as Sd } from '@headlessui/react'
 import { useEffect, useState } from 'react'
 
 export default function Switch({
   type,
-  value
+  value,
+  updateCanStatus
 }: {
   type: 'call' | 'chat'
-  value: boolean
+  value: boolean,
+  updateCanStatus: (checked: boolean, type: 'call' | 'chat') => void
 }) {
-  const [enabled, setEnabled] = useState(false)
+  // The enabled state should reflect the actual availability state
+  const [enabled, setEnabled] = useState(value)
 
+  // Update local state when props change
   useEffect(() => {
-    console.log(value)
-    setEnabled(!value)
+    setEnabled(value)
   }, [value])
+
+  // Handle toggle change
+  const handleChange = (checked: boolean) => {
+    // Update local state first
+    setEnabled(checked)
+    // Then call the parent's update function with the new value
+    updateCanStatus(!checked, type)
+  }
 
   return (
     <Sd
-      checked={enabled}
-      onChange={(checked) => {
-        setEnabled(checked)
-        updateCanStatus(!checked, type)
-      }}
+      defaultChecked={!enabled}
+      onChange={handleChange}
       className="group relative flex border w-10 cursor-pointer rounded-full bg-indigo-400 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
     >
       <span
