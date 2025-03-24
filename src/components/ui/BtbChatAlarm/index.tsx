@@ -22,11 +22,12 @@ const getNotificationCount = async () => {
 };
 
 export default function BtbChatAlarm() {
+    const { user } = useUserInfoQuery();
     const { data: count = { unreadCount: 0 }, refetch: refetchCount } = useQuery({
         queryKey: ['notificationCount', 'user'],
-        queryFn: () => getNotificationCount()
+        queryFn: () => getNotificationCount(),
+        enabled: !!user,
     });
-    const { user } = useUserInfoQuery();
     const showNoti = count?.unreadCount > 0;
     const notiCount = count?.unreadCount > 99 ? '99+' : count?.unreadCount;
   
