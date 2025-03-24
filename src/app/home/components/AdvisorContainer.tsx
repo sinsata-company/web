@@ -32,18 +32,6 @@ export default function AdvisorContainer({ path }: { path?: string }) {
     const observer = useRef<IntersectionObserver | null>(null)
     const {searchTerm} = useSearch();
 
-    useEffect(() => {
-        setIsMounted(true);
-        if ('scrollRestoration' in window?.history) {
-            window.history.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
-        }
-    }, [])
-
-    useEffect(() => {
-        if (isMounted) {
-            getTeachers(SearchType.NEW, page)
-        }
-    }, [page, sort, isMounted])
 
     const changeLiked = (id: string) => {
         console.log('id', id);
@@ -101,7 +89,7 @@ export default function AdvisorContainer({ path }: { path?: string }) {
     )
 
     // 필터링된 어드바이저 리스트
-    const filteredAdvisorList = advisorList.filter(advisor => {
+    const filteredAdvisorList = advisorList?.filter(advisor => {
         if (!searchTerm) return true;
 
         const advisorName = advisor.name;
@@ -110,7 +98,18 @@ export default function AdvisorContainer({ path }: { path?: string }) {
 
         return nameChosung.startsWith(searchChosung) ||
             advisorName.includes(searchTerm); // 일반 텍스트 검색도 포함
-    });
+    }) ?? [];
+
+    useEffect(() => {
+        if ('scrollRestoration' in window?.history) {
+            window.history.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
+        }
+    }, [])
+
+    useEffect(() => {
+        getTeachers(SearchType.NEW, page)
+    }, [page, sort])
+
 
     return (
         <div>
@@ -128,13 +127,11 @@ export default function AdvisorContainer({ path }: { path?: string }) {
             </div>
             <div className="h-6"></div>
             <div className="px-5 h-screen">
-                {isMounted && (
-                    <AdvisorList
-                        advisorList={filteredAdvisorList}
-                        changeLiked={changeLiked}
-                        lastAdvisorElementRef={lastAdvisorElementRef}
-                    />
-                )}
+                <AdvisorList
+                    advisorList={filteredAdvisorList}
+                    changeLiked={changeLiked}
+                    lastAdvisorElementRef={lastAdvisorElementRef}
+                />
             </div>
         </div>
     )
