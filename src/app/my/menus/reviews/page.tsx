@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Reviewable } from "@/types/review";
 import { basicGet } from "@/api/base";
 import { useState } from "react";
+import BTB from '@/components/common/Btb'
 
 export const getReviewables = async () => basicGet("/reviews/reviewable-reservations") as unknown as Promise<Reviewable[]>;
 
@@ -53,6 +54,7 @@ export default function Page() {
         </Tabs>
       </section>
 
+      <article className="flex flex-1">
       <section className="w-full flex flex-col gap-y-3">
         {reviewables.map((reviewable) => (
           <ReviewCard
@@ -61,6 +63,8 @@ export default function Page() {
           />
         ))}
       </section>
+      </article>
+      <BTB/>
     </div>
   )
 }

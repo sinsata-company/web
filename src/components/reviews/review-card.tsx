@@ -5,17 +5,22 @@ import Image from 'next/image';
 import { Reviewable } from '@/types/review';
 import { cn } from '@/lib/utils';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 interface ReviewCardProps extends Reviewable {
   className?: string;
 }
 
-export function ReviewCard({ className, startAt, teacherProfileImage, teacherName, teacherPinNumber }: ReviewCardProps) {
-  
+export function ReviewCard({ className, startAt, teacherProfileImage, teacherName, reservationId, teacherPinNumber }: ReviewCardProps) {
   const formattedDate = dayjs(startAt).format('YYYY.MM.DD HH:mm');
+  const router = useRouter();
+
+  const onClickRedirect = () => {
+    router.push(`/my/menus/reviews/${reservationId}`);
+  };
   
   return (
-    <button className={cn("w-full bg-white rounded-lg overflow-hidden", className)}>
+    <button onClick={onClickRedirect} className={cn("w-full bg-white rounded-lg overflow-hidden", className)}>
       {/* Header with profile and rating */}
       <div className="flex items-center p-4 border-b border-gray-100">
         <div className="flex items-center flex-1 gap-x-4">
