@@ -7,7 +7,6 @@ import { useRouter, usePathname } from 'next/navigation'
 import Modal from '@/components/common/Modal'
 import Image from 'next/image'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
-import { safeMap } from '@/utils/safeMap'
 import { startInstantChat } from '@/app/api/chat'
 
 export default function AdvisorList({
@@ -66,15 +65,23 @@ export default function AdvisorList({
 
     return (
         <div className="inline-flex flex-col gap-2.5 items-center w-full text-sm">
-            {isMounted && safeMap(advisorList || [], (item, idx) => (
-                <AdvisorItem
-                    {...item}
-                    key={item.id || idx}
-                    ref={idx === (advisorList?.length || 0) - 1 ? lastAdvisorElementRef : undefined}
-                    onClickPhone={onClickPhone}
-                    changeLiked={changeLiked}
-                />
-            ))}
+            {isMounted && Array.isArray(advisorList) && advisorList.length > 0 ? (
+                advisorList.map((item, idx) => (
+                    <AdvisorItem
+                        {...item}
+                        key={item.id || idx}
+                        ref={idx === (advisorList.length - 1) ? lastAdvisorElementRef : undefined}
+                        onClickPhone={onClickPhone}
+                        changeLiked={changeLiked}
+                    />
+                ))
+            ) : isMounted ? (
+                <div className="p-4 text-center text-gray-500">선생님 목록이 없습니다.</div>
+            ) : (
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="animate-pulse text-gray-400">로딩 중...</div>
+                </div>
+            )}
             {isPhoneModalOpen && advisor && (
                 <Modal
                     isOpen={isPhoneModalOpen}
