@@ -1,10 +1,6 @@
 import type { Metadata } from 'next'
-import { Noto_Sans } from 'next/font/google'
 import './globals.css'
-import KakaoScript from '@/components/common/KakaoScript'
-import LayoutChild from './layout-comp'
-import QueryProvider from '@/components/providers/QueryProvider'
-import { Dynamic } from '@/config/dynamic';
+import Main from './Main';
 
 export const metadata: Metadata = {
   title: '신사타',
@@ -66,14 +62,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html>
+    <html lang="en">
       <body>
-        <div className="w-full h-screen">
-          <QueryProvider>
-            <LayoutChild>{children}</LayoutChild>
-            <KakaoScript />
-          </QueryProvider>
-        </div>
+        <Main>{children}</Main>
       </body>
     </html>
   );
