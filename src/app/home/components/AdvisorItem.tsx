@@ -5,6 +5,7 @@ import {forwardRef, useEffect, useState} from 'react'
 import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import TeacherTypeLabel from '@/components/common/TeacherTypeLabel'
 import {basicPost} from "@/api/base";
+import { safeMap } from '@/utils/safeMap'
 
 
 interface AdvisorItemProps extends TeacherListDto {
@@ -127,7 +128,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                             {/* 가격 정보 */}
                             <div className="flex-col flex justify-between h-full text-black">
                                 <div className="flex flex-col gap-y-1.5">
-                                    {!!menuObj && menuObj.slice(0, 2).map(([key, value]: [key: string, value: number], index:number) => (
+                                    {!!menuObj && safeMap(menuObj.slice(0, 2), ([key, value]: [key: string, value: number], index:number) => (
                                         <div key={key} className="">
                                             {renderPriceInfo(
                                                 `${Number(value).toLocaleString()}원`,

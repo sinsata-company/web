@@ -11,15 +11,16 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  redirects: async () => {
-    return [
-        {
-          source: '/',
-          destination: '/home',
-          permanent: true,
-        },
-    ];
-  },
+  // App Router와의 충돌을 방지하기 위해 redirects 설정 비활성화
+  // redirects: async () => {
+  //   return [
+  //       {
+  //         source: '/',
+  //         destination: '/home',
+  //         permanent: true,
+  //       },
+  //   ];
+  // },
 
   rewrites: async () => [
     {
