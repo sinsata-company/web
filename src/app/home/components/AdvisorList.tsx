@@ -79,30 +79,30 @@ export default function AdvisorList({
 
     return (
         <div className="inline-flex flex-col gap-2.5 items-center w-full text-sm">
-            {advisorList.map((item, idx) => {
-                // if (idx === advisorList.length - 1) {
-                //     return (
-                //         <AdvisorItem
-                //             {...item}
-                //             key={item.id}
-                //             ref={lastAdvisorElementRef}
-                //             onClickPhone={onClickPhone}
-                //             changeLiked={changeLiked}
-                //             onItemClick={handleItemClick}
-                //         />
-                //     )
-                // } else {
-                    return (
-                        <AdvisorItem 
-                            changeLiked={changeLiked} 
-                            {...item} 
-                            key={idx} 
-                            onClickPhone={onClickPhone}
-                            onItemClick={handleItemClick}
-                        />
-                    )
-                // }
-            })}
+            {/*{advisorList.map((item, idx) => {*/}
+            {/*    if (idx === advisorList.length - 1) {*/}
+            {/*        return (*/}
+            {/*            <AdvisorItem*/}
+            {/*                {...item}*/}
+            {/*                key={item.id}*/}
+            {/*                ref={lastAdvisorElementRef}*/}
+            {/*                onClickPhone={onClickPhone}*/}
+            {/*                changeLiked={changeLiked}*/}
+            {/*                onItemClick={handleItemClick}*/}
+            {/*            />*/}
+            {/*        )*/}
+            {/*    } else {*/}
+            {/*        return (*/}
+            {/*            <AdvisorItem */}
+            {/*                changeLiked={changeLiked} */}
+            {/*                {...item} */}
+            {/*                key={idx} */}
+            {/*                onClickPhone={onClickPhone}*/}
+            {/*                onItemClick={handleItemClick}*/}
+            {/*            />*/}
+            {/*        )*/}
+            {/*    }*/}
+            {/*})}*/}
 
             <div className="h-32"></div>
             <Modal
