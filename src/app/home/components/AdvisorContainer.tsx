@@ -29,9 +29,14 @@ export default function AdvisorContainer({ path }: { path?: string }) {
     const [page, setPage] = useState<number>(0)
     const [sort, setSort] = useState<SearchType>(SearchType.NEW)
     const [hasMore, setHasMore] = useState(true)
+    const [isClient, setIsClient] = useState(false)
     const observer = useRef<IntersectionObserver | null>(null)
     const {searchTerm} = useSearch();
 
+    // Set isClient to true when component mounts on client
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
 
     const changeLiked = (id: string) => {
         console.log('id', id);
@@ -75,24 +80,21 @@ export default function AdvisorContainer({ path }: { path?: string }) {
         }
     }
 
-    const lastAdvisorElementRef = useCallback(
-        (node: HTMLDivElement | null) => {
-            if (observer.current) observer.current.disconnect()
-            observer.current = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting && hasMore) {
-                    setPage((prevPage) => prevPage + 1)
-                }
-            })
-            if (node) observer.current.observe(node)
-        },
-        [hasMore]
-    )
+    const lastAdvisorElementRef = useCallback((node: HTMLDivElement) => {
+        if (observer.current) observer.current.disconnect()
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                setPage(prevState => prevState + 1)
+            }
+        })
+        if (node) observer.current.observe(node)
+    }, [hasMore])
 
     // 필터링된 어드바이저 리스트
     const filteredAdvisorList = advisorList?.filter(advisor => {
         if (!searchTerm) return true;
 
-        const advisorName = advisor.name;
+        const advisorName = advisor?.name || '';
         const searchChosung = getChosung(searchTerm);
         const nameChosung = getChosung(advisorName);
 
@@ -100,26 +102,31 @@ export default function AdvisorContainer({ path }: { path?: string }) {
             advisorName.includes(searchTerm); // 일반 텍스트 검색도 포함
     }) ?? [];
 
+    // Only access browser APIs when confirmed on client
     useEffect(() => {
-        if ('scrollRestoration' in window?.history) {
+        if (isClient && 'scrollRestoration' in window?.history) {
             window.history.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
         }
-    }, [])
+    }, [isClient])
 
+    // Ensure data fetching only happens on client
     useEffect(() => {
-        getTeachers(SearchType.NEW, page)
-    }, [page, sort])
-
+        if (isClient) {
+            getTeachers(SearchType.NEW, page)
+        }
+    }, [page, sort, isClient])
 
     return (
         <div>
             <div className="px-5">
-                <AdvisorSort
+                <AdvisorSort 
                     getTeachers={async (sort, page) => {
-                        setPage(0)
-                        setSort(sort)
-                        setAdvisorList([])
-                        await getTeachers(sort, page)
+                        if (isClient) {
+                            setPage(0)
+                            setSort(sort)
+                            setAdvisorList([])
+                            await getTeachers(sort, page)
+                        }
                     }}
                     page={page}
                     path={path}
