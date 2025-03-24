@@ -11,7 +11,11 @@ export interface MenuProps {
   onClick: () => void
 }
 
-const MenuOptions = () => {
+interface MenuOptionsProps {
+  onEditClick: () => void;
+}
+
+const MenuOptions = ({ onEditClick }: MenuOptionsProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const menus: MenuProps[] = [
     {

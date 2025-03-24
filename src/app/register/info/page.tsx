@@ -1,6 +1,6 @@
 'use client'
 
-import { BASE_URL } from '@/api/base'
+import { BASE_URL, basicPost } from '@/api/base'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import Input from '@/components/common/Input'
 import LogoAppbar from '@/components/common/LogoAppbar'
@@ -21,8 +21,12 @@ export default function Page() {
 const Body = () => {
   const [name, setName] = useState('')
   const [phoneNum, setPhoneNum] = useState('')
+  const [verificationCode, setVerificationCode] = useState('')
   const [nameError, setNameError] = useState('')
   const [phoneNumError, setPhoneNumError] = useState('')
+  const [verificationError, setVerificationError] = useState('')
+  const [isVerifying, setIsVerifying] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
       message: ''
@@ -32,6 +36,58 @@ const Body = () => {
   const key = query.get('key')
   const oauth = JSON.parse(key ?? '')
   const router = useRouter()
+
+  const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
+
+  const sendVerificationCode = async () => {
+    setPhoneNumError('');
+    if (!phoneNum) {
+      setPhoneNumError('전화번호를 입력해주세요');
+      return;
+    }
+    
+    try {
+      const response = await basicPost('/users/send-verification', {
+        phoneNum: phoneNum
+      });
+      
+      if (response) {
+        setIsVerifying(true);
+        alert('인증번호가 발송되었습니다.');
+      } else {
+        setPhoneNumError('인증번호 발송에 실패했습니다.');
+      }
+    } catch (error) {
+      setPhoneNumError('인증번호 발송 중 오류가 발생했습니다.');
+    }
+  };
+
+  const verifyCode = async () => {
+    setVerificationError('');
+    if (!verificationCode) {
+      setVerificationError('인증번호를 입력해주세요');
+      return;
+    }
+
+    try {
+      const response = await axios.post('/api/auth/verify-code', {
+        phoneNum: phoneNum,
+        code: verificationCode
+      });
+      
+      if (response.data.verified) {
+        setIsVerified(true);
+        setIsVerifying(false);
+        alert('인증이 완료되었습니다.');
+      } else {
+        setVerificationError('잘못된 인증번호입니다.');
+      }
+    } catch (error) {
+      setVerificationError('인증 확인 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
     <div className="h-screen ">
@@ -53,15 +109,50 @@ const Body = () => {
           onChange={(e) => setName(e.target.value)}
           error={nameError}
         />
-        <Input
-          name="전화번호"
-          placeholder="전화번호를 입력해주세요"
-          value={phoneNum}
-          onChange={(e) => {
-            setPhoneNum(e.target.value)
-          }}
-          error={phoneNumError}
-        />
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <div className="text-sm font-medium text-gray-700 mb-1">전화번호</div>
+            </div>
+            <div className="w-24" />
+          </div>
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <Input
+                placeholder="전화번호를 입력해주세요"
+                value={phoneNum}
+                onChange={(e) => setPhoneNum(e.target.value)}
+                error={phoneNumError}
+              />
+            </div>
+            {/* <div className="w-24">
+              <Button
+                label={isVerified ? "인증완료" : "인증하기"}
+                buttonType={isVerified ? BUTTON_TYPE.secondary : BUTTON_TYPE.primary}
+                onClick={sendVerificationCode}
+              />
+            </div> */}
+          </div>
+        </div>
+        {isVerifying && (
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <Input
+                placeholder="인증번호를 입력해주세요"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                error={verificationError}
+              />
+            </div>
+            <div className="w-24">
+              <Button
+                label="확인"
+                buttonType={BUTTON_TYPE.primary}
+                onClick={verifyCode}
+              />
+            </div>
+          </div>
+        )}
         <div className="h-12"></div>
         <Button
           label="회원가입 완료하기"
@@ -133,8 +224,8 @@ const Body = () => {
               setModalOpen(true);
               setModalData({
                     message: "서버 오류가 발생했습니다. 관리자에게 문의해주세요."
-                });
-            }
+                });            
+              }
           }}
         />
       </div>

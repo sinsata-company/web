@@ -38,12 +38,13 @@ export default function Page() {
 
   const onSubmit = async () => {
     const canUse = await canUseIdAndMessage(name)
+    console.log(canUse)
     if (isLogin) {
       if (!canUse?.status) {
         setNameError('')
         const data = await getKeyByEmail(name, password, 'EMAIL')
-
-        if (data.isRegistered) {
+        console.log(data)
+        if (data?.isRegistered) {
           const isSuccess = await login(data)
           if (isSuccess) {
             nav.push('/home')
@@ -65,12 +66,14 @@ export default function Page() {
       }
       if (validate() && name && canUse?.status && password) {
         const data = await getKeyByEmail(name, password, 'EMAIL')
-        if (data.isRegistered) {
-          await login(data)
-          nav.push('/home')
-        } else {
-          nav.push(`/register/info?key=${JSON.stringify(data)}`)
-        }
+        console.log(data)
+        nav.push(`/register/info?key=${JSON.stringify(data)}`)
+        // if (data.isRegistered) {
+        //   await login(data)
+        //   nav.push('/home')
+        // } else {
+        //   nav.push(`/register/info?key=${JSON.stringify(data)}`)
+        // }
       }
     }
   }
@@ -126,6 +129,23 @@ export default function Page() {
         >
           {isLogin ? '회원가입 ' : '로그인'} 하러가기
         </div>
+        
+        {isLogin && (
+          <div className="flex justify-center gap-4 text-sm text-grey-600">
+            <div
+              className="cursor-pointer underline"
+              onClick={() => nav.push('/find/id')}
+            >
+              아이디 찾기
+            </div>
+            <div
+              className="cursor-pointer underline"
+              onClick={() => nav.push('/find/password')}
+            >
+              비밀번호 찾기
+            </div>
+          </div>
+        )}
       </div>
       <Modal
         isOpen={withdrawModal}

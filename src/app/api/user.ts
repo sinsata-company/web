@@ -3,7 +3,7 @@ import {BASE_URL, basicUnpagedGet, basicUnpagedGetForInquiry} from '../../api/ba
 import axios, {isAxiosError} from 'axios'
 import {UserCredential} from 'firebase/auth'
 import {isMobileDevice} from '@/utils/device'
-import {basicDelete, basicGet, basicPut} from './base'
+import {basicDelete, basicGet, basicPut, basicPost} from './base'
 import { InquiryResponseDto } from '@/app/api/data'
 import { basicTeacherGet } from '../manage/api/base'
 
@@ -221,3 +221,19 @@ export interface PayHistoryDto {
 export const getPayHistory = async () => {
   return await basicUnpagedGet<PayHistoryDto[]>('/users/billing')
 }
+
+export const verifyPassword = async (password: string) => {
+  const response = await basicPost('/users/verify-password', {
+    password,
+  })
+  return response.data
+}
+
+export const changePassword = async (currentPassword: string, newPassword: string) => {
+  const response = await basicPost('/users/change-password', {
+    currentPassword,
+    newPassword,
+  })
+  return response.data
+}
+

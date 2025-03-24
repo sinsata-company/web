@@ -19,8 +19,14 @@ export default function AdvisorList({
 }: AdvisorListProps) {
   const { searchTerm } = useSearch()
 
-  const filteredAdvisors = advisorList.filter((advisor) =>
-    advisor.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Ensure advisorList is always an array before filtering
+  const safeAdvisorList = Array.isArray(advisorList) ? advisorList : [];
+  
+  // Safely filter the array
+  const filteredAdvisors = safeAdvisorList.filter((advisor) => 
+    advisor && advisor.name && typeof advisor.name === 'string' 
+      ? advisor.name.toLowerCase().includes((searchTerm || '').toLowerCase())
+      : false
   )
 
   return (
@@ -31,19 +37,24 @@ export default function AdvisorList({
         </div>
       ) : (
         <div className="grid gap-4">
-          {filteredAdvisors.map((advisor, index) => (
-            <div
-              key={advisor.id}
-              ref={index === filteredAdvisors.length - 1 ? lastAdvisorElementRef : undefined}
-            >
-              <AdvisorCard 
-                advisor={advisor} 
-                onLikeClick={() => changeLiked(advisor.id)}
-              />
-            </div>
-          ))}
+          {filteredAdvisors.map((advisor, index) => {
+            // Ensure each advisor has an id, using index as fallback
+            const key = advisor?.id || `advisor-${index}`;
+            
+            return (
+              <div
+                key={key}
+                ref={index === filteredAdvisors.length - 1 ? lastAdvisorElementRef : undefined}
+              >
+                <AdvisorCard 
+                  advisor={advisor} 
+                  onLikeClick={() => advisor?.id && changeLiked(advisor.id)}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
   )
-} 
+}

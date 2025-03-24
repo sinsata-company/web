@@ -25,6 +25,8 @@ export default function AdvisorList({
     const pathname = usePathname()
     const isNavigating = useRef(false);
 
+    const safeAdvisorList = Array.isArray(advisorList) ? advisorList : [];
+
     useEffect(() => {
         setIsMounted(true);
     }, []);
@@ -65,16 +67,20 @@ export default function AdvisorList({
 
     return (
         <div className="inline-flex flex-col gap-2.5 items-center w-full text-sm">
-            {isMounted && Array.isArray(advisorList) && advisorList.length > 0 ? (
-                advisorList.map((item, idx) => (
-                    <AdvisorItem
-                        {...item}
-                        key={item.id || idx}
-                        ref={idx === (advisorList.length - 1) ? lastAdvisorElementRef : undefined}
-                        onClickPhone={onClickPhone}
-                        changeLiked={changeLiked}
-                    />
-                ))
+            {isMounted && safeAdvisorList.length > 0 ? (
+                safeAdvisorList.map((item, idx) => {
+                    const id = item?.id || `fallback-id-${idx}`;
+                    
+                    return (
+                        <AdvisorItem
+                            {...item}
+                            key={id}
+                            ref={idx === (safeAdvisorList.length - 1) ? lastAdvisorElementRef : undefined}
+                            onClickPhone={onClickPhone}
+                            changeLiked={changeLiked}
+                        />
+                    );
+                })
             ) : isMounted ? (
                 <div className="p-4 text-center text-gray-500">선생님 목록이 없습니다.</div>
             ) : (
@@ -100,7 +106,7 @@ export default function AdvisorList({
                                 className="rounded-lg object-cover"
                             />
                             <div className="text-zinc-900 text-sm flex items-center">
-                                {advisor?.pinNumber}
+                                {advisor?.pinNumber || ''}
                             </div>
                         </div>
                         
@@ -187,8 +193,21 @@ export default function AdvisorList({
                                 <div className="flex justify-center">
                                     <Button
                                         onClick={async () => {
-                                            const result = await startInstantChat(advisor?.id ?? '')
-                                            router.push(`/chats/private/${result.chatRoomId}`)
+                                            try {
+                                                const advisorId = advisor?.id || '';
+                                                if (!advisorId) {
+                                                    console.error('Advisor ID is missing');
+                                                    return;
+                                                }
+                                                const result = await startInstantChat(advisorId);
+                                                if (result && result.chatRoomId) {
+                                                    router.push(`/chats/private/${result.chatRoomId}`);
+                                                } else {
+                                                    console.error('Failed to start chat: Invalid response');
+                                                }
+                                            } catch (error) {
+                                                console.error('Failed to start chat:', error);
+                                            }
                                         }}
                                         buttonType={BUTTON_TYPE.primary}
                                         label={<span className="text-sm">채팅상담 시작하기</span>}
