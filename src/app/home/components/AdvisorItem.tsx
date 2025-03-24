@@ -14,7 +14,7 @@ interface AdvisorItemProps extends TeacherListDto {
 
 export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
     function AdvisorItem(advisor, ref) {
-        const {id, name, thumbnail, hashtag, summary, selfLiked, onClickPhone, teacherType, status, menu, changeLiked} = advisor;
+        const {id, name, thumbnail, hashtag, selfLiked, onClickPhone, teacherType, status, menu, changeLiked} = advisor;
         const router = useRouter()
         const pathname = usePathname()
         const [menuObj, setMenuObj] = useState<any>(null);
@@ -22,8 +22,6 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         const isAbse = status === 'ABSE';
         const isConsulting = status === 'CONN';
         const isAvailable = status === 'IDLE';
-
-        console.log({ isAbse, isConsulting, isAvailable })
 
         const tags = (() => {
             if (!hashtag) return [] as string[];
@@ -160,7 +158,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
 
                                 {isConsulting && !isAbse && (
                                     <Button
-                                        buttonType={BUTTON_TYPE.consulting}
+                                        buttonType={BUTTON_TYPE.secondaryV2}
                                         className="h-[32px] self-end !cursor-not-allowed"
                                         label={
                                             <div className="flex items-center justify-center gap-1">
@@ -171,7 +169,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                                     alt="phone"
                                                     className="brightness-0 invert"
                                                 />
-                                                <span className="text-sm">상담중</span>
+                                                <span className="text-sm text-sinsata-blue">상담중</span>
                                             </div>
                                         }
                                     />
@@ -181,7 +179,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                 {isAvailable && !isAbse && !isConsulting && (
                                     <Button
                                         onClick={handlePhoneClick}
-                                        buttonType={BUTTON_TYPE.primary}
+                                        buttonType={BUTTON_TYPE.secondaryV2}
                                         className="h-[32px] self-end"
                                         label={
                                             <div className="flex items-center justify-center gap-1">
@@ -192,7 +190,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                                     alt="phone"
                                                     className="brightness-0 invert"
                                                 />
-                                                <span className="text-sm">상담</span>
+                                                <span className="text-sm text-sinsata-blue">상담 가능</span>
                                             </div>
                                         }
                                     />

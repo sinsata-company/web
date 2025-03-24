@@ -9,7 +9,8 @@ export const enum BUTTON_TYPE {
   primarySm,
   abse,
   consulting,
-  dangerous = 7,
+  secondaryV2,
+  dangerous = 8,
 }
 
 type buttonStyleType = {
@@ -45,6 +46,10 @@ const buttonStyle: Record<BUTTON_TYPE, buttonStyleType> = {
   [BUTTON_TYPE.abse]: {
     background: 'bg-[#CCCCCC] px-2 py-4 rounded-xl ',
     text: 'text-white',
+  },
+  [BUTTON_TYPE.secondaryV2]: {
+    background: 'border bg-white border-sinsata-blue text-sinsata-blue px-2 py-4 rounded-xl ',
+    text: 'text-black',
   },
   [BUTTON_TYPE.consulting]: {
     background: 'bg-[#EAEAEA] px-2 py-4 rounded-xl ',
