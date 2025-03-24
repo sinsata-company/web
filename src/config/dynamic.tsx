@@ -10,9 +10,9 @@ export const Dynamic = ({ children }: { children: React.ReactNode }) => {
     }, []);
   
     if (!hasMounted) {
-      return null;
+      // null 대신 빈 div 반환
+      return <div style={{ visibility: 'hidden' }}></div>;
     }
   
     return <>{children}</>;
   };
-  

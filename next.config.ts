@@ -11,12 +11,10 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  
-  // App Router와의 충돌을 방지하기 위해 redirects 설정 수정
   redirects: async () => {
     return [
         {
-          source: '/index',
+          source: '/',
           destination: '/home',
           permanent: true,
         },

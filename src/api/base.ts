@@ -35,21 +35,21 @@ export const setToken = (tk: string) => {
 }
 
 function getAccessToken() {
-  const expire = window.localStorage.getItem('sst-access-token-expire-at')
+  const expire = typeof window !== 'undefined' && window.localStorage.getItem('sst-access-token-expire-at')
   if (expire && new Date().getTime() > parseInt(expire)) {
-    window.location.href = `${BASE_WEB}/register`
+    typeof window !== 'undefined' && (window.location.href = `${BASE_WEB}/register`)
     return null
   }
-  return window.localStorage.getItem('sst-access-token')
+  return typeof window !== 'undefined' && window.localStorage.getItem('sst-access-token')
 }
 
 function getTeacherToken() {
-  const expire = window.localStorage.getItem('sst-teacher-token-expire-at')
+  const expire = typeof window !== 'undefined' && window.localStorage.getItem('sst-teacher-token-expire-at')
   if (expire && new Date().getTime() > parseInt(expire)) {
-    window.location.href = `${BASE_WEB}/register`
+    typeof window !== 'undefined' && (window.location.href = `${BASE_WEB}/register`)
     return null
   }
-  return window.localStorage.getItem('sst-teacher-token')
+  return typeof window !== 'undefined' && window.localStorage.getItem('sst-teacher-token')
 }
 
 export async function basicUnpagedGet<T>(route: string): Promise<T> {
@@ -90,6 +90,15 @@ export async function basicUnpagedGetForInquiry<T>(route: string): Promise<T> {
     throw '에러 발생'
   }
 }
+
+export const axiosClient = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'SST-ACCESS-TOKEN': getAccessToken(),
+    'SST-TEACHER-TOKEN': getTeacherToken(),
+  },
+})
 
 
 export async function basicGet<T>(route: string): Promise<ApiResponse<T>> {
