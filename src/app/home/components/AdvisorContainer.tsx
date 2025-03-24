@@ -128,13 +128,13 @@ export default function AdvisorContainer({ path }: { path?: string }) {
             </div>
             <div className="h-6"></div>
             <div className="px-5 h-screen">
-                {isMounted && (
+                {/* {isMounted && (
                     <AdvisorList
                         advisorList={filteredAdvisorList}
                         changeLiked={changeLiked}
                         lastAdvisorElementRef={lastAdvisorElementRef}
                     />
-                )}
+                )} */}
             </div>
         </div>
     )
