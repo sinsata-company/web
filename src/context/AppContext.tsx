@@ -26,6 +26,7 @@ export function AppProvider({ children }: AppProviderProps) {
   const [isClient, setIsClient] = useState(false)
   const [fontFamily, setFontFamily] = useState('font-sans')
   const [fontSize, setFontSize] = useState('text-base')
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
