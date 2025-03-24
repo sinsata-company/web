@@ -1,9 +1,11 @@
 import axios from 'axios'
-import router from 'next/router'
+import { useRouter, usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 
 const useNaverLogin = () => {
   const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+  const pathname = usePathname();
 
   const handleLoadingToggle = (flag: boolean) => {
     setIsLoading(flag)
@@ -25,12 +27,12 @@ const useNaverLogin = () => {
   }, [])
 
   useEffect(() => {
-    const token = router?.asPath?.split('=')[1]?.split('&')[0]
+    const token = pathname?.split('=')[1]?.split('&')[0]
     // const token = new URL(window.location.href).searchParams.get('code') || ''
     // 네이버 아이디 로그인이 query에 accesstoken으로 넘겨주는 값을 추출해옵니다.
 
     if (token) handleNaverLogin(token)
-  }, [])
+  }, [pathname])
 
   return { isLoading, onLoadingToggle: handleLoadingToggle }
 }
