@@ -12,12 +12,12 @@ export default function GlobalError({
     // 오류 로깅
     console.error('Global error occurred:', error)
     
-    // 3초 후에 페이지 리로드 시도
-    // const timer = setTimeout(() => {
-      // window.location.href = '/home'
+    // // 3초 후에 페이지 리로드 시도
+    // // const timer = setTimeout(() => {
+    //   // window.location.href = '/home'
     // }, 3000)
     
-    return () => clearTimeout(timer)
+    // return () => clearTimeout(timer)
   }, [error])
 
   return (
