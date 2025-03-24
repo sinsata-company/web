@@ -23,15 +23,22 @@ interface AppProviderProps {
 }
 
 export function AppProvider({ children }: AppProviderProps) {
+  const [isClient, setIsClient] = useState(false)
   const [fontFamily, setFontFamily] = useState('font-sans')
   const [fontSize, setFontSize] = useState('text-base')
 
   useEffect(() => {
-    const savedFontFamily = localStorage.getItem('fontFamily') || 'font-sans'
-    const savedFontSize = localStorage.getItem('fontSize') || 'text-base'
-    setFontFamily(savedFontFamily)
-    setFontSize(savedFontSize)
+    setIsClient(true)
   }, [])
+
+  useEffect(() => {
+    if (isClient) {
+      const savedFontFamily = localStorage.getItem('fontFamily') || 'font-sans'
+      const savedFontSize = localStorage.getItem('fontSize') || 'text-base'
+      setFontFamily(savedFontFamily)
+      setFontSize(savedFontSize)
+    }
+  }, [isClient])
 
   return (
     <AppContext.Provider
