@@ -3,10 +3,8 @@
 import Image from 'next/image'
 import {useRouter} from 'next/navigation'
 import {TeacherListDto} from '@/app/api/data'
-import {forwardRef, useEffect, useState, useCallback} from 'react'
+import {forwardRef, useEffect, useState} from 'react'
 import TeacherTypeLabel from '@/components/common/TeacherTypeLabel'
-import {Heart} from "lucide-react"
-import {basicPost} from "@/api/base"
 import Modal from '@/components/common/Modal'
 import { Button } from '@/components/common/Button'
 import { BUTTON_TYPE } from '@/components/common/Button'
@@ -19,7 +17,7 @@ export default function AdvisorList({
     lastAdvisorElementRef,
 }: {
 advisorList: TeacherListDto[]
-changeLiked: Function;
+changeLiked: (id: string) => void;
 lastAdvisorElementRef?: (node: HTMLDivElement | null) => void
 }) {
 const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)

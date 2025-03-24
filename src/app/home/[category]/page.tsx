@@ -2,7 +2,7 @@
 
 import BackAppbar from '@/components/common/BackAppbar'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AdvisorItem } from '../components/AdvisorList'
+import { AdvisorItem } from '../components/AdvisorItem'
 import { useParams, useRouter } from 'next/navigation'
 import { getTeachersByCategory, SearchType } from '@/app/api/teacher'
 import { TeacherListDto } from '@/app/api/data'

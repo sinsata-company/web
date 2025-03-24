@@ -1,6 +1,6 @@
 'use client'
 
-import {TeacherDetailDto, TeacherListDto} from '@/app/api/data'
+import {TeacherListDto} from '@/app/api/data'
 import {getRecommendation} from '@/app/api/teacher'
 import AdvisorList from '@/app/home/components/AdvisorList'
 import BackAppbar from '@/components/common/BackAppbar'

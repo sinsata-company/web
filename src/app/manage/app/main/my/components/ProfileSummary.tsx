@@ -1,7 +1,7 @@
 'use client'
 
 import { TeacherListDto } from '@/app/api/data'
-import { AdvisorItem } from '@/app/home/components/AdvisorList'
+import { AdvisorItem } from '@/app/home/components/AdvisorItem'
 import { getMySummary } from '@/app/manage/api/mypage'
 import { useEffect, useState } from 'react'
 

@@ -9,6 +9,7 @@ import { getMyLikeTeachers } from '@/app/api/teacher'
 import { TeacherListDto } from '@/app/api/data'
 import RecentAdvisorContainer from './components/RecentAdvisorContainer'
 import { useSearchParams } from 'next/navigation'
+
 const AdvisorContainer = dynamic(
   () => import('@/app/heart/components/AdvisorContainer'),
   {

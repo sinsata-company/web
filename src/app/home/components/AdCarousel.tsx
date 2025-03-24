@@ -1,9 +1,8 @@
 'use client'
 
 import {useRouter} from 'next/navigation'
-import HomeBanner, {IBannerProps} from './ImageCarousel'
-import Modal from '@/components/common/Modal'
-import {JSX, useEffect, useState} from 'react'
+import HomeBanner from './ImageCarousel'
+import {JSX, useState} from 'react'  
 import Lottie from 'react-lottie'
 import rulet1000 from '../../../../public/lottie/1000.json'
 import rulet4000 from '../../../../public/lottie/4000.json'

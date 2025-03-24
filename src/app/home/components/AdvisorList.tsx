@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import AdvisorItem from './AdvisorItem'
+import { AdvisorItem } from './AdvisorItem'
 import { TeacherListDto } from '@/app/api/data'
 import { useRouter, usePathname } from 'next/navigation'
-import { startInstantChat } from '@/lib/api/chat'
 import Modal from '@/components/common/Modal'
 import Image from 'next/image'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { safeMap } from '@/utils/safeMap'
+import { startInstantChat } from '@/app/api/chat'
 
 export default function AdvisorList({
     advisorList,
