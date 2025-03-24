@@ -12,7 +12,14 @@ type Count = {
     unreadCount: number;
 }
 
-const getNotificationCount = () => basicGet('/notifications/count/user') as unknown as Promise<Count>;
+const getNotificationCount = async () => {
+    try {
+        return basicGet('/notifications/count/user') as unknown as Promise<Count> 
+    } catch (error) {
+        console.error(error);
+        return { unreadCount: 0 };
+    }
+};
 
 export default function BtbChatAlarm() {
     const { data: count = { unreadCount: 0 }, refetch: refetchCount } = useQuery({
