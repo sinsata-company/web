@@ -66,15 +66,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ko" className="w-full h-screen">
+    <html>
       <body>
-        <Dynamic>
+        <div className="w-full h-screen">
           <QueryProvider>
             <LayoutChild>{children}</LayoutChild>
             <KakaoScript />
           </QueryProvider>
-        </Dynamic>
+        </div>
       </body>
     </html>
-  )
+  );
 }
