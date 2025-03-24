@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function CompletePage() {
   const router = useRouter();
-  
+  const params = useParams();
+ 
   useEffect(() => {
     // URL 파라미터 확인
-    const { req_result, oid, amount } = router.query;
+    const { req_result, oid, amount } = params;
     
     if (req_result === '0000') {
       // 결제 성공 처리
