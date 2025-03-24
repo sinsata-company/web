@@ -4,6 +4,7 @@ import './globals.css'
 import KakaoScript from '@/components/common/KakaoScript'
 import LayoutChild from './layout-comp'
 import QueryProvider from '@/components/providers/QueryProvider'
+import { Dynamic } from '@/config/dynamic';
 
 export const metadata: Metadata = {
   title: '신사타',
@@ -58,6 +59,7 @@ export const metadata: Metadata = {
   },
 }
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,10 +68,12 @@ export default function RootLayout({
   return (
     <html lang="ko" className="w-full h-screen">
       <body>
-        <QueryProvider>
-          <LayoutChild>{children}</LayoutChild>
-          <KakaoScript />
-        </QueryProvider>
+        <Dynamic>
+          <QueryProvider>
+            <LayoutChild>{children}</LayoutChild>
+            <KakaoScript />
+          </QueryProvider>
+        </Dynamic>
       </body>
     </html>
   )
