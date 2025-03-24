@@ -15,23 +15,22 @@ interface AdvisorItemProps extends TeacherListDto {
 
 export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
     function AdvisorItem(advisor, ref) {
-        const {id, name, thumbnail, hashtag, selfLiked, onClickPhone, teacherType, status, menu, changeLiked} = advisor;
         const router = useRouter()
         const pathname = usePathname()
         const [menuObj, setMenuObj] = useState<any>(null);
-        const [newSelfLiked, setSelfLiked] = useState<boolean>(selfLiked);
-        const isAbse = status === 'ABSE';
-        const isConsulting = status === 'CONN';
-        const isAvailable = status === 'IDLE';
+        const [newSelfLiked, setSelfLiked] = useState<boolean>(advisor?.selfLiked);
+        const isAbse = advisor?.status === 'ABSE';
+        const isConsulting = advisor?.status === 'CONN';
+        const isAvailable = advisor?.status === 'IDLE';
 
         const tags = (() => {
-            if (!hashtag) return [] as string[];
-            return hashtag.split(',').map((tag: string) => tag.trim());
+            if (!advisor?.hashtag) return [] as string[];
+            return advisor?.hashtag.split(',').map((tag: string) => tag.trim());
         })();
 
         const changeSelfLiked = async () => {
             try {
-                await basicPost("/users/changeLiked", { id });
+                await basicPost("/users/changeLiked", { id: advisor?.id });
             } catch (error) {
                 console.log('error', error);
                 alert("찜 설정 도중 문제가 발생 했습니다. 잠시후 다시 시도 해주세요.")
@@ -53,8 +52,8 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         }, [pathname]);
 
         useEffect(() => {
-            if (!!menu && menu !== '' && menu.trim().length > 0) {
-                setMenuObj(JSON.parse(menu));
+            if (!!advisor?.menu && advisor?.menu !== '' && advisor?.menu.trim().length > 0) {
+                setMenuObj(JSON.parse(advisor?.menu));
             } else {
                 setMenuObj(null);
             }
@@ -66,12 +65,12 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 { ...history.state, scrollPos: currentScroll },
                 ''
             );
-            router.push('/teacher/' + id, {scroll: false});
+            router.push('/teacher/' + advisor?.id, {scroll: false});
         };
 
         const handlePhoneClick = (e: React.MouseEvent) => {
             e.stopPropagation()
-            onClickPhone(advisor)
+            advisor?.onClickPhone(advisor)
         }
 
         const renderPriceInfo = (price: string, duration: string) => (
@@ -107,13 +106,13 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                 onClick={handleClick}
                                 style={{objectFit: 'cover'}}
                                 className="rounded-xl w-min-[173.33px] h-full cursor-pointer"
-                                src={thumbnail || '/logo.jpg'}
+                                src={advisor?.thumbnail || '/logo.jpg'}
                                 placeholder="blur"
                                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
                                 alt="profile"
                                 fill
                             />
-                            <TeacherTypeLabel teacherType={teacherType}/>
+                            <TeacherTypeLabel teacherType={advisor?.teacherType}/>
                         </div>
 
                         {/* 오른쪽 정보 */}
@@ -220,7 +219,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                             alt="chat"
                         />
                         <span className="text-neutral-800 text-sm font-bold leading-tight">
-                            {advisor.score || 0}
+                            {advisor?.score || 0}
                         </span>
                         <span className="text-neutral-400 text-sm font-semibold leading-tight">
                             ({(advisor?.scoreLen || 0).toLocaleString()})
