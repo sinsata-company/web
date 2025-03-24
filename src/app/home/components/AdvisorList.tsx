@@ -20,7 +20,7 @@ export default function AdvisorList({
 }) {
     const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
     const [advisor, setAdvisor] = useState<TeacherListDto | null>(null)
-    // const router = useRouter()
+    const router = useRouter()
     const pathname = usePathname()
     const isNavigating = useRef(false);
 
@@ -53,7 +53,7 @@ export default function AdvisorList({
         if (pathname === '/home') {  // 메인 페이지에서만 스크롤 위치 저장
             sessionStorage.setItem('advisorListScrollPos', window.scrollY.toString())
         }
-        // router.push(`/teacher/${id}`)
+        router.push(`/teacher/${id}`)
     }
 
     useEffect(() => {
@@ -79,20 +79,19 @@ export default function AdvisorList({
 
     return (
         <div className="inline-flex flex-col gap-2.5 items-center w-full text-sm">
-            {isMounted && safeAdvisorList.length > 0 ? (
-                safeAdvisorList.map((item, idx) => {
-                    const id = item?.id || `fallback-id-${idx}`;
-                    
-                    return (
-                        <AdvisorItem
-                            {...item}
-                            key={id}
-                            ref={idx === (safeAdvisorList.length - 1) ? lastAdvisorElementRef : undefined}
-                            onClickPhone={onClickPhone}
-                            changeLiked={changeLiked}
-                        />
-                    )
-                } else {
+            {advisorList.map((item, idx) => {
+                // if (idx === advisorList.length - 1) {
+                //     return (
+                //         <AdvisorItem
+                //             {...item}
+                //             key={item.id}
+                //             ref={lastAdvisorElementRef}
+                //             onClickPhone={onClickPhone}
+                //             changeLiked={changeLiked}
+                //             onItemClick={handleItemClick}
+                //         />
+                //     )
+                // } else {
                     return (
                         <AdvisorItem 
                             changeLiked={changeLiked} 
@@ -102,7 +101,7 @@ export default function AdvisorList({
                             onItemClick={handleItemClick}
                         />
                     )
-                }
+                // }
             })}
 
             <div className="h-32"></div>
@@ -211,7 +210,7 @@ export default function AdvisorList({
                                 <Button
                                     onClick={async () => {
                                         const result = await startInstantChat(advisor?.id ?? '')
-                                        // router.push(`/chats/private/${result.chatRoomId}`)
+                                        router.push(`/chats/private/${result.chatRoomId}`)
                                     }}
                                     buttonType={BUTTON_TYPE.primary}
                                     label={<span className="text-sm">채팅상담 시작하기</span>}
