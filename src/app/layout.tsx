@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import { Noto_Sans } from 'next/font/google'
 import './globals.css'
 import KakaoScript from '@/components/common/KakaoScript'
-import { UsageFooter } from '@/components/common/BizFooter'
-import { AppProvider, useAppContext } from '@/context/AppContext'
 import LayoutChild from './layout-comp'
 import QueryProvider from '@/components/providers/QueryProvider'
 
@@ -66,11 +64,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="w-full h-screen">
-      <QueryProvider>
-        <LayoutChild>{children}</LayoutChild>
-        <KakaoScript />
-      </QueryProvider>
+    <html lang="ko" className="w-full h-screen">
+      <body>
+        <QueryProvider>
+          <LayoutChild>{children}</LayoutChild>
+          <KakaoScript />
+        </QueryProvider>
+      </body>
     </html>
   )
 }

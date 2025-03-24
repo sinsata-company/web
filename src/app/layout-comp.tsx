@@ -36,10 +36,15 @@ export default function LayoutChild({
 }
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
-  const { fontFamily, fontSize } = useAppContext() ?? {
-    fontFamily: '',
-    fontSize: '',
-  }
+  // 서버 사이드 렌더링 중에는 기본값 사용
+  const defaultFontFamily = 'font-sans';
+  const defaultFontSize = 'text-base';
+  
+  // 클라이언트 사이드에서만 useAppContext 값 사용
+  const appContext = useAppContext();
+  const fontFamily = appContext?.fontFamily || defaultFontFamily;
+  const fontSize = appContext?.fontSize || defaultFontSize;
+  
   return (
     <body
       className={`${fontFamily} ${fontSize} antialiased w-full max-w-[550px] mx-auto overflow-x-hidden overflow-y-auto`}
