@@ -51,36 +51,21 @@ export default function AdvisorContainer({ path }: { path?: string }) {
     }
 
     const getTeachers = async (query: SearchType, page: number) => {
-        try {
-            const response = await getTeacherList(query, page)
-            let user:UserDto | null | undefined;
+        const response = await getTeacherList(query, page)
 
-            try {
-                user = await getMyInfo();
-            } catch (error) {
-                console.log('error', error)
-                user = null;
-            }
+        if (response.content.length === 0) {
+            setHasMore(false)
+            return
+        }
 
-            if (response && response.content) {
-                setAdvisorList((prev) => {
-                    const combinedList = [...prev, ...response.content];
-                    return safeMap(combinedList, (item:TeacherListDto) => ({
-                        ...item,
-                        selfLiked: !!user && item.likedTeachers.some((liked: any) => liked.testId === user?.userId && liked.teacherId === item.id)
-                    }));
-                });
-                setHasMore(response.content.length > 0);
-            } else {
-                setHasMore(false);
-            }
-        } catch (error) {
-            console.error('Error fetching teachers:', error);
-            setHasMore(false);
+        if (page === 0) {
+            setAdvisorList(response.content)
+        } else {
+            setAdvisorList((prevState) => [...prevState, ...response.content])
         }
     }
 
-    const lastAdvisorElementRef = useCallback((node: HTMLDivElement) => {
+    const lastAdvisorElementRef = useCallback((node: HTMLDivElement | null) => {
         if (observer.current) observer.current.disconnect()
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {

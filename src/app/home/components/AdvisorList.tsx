@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { AdvisorItem } from './AdvisorItem'
-import { TeacherListDto } from '@/app/api/data'
-import { useRouter, usePathname } from 'next/navigation'
+import Image from 'next/image'
+import {useRouter} from 'next/navigation'
+import {TeacherListDto} from '@/app/api/data'
+import {useState, useRef} from 'react'
 import Modal from '@/components/common/Modal'
 import Image from 'next/image'
 import { Button, BUTTON_TYPE } from '@/components/common/Button'
@@ -22,35 +22,48 @@ export default function AdvisorList({
     const [advisor, setAdvisor] = useState<TeacherListDto | null>(null)
     const [isMounted, setIsMounted] = useState(false);
     const router = useRouter()
-    const pathname = usePathname()
+    // const pathname = usePathname()
     const isNavigating = useRef(false);
 
-    const safeAdvisorList = Array.isArray(advisorList) ? advisorList : [];
+    // useEffect(() => {
+    //     // 메인 페이지에서만 스크롤 위치 복원
+    //     if (pathname === '/home') {
+    //         const restoreScroll = () => {
+    //             const scrollPos = sessionStorage.getItem('advisorListScrollPos')
+    //             if (scrollPos) {
+    //                 window.scrollTo(0, parseInt(scrollPos))
+    //                 sessionStorage.removeItem('advisorListScrollPos')
+    //             }
+    //         }
+    //         const timer = setTimeout(restoreScroll, 100)
+    //         return () => clearTimeout(timer)
+    //     }
+    // }, [pathname])
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    const onClickPhone = (advisor: TeacherListDto) => {
+        setAdvisor(advisor)
+        setIsPhoneModalOpen(true)
+    }
 
-    useEffect(() => {
-        // 메인 페이지에서만 스크롤 위치 복원
-        if (pathname === '/home') {
-            const restoreScroll = () => {
-                const scrollPos = history.state?.scrollPos;
-                if (scrollPos && !isNavigating.current) {
-                    window.scrollTo(0, scrollPos);
-                }
-            };
-            restoreScroll();
-        }
-    }, [pathname])
+    const clickLiked = (id: string) => {
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            isNavigating.current = false;
-        }, 100);
+    };
 
-        return () => clearTimeout(timer);
-    }, [pathname]);
+    const handleItemClick = (id: string) => {
+        // // 현재 스크롤 위치를 저장
+        // if (pathname === '/home') {  // 메인 페이지에서만 스크롤 위치 저장
+        //     sessionStorage.setItem('advisorListScrollPos', window.scrollY.toString())
+        // }
+        router.push(`/teacher/${id}`)
+    }
+
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         isNavigating.current = false;
+    //     }, 100);
+    //
+    //     return () => clearTimeout(timer);
+    // }, [pathname]);
 
     if (!isMounted) {
         return (
