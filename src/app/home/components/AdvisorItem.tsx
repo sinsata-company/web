@@ -127,7 +127,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                             {/* 가격 정보 */}
                             <div className="flex-col flex justify-between h-full text-black">
                                 <div className="flex flex-col gap-y-1.5">
-                                    {!!menuObj && safeMap(menuObj.slice(0, 2), ([key, value]: [key: string, value: number], index:number) => (
+                                    {!!menuObj && menuObj.slice(0, 2)?.filter(Array.isArray).map(([key, value]: [key: string, value: number], index:number) => (
                                         <div key={key} className="">
                                             {renderPriceInfo(
                                                 `${Number(value).toLocaleString()}원`,
