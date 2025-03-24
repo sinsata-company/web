@@ -11,6 +11,7 @@ import Modal from '@/components/common/Modal'
 import { Button } from '@/components/common/Button'
 import { BUTTON_TYPE } from '@/components/common/Button'
 import { startInstantChat } from '@/app/api/chat'   
+import { safeMap } from '@/utils/safeMap'
 
 export default function AdvisorList({
     advisorList,
@@ -38,7 +39,7 @@ const router = useRouter()
 
 return (
 <div className="inline-flex flex-col gap-2.5 w-full text-sm">
-{advisorList.map((item, idx) => {
+{safeMap(advisorList, (item, idx) => {
 if (idx === advisorList.length - 1) {
 return (
 <AdvisorItem
@@ -79,7 +80,7 @@ alt="profile"
 {advisor?.name} {advisor?.pinNumber}번
 </div>
 </div>
-{/* ✅ 회색 작은 글씨 (위쪽 간격 mt-2, 아래쪽 간격 mb-3) */}
+{/* 회색 작은 글씨 (위쪽 간격 mt-2, 아래쪽 간격 mb-3) */}
 <p className="text-gray-400 text-sm mt-2 mb-3">
 전화 연결 후 989번을 입력하시면 상담사와 연결됩니다.
 </p>
@@ -240,7 +241,7 @@ function AdvisorItem(advisor, ref) {
     // menuObj가 객체인 경우 처리
     if (menuObj && typeof menuObj === 'object' && !Array.isArray(menuObj)) {
       const entries = Object.entries(menuObj);
-      return entries.slice(0, 2).map(([key, value], index) => (
+      return safeMap(entries.slice(0, 2), ([key, value], index) => (
         <div key={key}>
           {renderPriceInfo(
             `${Number(value).toLocaleString()}원`,
@@ -252,7 +253,7 @@ function AdvisorItem(advisor, ref) {
     
     // menuObj가 배열인 경우 처리
     if (Array.isArray(menuObj)) {
-      return menuObj.slice(0, 2).map(([key, value], index) => (
+      return safeMap(menuObj.slice(0, 2), ([key, value], index) => (
         <div key={key}>
           {renderPriceInfo(
             `${Number(value).toLocaleString()}원`,

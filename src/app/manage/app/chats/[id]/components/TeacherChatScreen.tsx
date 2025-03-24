@@ -6,6 +6,7 @@ import MyChat from '@/app/chats/components/MyChat'
 import { ChatDto, IMessage } from '@/app/api/data'
 import TeacherChat from './TeacherChat'
 import ChatInform from './ChatInform'
+import { safeMap } from '@/utils/safeMap'
 
 export default function TeacherChatScreen({
   messages,
@@ -38,7 +39,7 @@ export default function TeacherChatScreen({
       className="inline-flex flex-col py-2 px-5 gap-2.5 w-full overflow-y-auto"
     >
       <ChatInform chat={chat} />
-      {messages.map((item, idx) => {
+      {safeMap(messages, (item, idx) => {
         const isTeacherMessage = item.authorId === myId;
         return isTeacherMessage ? (
           <TeacherChat
@@ -47,7 +48,7 @@ export default function TeacherChatScreen({
             chat={chat}
             user={user}
             isMyMessage={true}
-            isContinued={idx > 0 && messages[idx - 1].authorId === myId}
+            isContinued={idx > 0 && messages[idx - 1]?.authorId === myId}
           />
         ) : (
           <TeacherChat
@@ -55,7 +56,7 @@ export default function TeacherChatScreen({
             {...item}
             chat={chat}
             isMyMessage={false}
-            isContinued={idx > 0 && messages[idx - 1].authorId === item.authorId}
+            isContinued={idx > 0 && messages[idx - 1]?.authorId === item.authorId}
           />
         )
       })}
