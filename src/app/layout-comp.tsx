@@ -46,11 +46,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const fontSize = appContext?.fontSize || defaultFontSize;
   
   return (
-    <body
+    <div
       className={`${fontFamily} ${fontSize} antialiased w-full max-w-[550px] mx-auto overflow-x-hidden overflow-y-auto`}
     >
       <div className="relative h-[100dvh]">{children}</div>
       {/* <UsageFooter /> */}
-    </body>
+    </div>
   )
 }
