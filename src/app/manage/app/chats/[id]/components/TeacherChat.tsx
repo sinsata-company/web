@@ -21,22 +21,22 @@ export default function TeacherChat({
           {!isMyMessage ? (
             <>
               <Image
+                src={`/images/membership/${chat?.userLevel}.png`}
+                width={24}
+                height={24}
+                className="mr-2"
+                alt="user profile"
+              />
+              {chat?.userName}
+            </>
+          ) : (
+            <>
+              <Image
                 src={chat?.teacherProfile ?? '/logo.jpg'}
                 width={24}
                 height={24}
                 className="mr-2"
                 alt="teacher profile"
-              />
-              {chat?.teacherName}
-            </>
-          ) : (
-            <>
-              <Image
-                src={`/images/membership/${user?.level}.png`}
-                width={24}
-                height={24}
-                className="mr-2"
-                alt="user profile"
               />
               {user?.nickname}
             </>
@@ -52,4 +52,4 @@ export default function TeacherChat({
       </div>
     </div>
   )
-}
+} 

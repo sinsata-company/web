@@ -87,7 +87,7 @@ export default function InquiryList() {
                 className="border-b p-4 flex items-center justify-between cursor-pointer"
                 onClick={() => {
                   if (inquiry.type === 'CHAT') {
-                    inquiry.id && router.push(`/chats/inquiry/${inquiry.id}`)
+                    inquiry.id && router.push(`/manage/app/chats/inquiry/${inquiry.id}`)
                   } else if (inquiry.type === 'INQUIRY') {
                     console.log('inquiry.id', inquiry)  
                     if (inquiry?.inquiryStatus === 'PENDING') {
