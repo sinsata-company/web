@@ -23,7 +23,7 @@ export default function AdvisorList({
     const router = useRouter()
     const pathname = usePathname()
     const isNavigating = useRef(false);
-    const testList = advisorList.slice(3);
+    // const testList = advisorList.slice(3);
 
     useEffect(() => {
         // 메인 페이지에서만 스크롤 위치 복원
@@ -80,7 +80,7 @@ export default function AdvisorList({
 
     return (
         <div className="inline-flex flex-col gap-2.5 items-center w-full text-sm">
-            {testList.map((item, idx) => {
+            {advisorList.map((item, idx) => {
                 if (idx === advisorList.length - 1) {
                     return (
                         <AdvisorItem
