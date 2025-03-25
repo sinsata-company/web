@@ -3,22 +3,58 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import BackButton from '@/components/common/BackButton';
+import { basicGet } from '@/app/api/base';
+
+interface TeacherDto {
+  id: number;
+  nickname: string;
+  name: string;
+  // 필요한 다른 필드들도 추가할 수 있습니다
+}
+
+interface TeacherResponse {
+  data: TeacherDto[];
+}
 
 export default function SearchPage() {
     const [recentSearches, setRecentSearches] = useState<string[]>([])
-    const [popularSearches, setPopularSearches] = useState([
-        { id: 1, term: '나나' },
-        { id: 2, term: '허준' },
-        { id: 3, term: '하울' },
-        // ... 더 많은 인기 검색어
-    ])
+    const [popularSearches, setPopularSearches] = useState<TeacherDto[]>([])
     const router = useRouter()
+    const [name, setName] = useState<string>('')
+
+    useEffect(() => {
+        const fetchTopTeachers = async () => {
+            try {
+                const response = await basicGet<TeacherResponse>('/teachers/top-liked');
+                console.log(response)
+                if (response) {
+                    const topTeachers = response.map((teacher: TeacherDto) => ({
+                        id: teacher.id,
+                        nickname: teacher.nickname,
+                        name: teacher.name
+                    }));
+                    console.log(topTeachers)
+                    setPopularSearches(topTeachers);
+                }
+            } catch (error) {
+                console.error('인기 강사 목록을 불러오는데 실패했습니다:', error);
+                setPopularSearches([
+                    { id: 1, nickname: '나나', name: '나나'  },
+                    { id: 2, nickname: '허준', name: '허준' },
+                    { id: 3, nickname: '하울', name: '하울' },
+                ]);
+            }
+        };
+    
+        fetchTopTeachers();
+    }, []);
 
     useEffect(() => {
         // localStorage에서 최근 검색어 가져오기
         const saved = localStorage.getItem('recentSearches')
         if (saved) {
             setRecentSearches(JSON.parse(saved))
+        
         }
     }, [])
 
@@ -39,9 +75,9 @@ export default function SearchPage() {
     return (
         <main className="min-h-screen">
             <div className="p-4">
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-2 mb-4">
                     <BackButton />
-                    <h1 className="text-xl font-bold">뒤로가기</h1>
+                    <h1 className="text-base font-medium">뒤로가기</h1>
                 </div>
                 {/* 검색 입력창 */}
                 <div className="flex items-center gap-2 mb-6">
@@ -89,10 +125,9 @@ export default function SearchPage() {
                             <div 
                                 key={item.id}
                                 className="flex items-center gap-4 p-2 hover:bg-gray-50 cursor-pointer"
-                                onClick={() => handleSearch(item.term)}
+                                onClick={() => handleSearch(item?.name)}
                             >
-                                <span className="font-bold text-gray-500">{item.id}</span>
-                                <span>{item.term}</span>
+                                <span className="font-bold text-gray-500">{item?.name}</span>
                             </div>
                         ))}
                     </div>

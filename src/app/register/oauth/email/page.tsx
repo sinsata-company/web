@@ -83,10 +83,10 @@ export default function Page() {
       <LogoAppbar />
       <div className="inline-flex flex-col gap-8 w-full p-5">
         <Input
-          name="아이디"
+          name="이메일"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="아이디를 입력해주세요"
+          placeholder="이메일을 입력해주세요"
           error={nameError}
         />
         <Input
@@ -137,7 +137,7 @@ export default function Page() {
               className="cursor-pointer underline"
               onClick={() => nav.push('/find/id')}
             >
-              아이디 찾기
+              이메일 찾기
             </div>
             <div
               className="cursor-pointer underline"

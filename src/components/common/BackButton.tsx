@@ -19,8 +19,8 @@ export default function BackButton({ className = '' }: BackButtonProps) {
             <Image
                 src="/images/ic_back.svg"
                 alt="뒤로가기"
-                width={24}
-                height={24}
+                width={10}
+                height={10}
             />
         </button>
     );
