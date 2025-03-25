@@ -8,7 +8,7 @@ import ReviewCompletionCard from "@/components/reviews/review-completion-card";
 import { useQuery } from "@tanstack/react-query";
 import { Reviewable, ReviewCompletion } from "@/types/review";
 import { basicGet } from "@/api/base";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BTB from '@/components/common/Btb'
 
 export const getReviewables = async () => basicGet("/reviews/reviewable-reservations") as unknown as Promise<Reviewable[]>;
@@ -20,11 +20,11 @@ enum TabType {
 
 export default function Page() {
   const router = useRouter();
-  const { data: reviewables = [] } = useQuery({
+  const { data: reviewables = [], refetch: rvl } = useQuery({
     queryKey: ['reviewable-list'],
     queryFn: getReviewables,
   });
-  const { data: reviews = [] } = useQuery({
+  const { data: reviews = [], refetch: rr } = useQuery({
     queryKey: ['review-list'],
     queryFn: () => basicGet("/reviews") as unknown as Promise<ReviewCompletion[]>,
   });
@@ -37,6 +37,10 @@ export default function Page() {
   const completionCount = reviews.length;
 
   const onClickBack = () => router.push('/my');
+
+  useEffect(() => {
+    rvl(); rr();
+  }, []);
 
   return (
     <div className="w-full flex flex-col">

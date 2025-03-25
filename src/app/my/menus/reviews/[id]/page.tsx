@@ -101,7 +101,9 @@ const Page = () => {
       setIsSubmitting(true);
       
       const formData = new FormData();
-      formData.append('image', imageFile as File);
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
       formData.append('rating', rating.toString());
       formData.append('category', category);
       formData.append('style', style);
@@ -113,7 +115,7 @@ const Page = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['reviewable-list', 'review-list'],
       });
       alert("후기가 성공적으로 등록되었습니다.");

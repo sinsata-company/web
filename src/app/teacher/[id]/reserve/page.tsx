@@ -96,9 +96,9 @@ export default function TeacherReservePage() {
       }, teacherId)
       
       setReserveComplete(true)
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error making reservation:', error)
-      alert('예약에 실패했습니다.')
+      alert(error.message);
     }
   }
 
