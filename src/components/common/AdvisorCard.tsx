@@ -30,17 +30,17 @@ export default function AdvisorCard({ advisor, onLikeClick }: AdvisorCardProps) 
           </div>
           
           <div className="mt-1 text-sm text-gray-600">
-            {advisor.introduction}
+            {advisor?.introduction}
           </div>
           
           <div className="mt-2 text-sm text-gray-700 line-clamp-2">
-            {advisor.introduction}
+            {advisor?.introduction}
           </div>
 
           <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
-            <div>경력 {advisor.experience}년</div>
-            <div>리뷰 {advisor.reviewCount}개</div>
-            <div>평점 {advisor.rating.toFixed(1)}</div>
+            <div>경력 {advisor?.experience}년</div>
+            <div>리뷰 {advisor?.reviewCount}개</div>
+            <div>평점 {advisor?.rating.toFixed(1)}</div>
           </div>
         </div>
       </div>
