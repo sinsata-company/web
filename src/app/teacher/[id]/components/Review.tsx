@@ -3,7 +3,7 @@ import { TeacherReviewDetails } from "@/types/review";
 import moment from "moment";
 
 export default function Review({ data, className }: { data: TeacherReviewDetails, className?: string }) {
-    const { rating } = data;
+    const rating = data.rating / 2;
 
     return (
         <section className={cn("flex flex-col w-full py-4", className)}>
