@@ -23,7 +23,7 @@ export default function Page() {
     return (
         <div className="flex flex-col gap-8 w-full">
             <Input
-                name="아이디"
+                name="이메일"
                 placeholder="이메일을 입력해주세요"
                 value={pin}
                 onChange={(e) => {

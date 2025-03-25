@@ -79,9 +79,9 @@ export default function FindId() {
     <div className="h-screen">
       <BackAppbar />
       <div className="p-4 flex flex-col gap-4">
-        <div className="text-2xl font-bold">아이디 찾기</div>
+        <div className="text-2xl font-bold">이메일 찾기</div>
         <div className="text-sm text-gray-500 mb-4">
-          가입 시 등록한 이름과 전화번호로 아이디를 찾을 수 있습니다.
+          가입 시 등록한 이름과 전화번호로 이메일를 찾을 수 있습니다.
         </div>
 
         <Input
@@ -146,10 +146,10 @@ export default function FindId() {
         onClose={() => {
           setShowResultModal(false);
         }}
-        title="아이디 찾기 결과"
+        title="이메일 찾기 결과"
         content={
           <div>
-            <div className="text-lg font-medium mb-2">찾은 아이디</div>
+            <div className="text-lg font-medium mb-2">찾은 이메일</div>
             <div className="text-xl font-bold text-primary">{foundId}</div>
           </div>
         }

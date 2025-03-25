@@ -83,7 +83,7 @@ export default function FindAccount() {
         
         <div className="flex gap-2 mb-4">
           <Button
-            label="아이디 찾기"
+            label="이메일 찾기"
             buttonType={findType === 'ID' ? BUTTON_TYPE.primary : BUTTON_TYPE.secondary}
             onClick={() => setFindType('ID')}
           />
