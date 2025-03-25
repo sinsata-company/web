@@ -37,6 +37,7 @@ export default function Page() {
   const nav = useRouter()
 
   const onSubmit = async () => {
+    console.log(name, password)
     const canUse = await canUseIdAndMessage(name)
     console.log(canUse)
     if (isLogin) {

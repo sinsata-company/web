@@ -8,7 +8,7 @@ import Modal from '@/components/common/Modal'
 import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
-
+import EmailVerification from '@/app/register/components/EmailVerification'
 
 export default function Page() {
   return (
@@ -20,10 +20,12 @@ export default function Page() {
 
 const Body = () => {
   const [name, setName] = useState('')
-  const [phoneNum, setPhoneNum] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [verificationCode, setVerificationCode] = useState('')
   const [nameError, setNameError] = useState('')
-  const [phoneNumError, setPhoneNumError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [phoneError, setPhoneError] = useState('')
   const [verificationError, setVerificationError] = useState('')
   const [isVerifying, setIsVerifying] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
@@ -31,6 +33,7 @@ const Body = () => {
   const [modalData, setModalData] = useState({
       message: ''
   });
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
 
   const query = useSearchParams()
   const key = query.get('key')
@@ -42,25 +45,25 @@ const Body = () => {
   };
 
   const sendVerificationCode = async () => {
-    setPhoneNumError('');
-    if (!phoneNum) {
-      setPhoneNumError('전화번호를 입력해주세요');
+    setEmailError('');
+    if (!email) {
+      setEmailError('이메일을 입력해주세요');
       return;
     }
     
     try {
       const response = await basicPost('/users/send-verification', {
-        phoneNum: phoneNum
+        email: email
       });
       
       if (response) {
         setIsVerifying(true);
         alert('인증번호가 발송되었습니다.');
       } else {
-        setPhoneNumError('인증번호 발송에 실패했습니다.');
+        setEmailError('인증번호 발송에 실패했습니다.');
       }
     } catch (error) {
-      setPhoneNumError('인증번호 발송 중 오류가 발생했습니다.');
+      setEmailError('인증번호 발송 중 오류가 발생했습니다.');
     }
   };
 
@@ -72,12 +75,14 @@ const Body = () => {
     }
 
     try {
-      const response = await axios.post('/api/auth/verify-code', {
-        phoneNum: phoneNum,
+      const response = await basicPost('/users/verify-code', {
+        email: email,
         code: verificationCode
       });
+
+      console.log('response', response)
       
-      if (response.data.verified) {
+      if (response?.verified) {
         setIsVerified(true);
         setIsVerifying(false);
         alert('인증이 완료되었습니다.');
@@ -88,6 +93,11 @@ const Body = () => {
       setVerificationError('인증 확인 중 오류가 발생했습니다.');
     }
   };
+
+  const handleEmailVerification = () => {
+    setIsEmailVerified(true)
+    console.log('Email verification success')
+  }
 
   return (
     <div className="h-screen ">
@@ -109,29 +119,40 @@ const Body = () => {
           onChange={(e) => setName(e.target.value)}
           error={nameError}
         />
+        <Input
+          name="전화번호"
+          placeholder="전화번호를 입력해주세요 (- 없이 입력)"
+          value={phone}
+          onChange={(e) => {
+            const value = e.target.value.replace(/[^0-9]/g, '')
+            setPhone(value)
+          }}
+          error={phoneError}
+        />
         <div className="flex flex-col gap-4">
           <div className="flex gap-2">
             <div className="flex-1">
-              <div className="text-sm font-medium text-gray-700 mb-1">전화번호</div>
+              <div className="text-xl text-gray-700 mb-1">이메일</div>
             </div>
             <div className="w-24" />
           </div>
           <div className="flex gap-2">
             <div className="flex-1">
               <Input
-                placeholder="전화번호를 입력해주세요"
-                value={phoneNum}
-                onChange={(e) => setPhoneNum(e.target.value)}
-                error={phoneNumError}
+                placeholder="이메일을 입력해주세요"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={emailError}
               />
             </div>
-            {/* <div className="w-24">
+            <div className="w-24">
               <Button
                 label={isVerified ? "인증완료" : "인증하기"}
                 buttonType={isVerified ? BUTTON_TYPE.secondary : BUTTON_TYPE.primary}
                 onClick={sendVerificationCode}
+                disabled={isVerified}
               />
-            </div> */}
+            </div>
           </div>
         </div>
         {isVerifying && (
@@ -154,32 +175,43 @@ const Body = () => {
           </div>
         )}
         <div className="h-12"></div>
+        <EmailVerification onVerificationSuccess={handleEmailVerification} />
         <Button
           label="회원가입 완료하기"
+          className={`w-full ${(!isEmailVerified || !isVerified) }`}
           buttonType={BUTTON_TYPE.primary}
+          disabled={!isVerified}
           onClick={async () => {
             let hasError = false;
             setNameError('');
-            setPhoneNumError('');
+            setEmailError('');
+            setPhoneError('');
 
             if (name === '') {
               setNameError('이름을 입력해주세요');
               hasError = true;
             }
-            if (phoneNum === '') {
-              setPhoneNumError('전화번호를 입력해주세요');
+            if (email === '') {
+              setEmailError('이메일을 입력해주세요');
+              hasError = true;
+            }
+            if (phone === '') {
+              setPhoneError('전화번호를 입력해주세요');
+              hasError = true;
+            } else if (phone.length < 10 || phone.length > 11) {
+              setPhoneError('올바른 전화번호를 입력해주세요');
               hasError = true;
             }
             if (hasError) return;
 
             try {
-              /** @type {import('next').NextConfig} */
               const response = await axios.post(
                 BASE_URL + '/users/join',
                 {
                   ...oauth,
                   name: name,
-                  phoneNum: phoneNum,
+                  email: email,
+                  phoneNum: phone,
                 },
                 {
                   headers: {
@@ -189,7 +221,8 @@ const Body = () => {
               );
 
               const data = response.data;
-              if (data.mtnId) {
+              console.log(data)
+              if (data?.userId) {
                 const header = response.headers;
                 const accessToken = header['sst-access-token']
                 const accessTokenExpireAt = header['sst-access-token-expire-at']
@@ -210,22 +243,21 @@ const Body = () => {
               } else {
                 setModalOpen(true);
                 setModalData({
-                    message: data?.errorMessage || ''
+                  message: data?.errorMessage || ''
                 });
               }
             } catch (error) {
               if (axios.isAxiosError(error)) {
                 if (error.response?.status === 405) {
                   console.error('잘못된 HTTP 메서드입니다');
-                  // alert('서버 오류가 발생했습니다. 관리자에게 문의해주세요.');
                   return;
                 }
               }
               setModalOpen(true);
               setModalData({
-                    message: "서버 오류가 발생했습니다. 관리자에게 문의해주세요."
-                });            
-              }
+                message: "서버 오류가 발생했습니다. 관리자에게 문의해주세요."
+              });            
+            }
           }}
         />
       </div>

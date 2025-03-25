@@ -9,6 +9,7 @@ import { basicTeacherGet } from '../manage/api/base'
 
 export const getMyInfo = async () => {
   const result = await basicUnpagedGet<UserDto>('/users/me')
+  console.log('result', result)
   return result
 }
 
@@ -158,9 +159,9 @@ export const loginByEmail = async (
   return data
 }
 
-export const canUseIdAndMessage = async (name: string) => {
+export const canUseIdAndMessage = async (email: string) => {
     try {
-  const response = await axios.get(BASE_URL + '/users/nickname/' + name)
+  const response = await axios.get(BASE_URL + '/users/nickname/' + email)
         return {
             status: response.data,
             message: ''

@@ -25,21 +25,28 @@ export default function ProfilePage() {
   const [passwordError, setPasswordError] = useState('')
 
   useEffect(() => {
-    const verified = sessionStorage.getItem('profile_verified');
-    if (verified) { 
-      setIsVerified(true);
-      setShowPasswordModal(false);
-      reload();
-    }
-  }, []);
+    const loadUserInfo = async () => {
+      try {
+        const userInfo = await getMyInfo()
+        console.log(userInfo)
+        if (userInfo) {
+          setMe(userInfo)
+          setNickname(userInfo.nickname || '')
+          setPhoneNumber(userInfo.phoneNum || '')
 
-  const reload = () => {
-    getMyInfo().then((res) => {
-      setMe(res)
-      setNickname(res.nickname)
-      setPhoneNumber(res.phoneNum)
-    })
-  }
+          
+        }
+      } catch (error) {
+        console.error('Failed to load user info:', error)
+        // 에러 처리 - 예: 로그인 페이지로 리다이렉트
+        router.push('/login')
+      }
+    }
+
+    setIsVerified(true)
+    setShowPasswordModal(false)
+    loadUserInfo() // 인증된 경우에만 사용자 정보 로드
+  }, [router])
 
   const handlePasswordChange = async () => {
     // 새 비밀번호 유효성 검사
@@ -71,21 +78,21 @@ export default function ProfilePage() {
     setPasswordError('')
   }
 
-  if (!isVerified) {
-    return (
-      <PasswordCheckModal
-        isOpen={showPasswordModal}
-        onClose={() => {
-          router.back()
-        }}
-        onVerified={() => {
-          setIsVerified(true)
-          setShowPasswordModal(false)
-          reload()
-        }}
-      />
-    )
-  }
+  // if (!isVerified) {
+  //   return (
+  //     <PasswordCheckModal
+  //       isOpen={showPasswordModal}
+  //       onClose={() => {
+  //         router.back()
+  //       }}
+  //       onVerified={() => {
+  //         setIsVerified(true)
+  //         setShowPasswordModal(false)
+  //         reload()
+  //       }}
+  //     />
+  //   )
+  // }
 
   return (
     <div className="flex flex-col gap-6">
