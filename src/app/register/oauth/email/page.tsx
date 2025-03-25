@@ -83,10 +83,10 @@ export default function Page() {
       <LogoAppbar />
       <div className="inline-flex flex-col gap-8 w-full p-5">
         <Input
-          name="아이디"
+          name="이메일"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="아이디를 입력해주세요"
+          placeholder="이메일을 입력해주세요"
           error={nameError}
         />
         <Input

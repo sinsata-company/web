@@ -9,7 +9,6 @@ import { basicTeacherGet } from '../manage/api/base'
 
 export const getMyInfo = async () => {
   const result = await basicUnpagedGet<UserDto>('/users/me')
-  console.log('result', result)
   return result
 }
 
