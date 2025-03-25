@@ -24,16 +24,13 @@ const getChosung = (str: string) => {
 };
 
 export default function AdvisorContainer({ path }: { path?: string }) {
-    const [isMounted, setIsMounted] = useState(false);
     const [advisorList, setAdvisorList] = useState<TeacherListDto[]>([])
     const [page, setPage] = useState<number>(0)
     const [sort, setSort] = useState<SearchType>(SearchType.NEW)
     const [hasMore, setHasMore] = useState(true)
-    const [isClient, setIsClient] = useState(false)
     const observer = useRef<IntersectionObserver | null>(null)
     const {searchTerm} = useSearch();
 
-    // Set isClient to true when component mounts on client
     useEffect(() => {
         setIsClient(true)
     }, [])
@@ -87,31 +84,26 @@ export default function AdvisorContainer({ path }: { path?: string }) {
             advisorName.includes(searchTerm); // 일반 텍스트 검색도 포함
     }) ?? [];
 
-    // Only access browser APIs when confirmed on client
     useEffect(() => {
-        if (isClient && 'scrollRestoration' in window?.history) {
+        if ('scrollRestoration' in window?.history) {
             window.history.scrollRestoration = 'manual' // 자동 스크롤 복원 비활성화
         }
-    }, [isClient])
+    }, [])
 
     // Ensure data fetching only happens on client
     useEffect(() => {
-        if (isClient) {
-            getTeachers(SearchType.NEW, page)
-        }
-    }, [page, sort, isClient])
+        getTeachers(SearchType.NEW, page)
+    }, [page, sort])
 
     return (
         <div>
             <div className="px-5">
                 <AdvisorSort 
                     getTeachers={async (sort, page) => {
-                        if (isClient) {
-                            setPage(0)
-                            setSort(sort)
-                            setAdvisorList([])
-                            await getTeachers(sort, page)
-                        }
+                        setPage(0)
+                        setSort(sort)
+                        setAdvisorList([])
+                        await getTeachers(sort, page)
                     }}
                     page={page}
                     path={path}
@@ -119,11 +111,11 @@ export default function AdvisorContainer({ path }: { path?: string }) {
             </div>
             <div className="h-6"></div>
             <div className="px-5 h-screen">
-                <AdvisorList
-                    advisorList={filteredAdvisorList}
-                    changeLiked={changeLiked}
-                    lastAdvisorElementRef={lastAdvisorElementRef}
-                />
+                    <AdvisorList
+                        advisorList={filteredAdvisorList}
+                        changeLiked={changeLiked}
+                        lastAdvisorElementRef={lastAdvisorElementRef}
+                    />
             </div>
         </div>
     )
