@@ -10,6 +10,16 @@ import ChatInform from './ChatInform'
 import { ChatDto, IMessage } from '@/app/api/data'
 import TeacherChat from './TeacherChat'
 
+const checkIsUser = async () => {
+  try {
+    getMyInfo();
+    return true;
+  } catch (err: unknown) {
+    console.error(err);
+    return false;
+  }
+}
+
 export default function PrivateChatScreen({
   messages,
   myId,
@@ -24,10 +34,15 @@ export default function PrivateChatScreen({
   isOutsideReservationTime?: boolean
 }) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [isUser, setIsUser] = useState(false)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  useEffect(() => {
+    checkIsUser().then(setIsUser);
+  }, []);
 
   useEffect(() => {
     scrollToBottom()
@@ -59,11 +74,12 @@ export default function PrivateChatScreen({
         } else {
           return (
             <MyChat
-              key={idx}
-              {...item}
-              user={user}
-              isContinued={idx > 0 && messages[idx - 1].authorId !== myId}
-            />
+            key={idx}
+            {...item}
+            user={user}
+            isContinued={idx > 0 && messages[idx - 1].authorId !== myId}
+          />
+
           );
         }
       })}

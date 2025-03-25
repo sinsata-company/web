@@ -21,7 +21,7 @@ export default function MyChat({
   const path = usePathname()
 
   return (
-    <div className="self-stretch flex justify-end items-end">
+    <div className="self-stretch flex justify-start items-end">
       <div className="flex flex-col justify-end items-end ">
         {!isTeacher && !isContinued && (
           <div className="flex items-center text-zinc-900 text-sm font-bold">
