@@ -1,4 +1,5 @@
 import { basicGet, basicPost } from "@/api/base"
+import { TeacherReviewDetails } from "@/types/review"
 import { UserDto } from "@/types/user"
 
 export interface TeacherListDto {
@@ -38,7 +39,7 @@ export interface TeacherDetailDto {
   noticeImgURI: string,
   qna: { question: string, answer: string }[];
   menu: string
-  reviews: any[]
+  reviews: TeacherReviewDetails[]
   pinNumber: string
   likedCnt: number | null;
   selfLiked: boolean;

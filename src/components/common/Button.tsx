@@ -65,10 +65,11 @@ const buttonStyle: Record<BUTTON_TYPE, buttonStyleType> = {
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: React.ReactNode
   leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
   buttonType: BUTTON_TYPE
 }
 
-export function Button({ className, buttonType, label, leftIcon, ...rest }: ButtonProps) {
+export function Button({ className, buttonType, label, leftIcon, rightIcon, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
@@ -86,6 +87,7 @@ export function Button({ className, buttonType, label, leftIcon, ...rest }: Butt
       >
         {leftIcon}
         {label}
+        {rightIcon}
       </div>
     </button>
   )
