@@ -75,8 +75,8 @@ export function Button({ className, buttonType, label, leftIcon, rightIcon, ...r
       {...rest}
       className={clsx(
         'w-full flex-col justify-center items-center gap-1 inline-flex cursor-pointer ',
-        className,
-        buttonStyle[buttonType].background
+        buttonStyle[buttonType].background,
+        className
       )}
     >
       <div

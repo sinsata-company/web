@@ -41,6 +41,13 @@ export type ReviewCompletion = {
 // 날짜 관련 타입 (Java의 LocalDateTime에 해당)
 type LocalDateTime = string; // ISO 형식의 날짜 문자열로 표현
 
+interface ReviewCommentDto {
+  id: number;
+  teacherId: string;
+  teacherName: string;
+  content: string;
+  createdDateTime: string; // ISO 형식의 날짜 문자열
+}
 // 리뷰 DTO 인터페이스
 export interface TeacherReviewDetails {
   id: number;
@@ -53,4 +60,6 @@ export interface TeacherReviewDetails {
   timeRange: string;
   likeCount: number;
   date: LocalDateTime;
+	comments: ReviewCommentDto[];
+	latestComment?: ReviewCommentDto;
 }
