@@ -6,8 +6,6 @@ import AdvisorSort from './AdvisorSort'
 import {TeacherListDto} from '@/app/api/data'
 import {getTeacherList, SearchType} from '@/app/api/teacher'
 import {useSearch} from '@/components/common/SearchContext'
-import {getMyInfo} from "@/app/api/user";
-import {UserDto} from "@/types/user";
 import { safeMap } from '@/utils/safeMap'
 
 // 초성 추출 함수
@@ -30,10 +28,6 @@ export default function AdvisorContainer({ path }: { path?: string }) {
     const [hasMore, setHasMore] = useState(true)
     const observer = useRef<IntersectionObserver | null>(null)
     const {searchTerm} = useSearch();
-
-    useEffect(() => {
-        setIsClient(true)
-    }, [])
 
     const changeLiked = (id: string) => {
         console.log('id', id);

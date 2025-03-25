@@ -19,10 +19,8 @@ export default function AdvisorList({
 }: AdvisorListProps) {
   const { searchTerm } = useSearch()
 
-  // Ensure advisorList is always an array before filtering
   const safeAdvisorList = Array.isArray(advisorList) ? advisorList : [];
   
-  // Safely filter the array
   const filteredAdvisors = safeAdvisorList.filter((advisor) => 
     advisor && advisor.name && typeof advisor.name === 'string' 
       ? advisor.name.toLowerCase().includes((searchTerm || '').toLowerCase())
@@ -38,7 +36,6 @@ export default function AdvisorList({
       ) : (
         <div className="grid gap-4">
           {filteredAdvisors.map((advisor, index) => {
-            // Ensure each advisor has an id, using index as fallback
             const key = advisor?.id || `advisor-${index}`;
             
             return (
