@@ -65,17 +65,18 @@ const buttonStyle: Record<BUTTON_TYPE, buttonStyleType> = {
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: React.ReactNode
   leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
   buttonType: BUTTON_TYPE
 }
 
-export function Button({ className, buttonType, label, leftIcon, ...rest }: ButtonProps) {
+export function Button({ className, buttonType, label, leftIcon, rightIcon, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
       className={clsx(
         'w-full flex-col justify-center items-center gap-1 inline-flex cursor-pointer ',
-        className,
-        buttonStyle[buttonType].background
+        buttonStyle[buttonType].background,
+        className
       )}
     >
       <div
@@ -86,6 +87,7 @@ export function Button({ className, buttonType, label, leftIcon, ...rest }: Butt
       >
         {leftIcon}
         {label}
+        {rightIcon}
       </div>
     </button>
   )
