@@ -1,27 +1,21 @@
 'use client'
+
 import { useEffect } from 'react'
 
 export default function GlobalError({
   error,
   reset,
 }: {
-  error: Error
+  error: Error & { digest?: string }
   reset: () => void
 }) {
   useEffect(() => {
     // 오류 로깅
     console.error('Global error occurred:', error)
-    
-    // // 3초 후에 페이지 리로드 시도
-    // // const timer = setTimeout(() => {
-    //   // window.location.href = '/home'
-    // }, 3000)
-    
-    // return () => clearTimeout(timer)
   }, [error])
 
   return (
-    <html>
+    <html lang="ko">
       <body>
         <div style={{ 
           padding: '20px', 

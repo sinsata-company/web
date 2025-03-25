@@ -2,10 +2,11 @@
 
 import { useRouter } from "next/navigation"
 import Image from 'next/image'
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ReviewCard from "@/components/reviews/review-card";
+import ReviewCompletionCard from "@/components/reviews/review-completion-card";
 import { useQuery } from "@tanstack/react-query";
-import { Reviewable } from "@/types/review";
+import { Reviewable, ReviewCompletion } from "@/types/review";
 import { basicGet } from "@/api/base";
 import { useState } from "react";
 import BTB from '@/components/common/Btb'
@@ -23,10 +24,17 @@ export default function Page() {
     queryKey: ['reviewable-list'],
     queryFn: getReviewables,
   });
+  const { data: reviews = [] } = useQuery({
+    queryKey: ['review-list'],
+    queryFn: () => basicGet("/reviews") as unknown as Promise<ReviewCompletion[]>,
+  });
+
+  console.log({ reviews });
+
   const [tab, setTab] = useState(TabType.WRITABLE);
 
   const writableCount = reviewables.length;
-  const completionCount = 0;
+  const completionCount = reviews.length;
 
   const onClickBack = () => router.push('/my');
 
@@ -45,24 +53,48 @@ export default function Page() {
             <TabsTrigger value={TabType.WRITABLE} className="flex-[0.5]">
               작성 가능 후기
               <span className="!text-xs pl-1">({writableCount})</span>
-              </TabsTrigger>
+            </TabsTrigger>
             <TabsTrigger value={TabType.COMPLETED} className="flex-[0.5]">
               작성 완료 후기
               <span className="!text-xs pl-1">({completionCount})</span>
-              </TabsTrigger>
+            </TabsTrigger>
           </TabsList>
+          
+          <TabsContent value={TabType.WRITABLE}>
+            <section className="w-full flex flex-col gap-y-3 p-4">
+              {reviewables.map((reviewable) => (
+                <ReviewCard
+                  key={reviewable.reservationId}
+                  {...reviewable}
+                />
+              ))}
+              {reviewables.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  작성 가능한 후기가 없습니다.
+                </div>
+              )}
+            </section>
+          </TabsContent>
+          
+          <TabsContent value={TabType.COMPLETED}>
+            <section className="w-full flex flex-col gap-y-3 p-4">
+              {reviews.map((review) => (
+                <ReviewCompletionCard
+                  key={review.id}
+                  {...review}
+                />
+              ))}
+              {reviews.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  작성한 후기가 없습니다.
+                </div>
+              )}
+            </section>
+          </TabsContent>
         </Tabs>
       </section>
 
       <article className="flex flex-1">
-      <section className="w-full flex flex-col gap-y-3">
-        {reviewables.map((reviewable) => (
-          <ReviewCard
-            key={reviewable.reservationId}
-            {...reviewable}
-          />
-        ))}
-      </section>
       </article>
       <BTB/>
     </div>

@@ -64,10 +64,11 @@ const buttonStyle: Record<BUTTON_TYPE, buttonStyleType> = {
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: React.ReactNode
+  leftIcon?: React.ReactNode
   buttonType: BUTTON_TYPE
 }
 
-export function Button({ className, buttonType, label, ...rest }: ButtonProps) {
+export function Button({ className, buttonType, label, leftIcon, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
@@ -79,10 +80,11 @@ export function Button({ className, buttonType, label, ...rest }: ButtonProps) {
     >
       <div
         className={clsx(
-          'text-base font-bold  leading-tight',
+          'text-base font-bold  leading-tight flex gap-x-2 items-center',
           buttonStyle[buttonType].text
         )}
       >
+        {leftIcon}
         {label}
       </div>
     </button>

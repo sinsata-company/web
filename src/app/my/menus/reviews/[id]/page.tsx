@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { useQuery } from "@tanstack/react-query";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { basicGet } from "@/api/base";
+import { axiosClient, basicGet, basicPost } from "@/api/base";
 import { Reviewable } from "@/types/review";
 import moment from "moment";
 import NumberedCircle from '@/components/ui/numbered-circle';
@@ -14,11 +14,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Button, BUTTON_TYPE } from "@/components/common/Button";
 import useUserMenuStore from '@/components/user-menu/user-menu.store';
+import { Image as ImageIcon, X } from "lucide-react";
+import { queryClient } from '@/lib/query/queryClient';
 
 
 const Page = () => {
   const { setHideAppBar } = useUserMenuStore();
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Form state
   const [rating, setRating] = useState<number>(0);
@@ -27,6 +30,8 @@ const Page = () => {
   const [content, setContent] = useState<string>("");
   const [agreeToPolicy, setAgreeToPolicy] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  console.log({ imageFile });
     
   const reviewableId = usePathname().split('/').pop() as string;
   const { data: reviewable = null } = useQuery({
@@ -43,6 +48,28 @@ const Page = () => {
   }, [setHideAppBar]);
 
   const onClickBack = () => router.push('/my/menus/reviews');
+  
+  const handleImageUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleFileChange()')
+    const files = event.target.files;
+    console.log(event.target.files);
+    if (files && files.length > 0) {
+      setImageFile(files[0]);
+    }
+  };
+  
+  const removeImage = () => {
+    setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
   
   const handleSubmit = async () => {
     if (!agreeToPolicy) {
@@ -72,9 +99,23 @@ const Page = () => {
     
     try {
       setIsSubmitting(true);
-      // Here you would submit the review data to your API
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const formData = new FormData();
+      formData.append('image', imageFile as File);
+      formData.append('rating', rating.toString());
+      formData.append('category', category);
+      formData.append('style', style);
+      formData.append('reservationId', String(reviewable?.reservationId));
+      formData.append('content', content);
+
+      await axiosClient.post('/reviews', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['reviewable-list', 'review-list'],
+      });
       alert("후기가 성공적으로 등록되었습니다.");
       router.push('/my/menus/reviews');
     } catch (error) {
@@ -115,7 +156,7 @@ const Page = () => {
       </section>
 
 
-      <form className="my-12 flex flex-col flex-1 px-4 gap-y-8">
+      <div className="my-12 flex flex-col flex-1 px-4 gap-y-8">
         <section className="flex flex-col">
             <div className="flex gap-x-2 items-center">
                 <NumberedCircle number={1} size="sm" />
@@ -187,10 +228,34 @@ const Page = () => {
                 <span>이미지를 올려주세요.</span>
             </div>
             <div className="mt-3" />
-            <Button label="사진 등록하기" buttonType={BUTTON_TYPE.ghost} className="h-[48px] w-full" />
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <Button 
+              leftIcon={<ImageIcon size={18} />}
+              label="사진 등록하기"
+              buttonType={BUTTON_TYPE.ghost}
+              className="h-[48px] w-full"
+              onClick={handleImageUpload}
+            />
+            {imageFile && (
+              <div className="mt-2 flex items-center justify-between bg-gray-50 p-2 rounded-md">
+                <span className="text-sm truncate max-w-[80%]">{imageFile.name}</span>
+                <button 
+                  type="button" 
+                  onClick={removeImage}
+                  className="text-gray-500 hover:text-red-500"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            )}
         </section>
 
-        {/* Privacy and guidelines agreement */}
         <section className="flex flex-col mt-4 bg-gray-50 p-4 rounded-md">
           <div className="flex items-start gap-x-2">
             <input 
@@ -221,9 +286,9 @@ const Page = () => {
             </ul>
           </div>
         </section>
-      </form>
+      </div>
 
-        <footer className="h-[128px] w-full border-t-2 border-t-slate-200 sticky flex gap-x-4 pt-3 px-4 bottom-0 bg-white">
+        <footer className="h-[128px] bottom-[30px] w-full border-t-2 border-t-slate-200 sticky flex gap-x-4 pt-3 px-4 bg-white">
             <Button label="취소" buttonType={BUTTON_TYPE.abse} onClick={onClickBack} className="h-[48px] flex-[0.2]" />
             <Button
               label={isSubmitting ? "제출 중..." : "등록하기"} 
