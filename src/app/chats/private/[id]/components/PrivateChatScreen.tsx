@@ -77,6 +77,7 @@ export default function PrivateChatScreen({
             key={idx}
             {...item}
             user={user}
+            chat={chat}
             isContinued={idx > 0 && messages[idx - 1].authorId !== myId}
           />
 
