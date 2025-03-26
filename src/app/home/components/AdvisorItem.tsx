@@ -18,13 +18,35 @@ type Menu = {
   minute: number;
   price: number;
   method?: string;
+  unit: 'minute' | 'second';
 }
+
+export const createMenu = (data: [string, string][]): Menu[] => {
+    const [first, ...rest] = data;
+    const firstObj: Menu = {
+        id: 0,
+        type: 'call' as const,
+        minute: Number(first[0]),
+        method: 'cash',
+        unit: 'minute' as const,
+        price: Number(first[1]),
+    };
+
+    return [firstObj, ...rest.map(([minute, price], idx) => ({
+        id: idx + 1,
+        type: 'call' as const,
+        minute: Number(minute),
+        method: 'cash',
+        unit: 'minute' as const,
+        price: Number(price),
+    }))];
+};
 
 export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
     function AdvisorItem(advisor, ref) {
         const router = useRouter()
         const pathname = usePathname()
-        const [menuObj, setMenuObj] = useState<any[]>([]);
+        const [menuObj, setMenuObj] = useState<Menu[]>([]);
 
         const [newSelfLiked, setSelfLiked] = useState<boolean>(advisor?.selfLiked);
         const isAbse = advisor?.status === 'ABSE';
@@ -64,11 +86,11 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
 
         useEffect(() => {
             if (!!advisor?.menu && advisor?.menu !== '' && advisor?.menu.trim().length > 0) {
-                try {
+                const data = JSON.parse(advisor?.menu);
+                if (data.every((i: [string, string]) => Array.isArray(i) && i.length === 2)) {
+                    setMenuObj(createMenu(data));
+                } else {
                     setMenuObj(JSON.parse(advisor?.menu));
-                } catch (error) {
-                    console.error("Error parsing menu:", error);
-                    setMenuObj([]);
                 }
             } else {
                 setMenuObj([]);
