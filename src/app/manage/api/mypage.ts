@@ -27,7 +27,7 @@ export const updatePrepay = async (prepay: Prepay) => {
 }
 
 export const updateMenu = async (menu: string) => {
-  const result = await basicTeacherPost('/manage/my/menu', {
+  return await basicTeacherPost('/manage/my/menu', {
     menus: menu,
   })
 }

@@ -120,6 +120,7 @@ export default function Page() {
             client.current?.subscribe(
                 `/sub/channel/${roomId}`,
                 (received_message: StompJs.IFrame) => {
+                    readPrivateChat();
                     const body = JSON.parse(received_message.body)
                     const ignore = (() => {
                         if (body?.metadata?.includes('채팅이 아직 수락되지 않았습니다.')) return true;
@@ -190,6 +191,10 @@ export default function Page() {
             client.current.activate()
         }
         connect()
+
+        return () => {
+            disconnect();
+        }
     }, [])
 
     // 해야될 것. 채팅 시작되지 않았을 때, 채팅 종료되었을 때 타이핑 막기 & 안내 문구 띄우기

@@ -31,6 +31,7 @@ export default function BtbAdvisorHome() {
     useWebSocket({
         channelUrl: `/sub/notification/${user?.userId}`,
         onMessage: (message) => {
+            console.log({ teacherNotification: message });
             refetchCount();
             queryClient.invalidateQueries({
                 queryKey: ['reserveByDate'],
