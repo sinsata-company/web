@@ -64,13 +64,7 @@ export default function Page() {
             </TabsTrigger>
           </TabsList>
           
-          <article className="flex flex-1">
-        <section className="w-full flex justify-center">
-          <span>
-            상담후기에 답글을 등록하면 고객 만족도가 더욱 높아집니다.
-          </span>
-        </section>
-      </article>
+  
           <TabsContent value={TabType.WRITABLE}>
             <section className="w-full flex flex-col gap-y-3 p-4">
               {reviewables.map((reviewable) => (
