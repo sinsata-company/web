@@ -61,6 +61,8 @@ const faqs: Array<SiteFaqText> = [
 export default function Page() {
     const [qna, setQna] = useState<Array<SiteFaqText>>([])
     const [openIndex, setOpenIndex] = useState<number | null>(null)
+    const [showCompanyInfo, setShowCompanyInfo] = useState(false)
+
     const toggleFAQ = (index: number) => {
         setOpenIndex(openIndex === index ? null : index)
     }
@@ -81,37 +83,82 @@ export default function Page() {
     }, []);
 
     return (
-        <div className="flex flex-col gap-4">
-            {qna.map((faq, index) => (
-                <div
-                    key={index}
-                    className="self-stretch p-4 bg-neutral-50 rounded-xl flex-col justify-start items-start gap-3 flex cursor-pointer"
-                    onClick={() => toggleFAQ(index)}
-                >
-                    <div className="self-stretch justify-between items-center inline-flex">
-                        <div className="text-zinc-900 text-base font-bold  leading-snug">
-                            {index + 1}{">"} {faq.question}
+        <div className="flex flex-col">
+            {/* 헤더 섹션 */}
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-xl font-bold">고객센터</h1>
+            </div>
+
+            {/* FAQ 리스트 */}
+            <div className="flex flex-col gap-4 mb-8">
+                {qna.map((faq, index) => (
+                    <div
+                        key={index}
+                        className="self-stretch p-4 bg-neutral-50 rounded-xl flex-col justify-start items-start gap-3 flex cursor-pointer"
+                        onClick={() => toggleFAQ(index)}
+                    >
+                        <div className="self-stretch justify-between items-center inline-flex">
+                            <div className="text-zinc-900 text-base font-bold leading-snug">
+                                {faq.question}
+                            </div>
+                            <div className="w-4 h-4 flex-col justify-center items-center gap-2.5 inline-flex">
+                                <img
+                                    src="/images/ic_arrow_up.svg"
+                                    alt="arrow"
+                                    className={`transition-transform duration-300 ease-in-out ${
+                                        openIndex === index ? 'rotate-180' : ''
+                                    }`}
+                                />
+                            </div>
                         </div>
-                        <div className="w-4 h-4 flex-col justify-center items-center gap-2.5 inline-flex">
-                            <img
-                                src="/images/ic_arrow_up.svg"
-                                alt="arrow"
-                                className={`transition-transform duration-300 ease-in-out ${
-                                    openIndex === index ? 'rotate-180' : ''
-                                }`}
-                            />
+                        <div
+                            className={`self-stretch text-neutral-500 text-base font-normal leading-snug transition-max-height duration-300 ease-in-out overflow-hidden ${
+                                openIndex === index ? 'max-h-[800px]' : 'max-h-0'
+                            }`}
+                            dangerouslySetInnerHTML={{
+                                __html: faq.answer.replace(/\n/g, '<br />'),
+                            }}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            {/* 하단 사업자정보 섹션 */}
+            <div className="mt-auto">
+                <button
+                    onClick={() => setShowCompanyInfo(!showCompanyInfo)}
+                    className="w-full flex justify-end items-center py-3 text-sm text-gray-600 border-t border-gray-200"
+                >
+                    <span className="mr-2">사업자정보</span>
+                    <img
+                        src="/images/ic_arrow_up.svg"
+                        alt="toggle"
+                        className={`w-3 h-3 transition-transform duration-300 ${
+                            showCompanyInfo ? 'rotate-180' : ''
+                        }`}
+                    />
+                </button>
+
+                <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                        showCompanyInfo ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                >
+                    <div className="py-4 text-sm text-gray-600 leading-relaxed space-y-1">
+                        <p>상호명: 신사타컴퍼니</p>
+                        <p>개인정보관리자: 박상현</p>
+                        <p>사업자등록번호: 781-37-01346</p>
+                        <p>주소: 충청북도 청주시 청원구 대성로 298</p>
+                        <p>고객문의: shinsata1650@gmail.com</p>
+                        
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                            <p className="text-xs text-gray-500">
+                                Copyright © SHINSATA. ALL RIGHTS RESERVED.
+                            </p>
                         </div>
                     </div>
-                    <div
-                        className={`self-stretch text-neutral-500 text-base font-normal  leading-snug transition-max-height duration-300 ease-in-out overflow-hidden ${
-                            openIndex === index ? 'max-h-[800px]' : 'max-h-0'
-                        }`}
-                        dangerouslySetInnerHTML={{
-                            __html: faq.answer.replace(/\n/g, '<br />'),
-                        }}
-                    />
                 </div>
-            ))}
+            </div>
         </div>
     )
 }
