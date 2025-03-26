@@ -28,17 +28,17 @@ export interface MenuItemProps {
   minute: number;
   method: 'direct' | 'cash';
   price: number;
-  unit?: 'minute' | 'second'; // 추가!
+  unit: 'minute' | 'second'; // 추가!
 }
 
 
 const initialMenu: MenuItemProps[] = [
-  { id: 1, type: 'chat',  minute: 15, method: 'cash',   price: 25000 },
-  { id: 2, type: 'chat',  minute: 30, method: 'cash',   price: 40000 },
-  { id: 3, type: 'chat',  minute: 60, method: 'cash',   price: 90000 },
-  { id: 4, type: 'phone', minute: 15, method: 'cash',   price: 25000 },
-  { id: 5, type: 'phone', minute: 30, method: 'cash',   price: 40000 },
-  { id: 6, type: 'phone', minute: 60, method: 'cash',   price: 90000 },
+  { id: 1, type: 'chat',  minute: 15, method: 'cash',   price: 25000, unit: 'second' },
+  { id: 2, type: 'chat',  minute: 30, method: 'cash',   price: 40000, unit: 'second' },
+  { id: 3, type: 'chat',  minute: 60, method: 'cash',   price: 90000, unit: 'second' },
+  { id: 4, type: 'phone', minute: 15, method: 'cash',   price: 25000, unit: 'minute' },
+  { id: 5, type: 'phone', minute: 30, method: 'cash',   price: 40000, unit: 'minute' },
+  { id: 6, type: 'phone', minute: 60, method: 'cash',   price: 90000, unit: 'minute' },
 ]
 
 export default function TimeTabs() {
