@@ -27,13 +27,13 @@ const MenuOptions = ({ onEditClick }: MenuOptionsProps) => {
     {
       label: '결제내역',
       onClick: () => {
-        router.push('/my/menus/billing')
+        router.push('/my/menus/reserves')
       },
     },
     {
       label: '상담내역',
       onClick: () => {
-        router.push('/my/menus/reserves')
+        router.push('/my/menus/billing')
       },
     },
     {
