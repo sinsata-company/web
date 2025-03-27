@@ -9,6 +9,8 @@ import { Button, BUTTON_TYPE } from '@/components/common/Button'
 import { startInstantChat } from '@/app/api/chat'
 import { SearchProvider } from '@/components/common/SearchContext'
 import { AdvisorItem } from './AdvisorItem'
+import { getTeacherDetail } from '@/app/api/teacher'
+import { getMenuPrepay, getMenuPrepayByTeacherId } from '@/app/manage/api/mypage'
 
 export default function AdvisorList({
     advisorList,
@@ -24,6 +26,11 @@ export default function AdvisorList({
     const router = useRouter()
     const pathname = usePathname()
     const isNavigating = useRef(false);
+    const [detailInfo, setDetailInfo] = useState<any>(null);
+    const [prepayInfo, setPrepayInfo] = useState<{ chatPrepay: number; callPrePay: number }>({ 
+        chatPrepay: 0, 
+        callPrePay: 0 
+    });
 
     useEffect(() => {
         // 메인 페이지에서만 스크롤 위치 복원
@@ -40,8 +47,38 @@ export default function AdvisorList({
         }
     }, [pathname])
 
-    const onClickPhone = (advisor: TeacherListDto) => {
+    useEffect(() => {
+        const fetchTeacherDetail = async () => {
+            try {
+                const response = await getTeacherDetail(advisor?.id || '');
+                if (response?.menu) {
+                    setDetailInfo(response);
+                }
+            } catch (error) {
+                console.error('선생님 상세 정보 로딩 실패:', error);
+            }
+        };
+
+        fetchTeacherDetail();
+    }, [advisor?.id]);
+
+    const onClickPhone = async (advisor: TeacherListDto) => {
         setAdvisor(advisor)
+        
+        try {
+            // 선생님별 가격 정보 조회
+            const response = await getMenuPrepayByTeacherId(advisor.id);
+            if (response) {
+                setPrepayInfo({
+                    chatPrepay: Number(response?.chatPrepay) || 0,
+                    callPrePay: Number(response?.callPrePay) || 0
+                });
+            }
+        } catch (error) {
+            console.error('Failed to fetch prepay info:', error);
+            // 에러 발생시 기본값 유지
+        }
+        
         setIsPhoneModalOpen(true)
     }
 
@@ -132,7 +169,7 @@ export default function AdvisorList({
                                         <p className="text-sm">전화 상담(선불)</p>
                                     </div>
                                     <p className="text-neutral-500 text-xs">
-                                        30초 당 1,400원
+                                        30초 당 {prepayInfo?.callPrePay}
                                     </p>
                                 </div>
                                 <div className="flex justify-center">
@@ -190,7 +227,7 @@ export default function AdvisorList({
                                         <p className="text-sm">채팅 상담(잔액차감)</p>
                                     </div>
                                     <p className="text-neutral-500 text-xs">
-                                        30초 당 1,400원
+                                        {prepayInfo?.chatPrepay > 0 ? `30초 당 ${prepayInfo?.chatPrepay}원` : '가격 정보 로딩 중...'}
                                     </p>
                                 </div>
                                 <div className="flex justify-center">

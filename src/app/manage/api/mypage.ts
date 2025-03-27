@@ -16,6 +16,11 @@ export const getMenuPrepay = async () => {
   return result
 }
 
+export const getMenuPrepayByTeacherId = async (teacherId: string) => {
+  const result = await basicTeacherGet<string>(`/manage/my/menu/fix/${teacherId}`)
+  return result
+}
+
 export interface Prepay {
   chatPrepay: number
   callPrePay: number

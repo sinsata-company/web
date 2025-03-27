@@ -20,9 +20,19 @@ import { UnavailableTime } from '@/app/api/data'
 import TimeSelect from './components/TimeSelect'
 import Agreement from './components/Agreement'
 import { useQuery } from '@tanstack/react-query'
+import { TeacherDetailDto } from '@/app/api/data' 
+import ReserveHourSelector from './components/ReserveHourSelector'
+
+interface Menu {
+  id: number;
+  type: 'chat' | 'phone';
+  minute: number;
+  method: string;
+  price: number;
+}
 
 export default function TeacherReservePage() {
-  const router = useRouter()
+  const router = useRouter()  
   const params = useParams()
   const teacherId = params.id as string
   const { data: teacher } = useQuery({
@@ -35,17 +45,53 @@ export default function TeacherReservePage() {
 
   const [selectedDate, setSelectedDate] = useState<Moment | null>(null)
   const [selectedTime, setSelectedTime] = useState<string>('')
-  const [selectedHour, setSelectedHour] = useState<number>(15)
+  const [selectedHour, setSelectedHour] = useState<number>(0)
+  const [coinAmount, setCoinAmount] = useState<number>(0)
   const [myCash, setMyCash] = useState<number>(0)
   const [type, setType] = useState<string>('')
   const [reserveComplete, setReserveComplete] = useState<boolean>(false)
   const [unavailableTimes, setUnavailableTimes] = useState<UnavailableTime[]>([])
   const [now, setNow] = useState<Moment>(moment())
   const [agreementChecked, setAgreementChecked] = useState<boolean>(false)
+  const [teacherDetail, setTeacherDetail] = useState<TeacherDetailDto | null>(null)
 
   useEffect(() => {
     getMyCash().then(setMyCash)
   }, [])
+
+  useEffect(() => {
+    const fetchTeacherDetail = async () => {
+      try {
+        const response = await getTeacherDetail(teacherId);
+        if (response) {
+          setTeacherDetail(response);
+          if (response.menu) {
+            const menuArray = JSON.parse(response.menu);
+            
+            if (type) {
+              const apiType = type === '전화' ? 'phone' : 'chat';
+              const typeMenus = menuArray.filter((menu: Menu) => {
+                return menu.type === apiType;
+              });
+              
+              
+              if (typeMenus.length > 0) {
+                const firstMenu = typeMenus[0];
+                setSelectedHour(firstMenu.minute);
+                setCoinAmount(firstMenu.price);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('선생님 정보 로딩 실패:', error);
+      }
+    };
+
+    if (teacherId) {
+      fetchTeacherDetail();
+    }
+  }, [teacherId, type]);
 
   const onDateSelect = async (date: Moment) => {
     setSelectedDate(date)
@@ -53,7 +99,6 @@ export default function TeacherReservePage() {
     
     try {
       const times = await getUnavailableTimesForUser(teacherId, date.format('YYYY-MM-DD'))
-      console.log('times : ' + times);
       setUnavailableTimes(times)
     } catch (error) {
       console.error('Error fetching unavailable times:', error)
@@ -79,9 +124,20 @@ export default function TeacherReservePage() {
       return
     }
 
-    if (!selectedDate || !selectedTime) return
+    if (!selectedDate || !selectedTime || !teacherDetail) return
 
-    const payamt = selectedHour === 15 ? 25000 : selectedHour === 30 ? 40000 : 90000
+    const menus = JSON.parse(teacherDetail.menu);
+    const selectedMenu = menus.find((menu: Menu) => 
+      menu.type === (type === '전화' ? 'phone' : 'chat') && 
+      menu.minute === selectedHour
+    );
+
+    if (!selectedMenu) {
+      alert('선택된 메뉴를 찾을 수 없습니다.');
+      return;
+    }
+
+    const payamt = selectedMenu.price;
     if (payamt > myCash) {
       router.push('/my/cash')
       return
@@ -92,13 +148,13 @@ export default function TeacherReservePage() {
         reserveDate: selectedDate.format('YYYY-MM-DD'),
         reserveTime: `${selectedDate.format('YYYY-MM-DD')} ${selectedTime}:00`,
         reserveMinutes: selectedHour,
-        reserveType: type === '전화' ? 'CALL' : 'CHAT',
+        reserveType: type === '전화' ? 'phone' : 'chat',
       }, teacherId)
       
       setReserveComplete(true)
     } catch (error: unknown) {
       console.error('Error making reservation:', error)
-      alert(error.message);
+      alert(error instanceof Error ? error.message : '예약 실패');
     }
   }
 
@@ -158,10 +214,15 @@ export default function TeacherReservePage() {
       </div>
 
       <GreyDivider />
-      <RserveHourSelector
-        selectedHour={selectedHour}
-        setSelectedHour={setSelectedHour}
-      />
+      {teacherDetail && (
+        <ReserveHourSelector  
+          selectedHour={selectedHour}
+          setSelectedHour={setSelectedHour}
+          onCoinAmountChange={setCoinAmount}
+          menus={JSON.parse(teacherDetail?.menu || '[]')}
+          selectedType={type}
+        />
+      )}
       <GreyDivider />
       <ReserveTypeSelector selectedType={type} setSelectedType={setType} chatable={chatable} />
       {!chatable && (
@@ -174,6 +235,8 @@ export default function TeacherReservePage() {
         selectedHour={selectedHour}
         myCash={myCash}
         selectedTime={selectedTime}
+        menus={JSON.parse(teacherDetail?.menu || '[]')}
+        selectedType={type}   
       />
       <GreyDivider />
       <Agreement 
@@ -213,6 +276,10 @@ export default function TeacherReservePage() {
           />
         </div>
       </Modal>
+      {/* 가격을 표시하는 부분 */}
+      <div className="text-zinc-900 text-base font-bold">
+        {(coinAmount || 0).toLocaleString()} 코인
+      </div>
     </div>
   )
 }

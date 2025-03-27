@@ -64,7 +64,6 @@ export const getTeachersByCategory = async (
 export const getTeacherDetail = async (teacherId: String) => {
   const response = await basicGet(`/teachers/${teacherId}`)
   const data = response as TeacherDetailDto
-  console.log(data?.images)
   return data
 }
 
