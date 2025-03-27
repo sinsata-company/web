@@ -8,18 +8,32 @@ import { InfoItem } from '../../hashtag/page'
 import { GreyDivider } from '@/components/common/Divider'
 import Modal from '@/components/common/Modal'
 import Input from '@/components/common/Input'
-import {
-  getMenu,
-  updateMenu,
-} from '@/app/manage/api/mypage'
-
+import { getMenu,updateMenu,updatePrepay, getMenuPrepay} from '@/app/manage/api/mypage'  
 // 임시 스텁
-const getMenuPrepay = async () => {
-  return Promise.resolve({ chatPrepay: 1400, callPrePay: 1000 })
+const getMenuPrepays = async (): Promise<{ chatPrepay: number; callPrePay: number }> => {
+  try {
+    const response = await getMenuPrepay();
+    console.log('response', response)
+    // API 응답이 문자열로 온다면 JSON으로 파싱
+    const prepayData = typeof response === 'string' ? JSON.parse(response) : response;
+    
+    return {
+      chatPrepay: Number(prepayData.chatPrepay) || 0,
+      callPrePay: Number(prepayData.callPrePay) || 0
+    };
+  } catch (error) {
+    console.error('Failed to fetch prepay menu:', error);
+    return { chatPrepay: 0, callPrePay: 0 };
+  }
 }
-const updatePrepay = async (data: { chatPrepay: number; callPrePay: number }) => {
-  console.log('updatePrepay called with', data)
-  return Promise.resolve(data)
+const updatePrepayMenu = async (data: { chatPrepay: number; callPrePay: number }) => {
+  try {
+    const result = await updatePrepay(data);  // API 함수 호출
+    return result;
+  } catch (error) {
+    console.error('Failed to update prepay menu:', error);
+    throw error;  // 에러를 상위로 전파하여 UI에서 처리할 수 있도록 함
+  }
 }
 
 export interface MenuItemProps {
@@ -79,7 +93,7 @@ export default function TimeTabs() {
         setMenu(res)
       }
     })
-    getMenuPrepay().then((res) => {
+    getMenuPrepays().then((res) => {
       if (res.chatPrepay && res.callPrePay) {
         setPrepay({
           chat: res.chatPrepay,
@@ -192,9 +206,18 @@ export default function TimeTabs() {
           type="number"
           value={selectedMenu?.minute.toString() ?? ''}
           onChange={(e) => {
-            setSelectedMenu((prev) =>
-              prev ? { ...prev, minute: Number(e.target.value) || 0 } : null
-            )
+            setSelectedMenu((prev) => {
+              if (!prev) return null;
+              
+              // 입력값을 숫자로 변환
+              let newMinute = Number(e.target.value) || 0;
+              
+              // 10분에서 60분 사이로 제한
+              if (newMinute < 10) newMinute = 10;
+              if (newMinute > 60) newMinute = 60;
+              
+              return { ...prev, minute: newMinute };
+            })
           }}
           name="단위 시간(분)"
         />
@@ -258,7 +281,7 @@ export default function TimeTabs() {
             buttonType={BUTTON_TYPE.primary}
             label="수정하기"
             onClick={() => {
-              updatePrepay({
+              updatePrepayMenu({
                 chatPrepay: prepay.chat,
                 callPrePay: prepay.phone,
               })
