@@ -7,10 +7,11 @@ import { useRouter } from 'next/navigation'
 
 const ReserveSummary = ({ detail }: { detail: TeacherReserveHistoryDto | undefined }) => {
   moment.locale('ko')
-  const isReservActivation = detail?.status === 'ACTIVE';
   const router = useRouter();
-
-  const onCancelReservation = async () => {
+  const endTime = detail?.consultationEndTime ? moment(detail?.consultationEndTime).format('a hh시 mm분') : null;
+  const isReservActivation = detail?.status === 'ACTIVE' && endTime !== null;
+  
+  const onCancelReservation = async () => { 
     try {
       await basicTeacherDelete(`/reserve/teacher/${detail?.reservationId}`);
       alert("예약을 취소하였습니다.");
@@ -32,8 +33,8 @@ const ReserveSummary = ({ detail }: { detail: TeacherReserveHistoryDto | undefin
           <div className="text-zinc-900 text-xl font-bold ">
             {moment(detail?.consultationStartTime).format('YYYY년 MM월 DD일')}
             <br />
-            {moment(detail?.consultationStartTime).format('a hh시 mm분')} -{' '}
-            {moment(detail?.consultationEndTime).format('a hh시 mm분')}
+            {moment(detail?.consultationStartTime).format('a hh시 mm분')}
+            {endTime && ` - ${endTime}`}
           </div>
         </div>
 
