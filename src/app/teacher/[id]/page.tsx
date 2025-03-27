@@ -5,19 +5,18 @@ import ImageCarousel from './components/ImageCarousel'
 import TeacherSummary from './components/TeacherSummary'
 import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import TeacherAdvance from './components/TeacherAdvance'
-import TeacherReview from './components/TeacherReview'
 import TeacherIntroduciton from './components/TeacherIntroduction'
 import AdviceQnA from './components/AdviceQnA'
-import {useParams, usePathname, useRouter} from 'next/navigation'
+import {useParams, useRouter} from 'next/navigation'
 import {useEffect, useState} from 'react'
-import {IAdvisor} from '@/dummy/dummyTeacher'
 
 import {getTeacherDetail} from '@/app/api/teacher'
 import {TeacherDetailDto} from '@/app/api/data'
 import TeacherNotice from './components/TeacherNotice'
-import {Heart} from "lucide-react";
-import {basicPost} from "@/api/base";
+import { ChevronRight, Heart } from "lucide-react";
+import { basicPost } from "@/api/base";
 import {getMyInfo} from "@/app/api/user";
+import Review from './components/Review'
 
 export default function TeacherPage() {
     const [advisor, setAdvisor] = useState<TeacherDetailDto | null>(null)
@@ -25,6 +24,11 @@ export default function TeacherPage() {
     const param = useParams()
     const teacherId = String(param.id)
     const [isLogined, setIsLogined] = useState(false);
+    // const {data: reviews = [] } = useQuery({
+    //     queryKey: ['teacher-detail', teacherId],
+    //     queryFn: () => basicGet(`/teachers/${teacherId}`),
+    // });
+
 
     useEffect(() => {
         getInfo()
@@ -120,11 +124,26 @@ export default function TeacherPage() {
                     <TeacherNotice advisor={advisor}/>
                 </div>
             )}
-            s{advisor?.reviews && advisor?.reviews.length > 0 && (
-                <div className="px-5 py-6">
-                    <TeacherReview/>
+
+            <section className="px-4">
+            {advisor?.reviews.map((review, index) => (
+                <div key={review.id} className={index !== 0 ? 'border-t border-gray-100' : ''}>
+                    <Review data={review}/>
                 </div>
-            )}
+            ))}                
+            </section>
+
+            <section className="px-4">
+                <Button
+                    rightIcon={<ChevronRight />}
+                    className="w-full mt-4 h-[28px]"
+                    onClick={() => router.push('/teacher/' + teacherId + '/reviews')}
+                    buttonType={BUTTON_TYPE.ghost}
+                    label="더보기"
+                />
+            </section>
+
+
             <div className="px-5 py-6">
                 <TeacherIntroduciton introduction={advisor?.introduction}/>
             </div>

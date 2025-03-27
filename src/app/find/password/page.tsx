@@ -29,7 +29,7 @@ export default function FindPassword() {
     if (!name || !phoneNum || !email) {
       if (!name) setNameError('이름을 입력해주세요');
       if (!phoneNum) setPhoneNumError('전화번호를 입력해주세요');
-      if (!email) setEmailError('아이디를 입력해주세요');
+      if (!email) setEmailError('이메일를 입력해주세요');
       return;
     }
     
@@ -89,10 +89,10 @@ export default function FindPassword() {
 
         
         <Input
-          name="아이디"
+          name="이메일"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="아이디를 입력해주세요"
+          placeholder="이메일을 입력해주세요"
           error={emailError}
         />
 

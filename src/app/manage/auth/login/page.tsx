@@ -24,7 +24,7 @@ export default function Page() {
         <div className="flex flex-col gap-8 w-full">
             <Input
                 name="아이디"
-                placeholder="이메일을 입력해주세요"
+                placeholder="아이디를 입력해주세요"
                 value={pin}
                 onChange={(e) => {
                     setPin(e.target.value);
@@ -32,7 +32,7 @@ export default function Page() {
             />
             <Input
                 name="비밀번호"
-                placeholder="이메일을 입력해주세요"
+                placeholder="비밀번호를 입력해주세요"
                 value={password}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') {

@@ -137,7 +137,7 @@ export default function Page() {
               className="cursor-pointer underline"
               onClick={() => nav.push('/find/id')}
             >
-              아이디 찾기
+              이메일 찾기
             </div>
             <div
               className="cursor-pointer underline"

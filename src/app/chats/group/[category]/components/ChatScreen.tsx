@@ -1,12 +1,8 @@
 'use client'
 
-import { getMyInfo } from '@/app/api/user'
-
-import OthersChat from './OthersChat'
 import { UserDto } from '@/types/user'
-import { useEffect, useState } from 'react'
 import { IMessage } from '@/app/api/data'
-import MyChat from '@/app/chats/components/MyChat'
+import GroupChat from '@/app/chats/components/GroupChat'
 
 export default function ChatScreen({
   messages,
@@ -33,7 +29,7 @@ export default function ChatScreen({
       </div>
       {messages.map((item, idx) => {
         return item.authorId == myId ? (
-          <MyChat
+          <GroupChat
             key={idx}
             {...item}
             user={user}

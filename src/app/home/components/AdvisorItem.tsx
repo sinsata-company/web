@@ -5,23 +5,56 @@ import {forwardRef, useEffect, useState} from 'react'
 import {Button, BUTTON_TYPE} from '@/components/common/Button'
 import TeacherTypeLabel from '@/components/common/TeacherTypeLabel'
 import {basicPost} from "@/api/base";
-import { safeMap } from '@/utils/safeMap'
 
 
 interface AdvisorItemProps extends TeacherListDto {
     onClickPhone: (advisor: TeacherListDto) => void
-    changeLiked: Function;
+    changeLiked: (id: number) => void;
 }
+
+type Menu = {
+  id: number;
+  type: 'call' | 'chat' | 'phone';
+  minute: number;
+  price: number;
+  method?: string;
+  unit: 'minute' | 'second';
+}
+
+export const createMenu = (data: [string, string][]): Menu[] => {
+    const [first, ...rest] = data;
+    const firstObj: Menu = {
+        id: 0,
+        type: 'call' as const,
+        minute: Number(first[0]),
+        method: 'cash',
+        unit: 'minute' as const,
+        price: Number(first[1]),
+    };
+
+    return [firstObj, ...rest.map(([minute, price], idx) => ({
+        id: idx + 1,
+        type: 'call' as const,
+        minute: Number(minute),
+        method: 'cash',
+        unit: 'minute' as const,
+        price: Number(price),
+    }))];
+};
 
 export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
     function AdvisorItem(advisor, ref) {
         const router = useRouter()
         const pathname = usePathname()
-        const [menuObj, setMenuObj] = useState<any>(null);
+        const [menuObj, setMenuObj] = useState<Menu[]>([]);
+
         const [newSelfLiked, setSelfLiked] = useState<boolean>(advisor?.selfLiked);
         const isAbse = advisor?.status === 'ABSE';
         const isConsulting = advisor?.status === 'CONN';
         const isAvailable = advisor?.status === 'IDLE';
+
+        console.log({ advisor, menuObj });
+
 
         const tags = (() => {
             if (!advisor?.hashtag) return [] as string[];
@@ -53,11 +86,16 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
 
         useEffect(() => {
             if (!!advisor?.menu && advisor?.menu !== '' && advisor?.menu.trim().length > 0) {
-                setMenuObj(JSON.parse(advisor?.menu));
+                const data = JSON.parse(advisor?.menu);
+                if (data.every((i: [string, string]) => Array.isArray(i) && i.length === 2)) {
+                    setMenuObj(createMenu(data));
+                } else {
+                    setMenuObj(JSON.parse(advisor?.menu));
+                }
             } else {
-                setMenuObj(null);
+                setMenuObj([]);
             }
-        }, []);
+        }, [advisor?.menu]);
 
         const handleClick = () => {
             const currentScroll = window.scrollY;
@@ -91,9 +129,11 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             </div>
         )
 
+      if (!advisor) return null;
+
         return (
             <div 
-                key={advisor?.id || ''}
+                key={advisor.id}
                 ref={ref}
                 className="w-full flex flex-col bg-white overflow-hidden"
             >
@@ -127,14 +167,32 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                             {/* 가격 정보 */}
                             <div className="flex-col flex justify-between h-full text-black">
                                 <div className="flex flex-col gap-y-1.5">
-                                    {!!menuObj && menuObj.slice(0, 2)?.filter(Array.isArray).map(([key, value]: [key: string, value: number], index:number) => (
-                                        <div key={key} className="">
-                                            {renderPriceInfo(
-                                                `${Number(value).toLocaleString()}원`,
-                                                `${key}${index === 0 ? '초' : '분'}`
-                                            )}
-                                        </div>
-                                    ))}
+                                    {menuObj.slice(0, 2).map((data, index) => {
+                                        // Handle array format [duration, price]
+                                        if (Array.isArray(data)) {
+                                            const [duration, price] = data;
+                                            return (
+                                                <div key={`menu-${index}`} className="">
+                                                    {renderPriceInfo(
+                                                        `${Number(price).toLocaleString()}원`,
+                                                        `${duration}${Number(duration) < 10 ? '초' : '분'}`
+                                                    )}
+                                                </div>
+                                            );
+                                        } 
+                                        // Handle object format {id, type, minute, price}
+                                        else if (typeof data === 'object' && data !== null) {
+                                            return (
+                                                <div key={`menu-${data.id || index}`} className="">
+                                                    {renderPriceInfo(
+                                                        `${Number(data.price).toLocaleString()}원`,
+                                                        `${data.minute}${index === 0 ? '초' : '분'}`,
+                                                    )}
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    })}
                                 </div>
                                 
                                 {isAbse && !isConsulting && (

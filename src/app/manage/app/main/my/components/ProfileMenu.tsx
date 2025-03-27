@@ -51,7 +51,7 @@ const ProfileMenu = () => {
         },
         {
             route: 'qna',
-            title: '자주 묻는 질문',
+            title: '후기 관리',
             icon: <CircleHelp size={ICON_SIZE}/>
         },
         {

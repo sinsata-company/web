@@ -73,6 +73,7 @@ export default function Page() {
             client.current?.subscribe(
                 `/sub/channel/${roomId}`,
                 (received_message: StompJs.IFrame) => {
+                    readPrivateChat();
                     const body = JSON.parse(received_message.body)
                     const ignore = (() => {
                         if (body?.metadata?.includes('채팅이 아직 수락되지 않았습니다.')) return true;
@@ -125,6 +126,11 @@ export default function Page() {
             client.current.activate()
         }
         connect()
+
+        return () => {
+            readPrivateChat();
+            disconnect();
+        }
     }, [])
 
     return (

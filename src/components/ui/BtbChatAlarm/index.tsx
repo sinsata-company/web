@@ -34,7 +34,7 @@ export default function BtbChatAlarm() {
     useWebSocket({
         channelUrl: `/sub/notification/${user?.userId}`,
         onMessage: (message) => {
-            console.log({ message });
+            console.log({ userNotification: message });
             refetchCount();
             queryClient.invalidateQueries({
                 queryKey: ['chats'],

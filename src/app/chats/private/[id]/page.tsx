@@ -154,6 +154,7 @@ export default function PrivateChatPage() {
                 (received_message: StompJs.IFrame) => {
                     const body = JSON.parse(received_message.body);
                     console.log({ chatBody: body });
+                    readPrivateChat();
 
                     if (body.type === 'ERROR') {
                         alert(body.metadata);
@@ -228,6 +229,11 @@ export default function PrivateChatPage() {
             client.current.activate()
         }
         connect()
+
+        return () => {
+            disconnect();
+            readPrivateChat();
+        }
     }, [])
 
     const sendEndMessage = () => {

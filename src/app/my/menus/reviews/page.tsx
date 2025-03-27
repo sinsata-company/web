@@ -44,7 +44,7 @@ export default function Page() {
 
   return (
     <div className="w-full flex flex-col">
-      <header className="h-[64px] w-full px-4 flex items-center bg-sinsata-blue">
+      <header className="min-h-[64px] w-full px-4 flex items-center bg-sinsata-blue">
         <button className="flex gap-x-1" onClick={onClickBack}>
           <Image src="/images/left-arrow-white.svg" alt="back" width={28} height={28} />
           <span className="text-white pt-[3px]">나의 상담후기</span>
@@ -64,6 +64,7 @@ export default function Page() {
             </TabsTrigger>
           </TabsList>
           
+  
           <TabsContent value={TabType.WRITABLE}>
             <section className="w-full flex flex-col gap-y-3 p-4">
               {reviewables.map((reviewable) => (
@@ -97,9 +98,6 @@ export default function Page() {
           </TabsContent>
         </Tabs>
       </section>
-
-      <article className="flex flex-1">
-      </article>
       <BTB/>
     </div>
   )
