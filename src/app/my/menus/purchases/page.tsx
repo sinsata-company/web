@@ -39,7 +39,7 @@ export default function Page() {
                   width={100}
                   height={100}
                   alt={`${va.productName} 상품 이미지`}
-                  className="mr-2 rounded-md"
+                  className="mr-2 rounded-md" 
                 />
               ) : (
                 <div className="w-[100px] h-[100px] bg-gray-200 mr-2 rounded-md" />
