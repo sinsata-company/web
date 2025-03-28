@@ -20,6 +20,7 @@ export interface TeacherListDto {
   menu: string
   likedCnt: number
   selfLiked: boolean;
+  chatLastPay: number,
   likedTeachers: Array<{ testId: string; teacherId: string; }>
 }
 

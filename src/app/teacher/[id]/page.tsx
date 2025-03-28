@@ -70,7 +70,8 @@ export default function TeacherPage() {
             console.log('error', error);
             alert("찜 설정 도중 문제가 발생 했습니다. 잠시후 다시 시도 해주세요.")
         } finally {
-            setAdvisor((prevState: TeacherDetailDto) => {
+            setAdvisor((prevState: TeacherDetailDto | null) => {
+                if (!prevState) return null;
                 const newCnt = (prevState?.likedCnt || 0) + (!prevState?.selfLiked ? 1 : -1);
                 return {
                     ...prevState,

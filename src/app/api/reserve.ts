@@ -5,7 +5,7 @@ export interface IMakeReserve {
   reserveDate: string
   reserveTime: string
   reserveMinutes: number
-  reserveType: 'CALL' | 'CHAT'
+  reserveType: 'phone' | 'chat'
 }
 
 export const makeReserve = async (reserve: IMakeReserve, teacherid: string) => {

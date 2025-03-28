@@ -10,6 +10,10 @@ import {basicPost} from "@/api/base";
 interface AdvisorItemProps extends TeacherListDto {
     onClickPhone: (advisor: TeacherListDto) => void
     changeLiked: (id: number) => void;
+    prepayInfo: {
+        chatPrepay: number;
+        callPrePay: number;
+    }
 }
 
 type Menu = {
@@ -43,18 +47,19 @@ export const createMenu = (data: [string, string][]): Menu[] => {
 };
 
 export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
-    function AdvisorItem(advisor, ref) {
+    function AdvisorItem({ prepayInfo, ...advisor }, ref) {
         const router = useRouter()
         const pathname = usePathname()
         const [menuObj, setMenuObj] = useState<Menu[]>([]);
-
         const [newSelfLiked, setSelfLiked] = useState<boolean>(advisor?.selfLiked);
+        
         const isAbse = advisor?.status === 'ABSE';
         const isConsulting = advisor?.status === 'CONN';
         const isAvailable = advisor?.status === 'IDLE';
 
-        console.log({ advisor, menuObj });
-
+        //console.log('advisor', advisor);
+        //console.log('menuObj', menuObj);
+        //console.log('prepayInfo', prepayInfo);
 
         const tags = (() => {
             if (!advisor?.hashtag) return [] as string[];
@@ -167,26 +172,24 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                             {/* 가격 정보 */}
                             <div className="flex-col flex justify-between h-full text-black">
                                 <div className="flex flex-col gap-y-1.5">
-                                    {menuObj.slice(0, 2).map((data, index) => {
-                                        // Handle array format [duration, price]
-                                        if (Array.isArray(data)) {
-                                            const [duration, price] = data;
-                                            return (
-                                                <div key={`menu-${index}`} className="">
-                                                    {renderPriceInfo(
-                                                        `${Number(price).toLocaleString()}원`,
-                                                        `${duration}${Number(duration) < 10 ? '초' : '분'}`
-                                                    )}
-                                                </div>
-                                            );
-                                        } 
-                                        // Handle object format {id, type, minute, price}
-                                        else if (typeof data === 'object' && data !== null) {
+                                    <div key={`menu-${advisor?.id}`} className="">
+                                        {renderPriceInfo(
+                                            `${Number(advisor?.chatLastPay || 0).toLocaleString()}원`,
+                                            '30초'
+                                        )}
+                                    </div>
+                                    
+                                    {menuObj.slice(1, 2).map((data, index) => {
+
+                                        
+                                        if (typeof data === 'object' && data !== null) {
+                                            // 채팅 메뉴 중 첫 번째 항목 찾기
+                                            const chatMenu = menuObj.find(menu => menu.type === 'chat');
                                             return (
                                                 <div key={`menu-${data.id || index}`} className="">
                                                     {renderPriceInfo(
-                                                        `${Number(data.price).toLocaleString()}원`,
-                                                        `${data.minute}${index === 0 ? '초' : '분'}`,
+                                                        `${Number(chatMenu?.price || 0).toLocaleString()}원`,
+                                                        '30초'
                                                     )}
                                                 </div>
                                             );
