@@ -209,17 +209,25 @@ export default function TimeTabs() {
             setSelectedMenu((prev) => {
               if (!prev) return null;
               
-              // 입력값을 숫자로 변환
-              let newMinute = Number(e.target.value) || 0;
+              const newValue = e.target.value;
+              if (newValue === '') {
+                return { ...prev, minute: 0 };
+              }
               
-              // 10분에서 60분 사이로 제한
-              if (newMinute < 10) newMinute = 10;
-              if (newMinute > 60) newMinute = 60;
+              let newMinute = parseInt(newValue);
+              if (isNaN(newMinute)) return prev;
+              
+              newMinute = Math.max(10, Math.min(60, newMinute));
+              newMinute = Math.round(newMinute / 5) * 5;
               
               return { ...prev, minute: newMinute };
             })
           }}
           name="단위 시간(분)"
+          className="min-w-[120px]"
+          min={10}
+          max={60}
+          step={5}
         />
         <Input
           type="number"

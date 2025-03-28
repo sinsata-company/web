@@ -34,14 +34,13 @@ export default function FindPassword() {
     }
     
     try {
-      const response = await axios.post('/send-verification', {
+      const response = await basicPost('/send-verification', {
         phoneNum,
         name,
         type: 'PASSWORD'
       });
       
-      if (response.data.success) {
-        setIsVerifying(true);
+      if (response) {
         alert('인증번호가 발송되었습니다.');
       }
     } catch (error) {
@@ -57,12 +56,9 @@ export default function FindPassword() {
         email: email.trim(),
       });
 
-      console.log(response)
       
       if (response) {
-        setIsReset(true);
-        setShowResultModal(true);
-        setSocialToken(response.socialToken);
+        alert('이메일이 발송되었습니다.');
       }
     } catch (error: any) {
       if (error.response?.status === 404) {

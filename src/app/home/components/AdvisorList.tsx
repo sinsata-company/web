@@ -111,6 +111,7 @@ export default function AdvisorList({
                             onClickPhone={onClickPhone}
                             changeLiked={changeLiked}
                             onItemClick={handleItemClick}
+                            prepayInfo={prepayInfo}
                         />
                     )
                 } else {
@@ -121,6 +122,7 @@ export default function AdvisorList({
                             key={idx}
                             onClickPhone={onClickPhone}
                             onItemClick={handleItemClick}
+                            prepayInfo={prepayInfo}
                         />
                     )
                 }
