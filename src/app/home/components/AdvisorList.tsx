@@ -32,6 +32,12 @@ export default function AdvisorList({
         callPrePay: 0 
     });
 
+    // advisor.id를 기준으로 중복 제거
+    const filteredAdvisorList = advisorList.filter(
+        (advisor, index, self) => 
+            index === self.findIndex((a) => a.id === advisor.id)
+    );
+
     useEffect(() => {
         // 메인 페이지에서만 스크롤 위치 복원
         if (pathname === '/home') {
@@ -100,9 +106,9 @@ export default function AdvisorList({
 
     return (
       <SearchProvider>
-        <div className="inline-flex flex-col gap-2.5 items-center w-full text-sm">
-            {advisorList.map((item, idx) => {
-                if (idx === advisorList.length - 1) {
+        <div className="inline-flex flex-col flex-1 gap-2.5 items-center w-full text-sm">
+            {filteredAdvisorList.map((item, idx) => {
+                if (idx === filteredAdvisorList.length - 1) {
                     return (
                         <AdvisorItem
                             {...item}

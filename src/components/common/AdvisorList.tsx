@@ -21,11 +21,13 @@ export default function AdvisorList({
 
   const safeAdvisorList = Array.isArray(advisorList) ? advisorList : [];
   
-  const filteredAdvisors = safeAdvisorList.filter((advisor) => 
-    advisor && advisor.name && typeof advisor.name === 'string' 
+  const filteredAdvisors = Array.from(
+    new Set(safeAdvisorList.map(advisor => advisor?.id))
+  ).map(id => safeAdvisorList.find(advisor => advisor?.id === id))
+    .filter(advisor => advisor && advisor.name && typeof advisor.name === 'string' 
       ? advisor.name.toLowerCase().includes((searchTerm || '').toLowerCase())
       : false
-  )
+    )
 
   return (
     <div className="px-4">
