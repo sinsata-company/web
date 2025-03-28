@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react' 
+import { useEffect, useState, Suspense } from 'react' 
 import MainAppbar from '@/components/common/MainAppbar'
 import { useRouter, useSearchParams } from 'next/navigation'   
 import Image from 'next/image'
@@ -11,7 +11,7 @@ import { UserDto } from '@/types/user'
 import { VaCustomerDto } from '@/app/api/cash'
 import { basicPost } from '@/api/base'
 
-export default function InquiryList() {
+function InquiryListContent() {
   const [inquiries, setInquiries] = useState<CutomerChatInquiryDto[]>([])
   const router = useRouter()
   const [user, setUser] = useState<UserDto | null>(null)
@@ -174,4 +174,12 @@ export default function InquiryList() {
       </div>
     </div>
   )
-} 
+}
+
+export default function InquiryList() {
+  return (
+    <Suspense fallback={<div className="h-screen bg-white flex items-center justify-center">로딩 중...</div>}>
+      <InquiryListContent />
+    </Suspense>
+  )
+}
