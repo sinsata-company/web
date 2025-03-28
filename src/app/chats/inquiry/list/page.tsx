@@ -2,17 +2,35 @@
 
 import { useEffect, useState } from 'react' 
 import MainAppbar from '@/components/common/MainAppbar'
-import { useRouter } from 'next/navigation'   
+import { useRouter, useSearchParams } from 'next/navigation'   
 import Image from 'next/image'
 import { getInquiryList } from '@/app/api/chat'
 import { getCustomerAll, CutomerChatInquiryDto } from '@/app/api/data'   
 import { getMyInfo } from '@/app/api/user'
 import { UserDto } from '@/types/user'
+import { VaCustomerDto } from '@/app/api/cash'
+import { basicPost } from '@/api/base'
 
 export default function InquiryList() {
   const [inquiries, setInquiries] = useState<CutomerChatInquiryDto[]>([])
   const router = useRouter()
   const [user, setUser] = useState<UserDto | null>(null)
+  const searchParams = useSearchParams()
+  const purchaseStatus = searchParams.get('purchase');
+  
+
+  useEffect(() => {
+    if (purchaseStatus === 'Done') {
+      const selectedVa = localStorage.getItem('selectedVa')
+      if (selectedVa) {
+        const va = JSON.parse(selectedVa) as VaCustomerDto;
+        basicPost("/users/va", va);
+        
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
+  }, [purchaseStatus]);
 
   useEffect(() => {
     const fetchInquiries = async () => {

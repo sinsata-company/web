@@ -111,6 +111,7 @@ export default function Page() {
               onClick={() => {
                 if (selectedVa) {
                   console.log('selectedVa :' + selectedVa);
+                  localStorage.setItem("selectedVa", JSON.stringify(selectedVa));
                   router.push(`/my/menus/valueAdded/billing?vaId=${encodeURIComponent(JSON.stringify(selectedVa))}`);
                 }
                 setIsOpen(false);
