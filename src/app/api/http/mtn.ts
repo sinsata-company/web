@@ -14,7 +14,7 @@ export const getPayURL = async (
           &membnm=${user?.name}
           &item=신사타 코인 ${amount}원
           &oid=${timestamp}
-          &returnurl=https://api.sinsata.co.kr/api/v1/mtn/complete
-          &formurl=https://www.sinsata.co.kr/chats/inquiry/list`
+          &returnurl=https://www.sinsata.co.kr/chats/inquiry/list
+          &formurl=https://api.sinsata.co.kr/api/v1/mtn/complete`
   return mtonetUrl.replace(/\s/g, '')
 }
