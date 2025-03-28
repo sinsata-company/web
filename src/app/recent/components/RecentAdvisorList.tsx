@@ -234,34 +234,47 @@ function AdvisorItem(advisor, ref) {
   )
 
   const renderMenu = () => {
-    console.log('Rendering menu with menuObj:', menuObj);
-    
-    // menuObj가 객체인 경우 처리
-    if (menuObj && typeof menuObj === 'object' && !Array.isArray(menuObj)) {
-      const entries = Object.entries(menuObj);
-      return safeMap(entries.slice(0, 2), ([key, value], index) => (
-        <div key={key}>
-          {renderPriceInfo(
-            `${Number(value).toLocaleString()}원`,
-            `${key}${index === 0 ? '초' : '분'}`
-          )}
-        </div>
-      ));
+    // menuObj가 유효한 배열인지 확인
+    if (!menuObj || !Array.isArray(menuObj)) {
+        return (
+            <div>
+                {renderPriceInfo(
+                    `${Number(advisor?.chatLastPay || 0).toLocaleString()}원`,
+                    '30초'
+                )}
+            </div>
+        );
     }
-    
-    // menuObj가 배열인 경우 처리
-    if (Array.isArray(menuObj)) {
-      return safeMap(menuObj.slice(0, 2), ([key, value], index) => (
-        <div key={key}>
-          {renderPriceInfo(
-            `${Number(value).toLocaleString()}원`,
-            `${key}${index === 0 ? '초' : '분'}`
-          )}
-        </div>
-      ));
-    }
-    
-    return null;
+
+    // menuObj가 배열이면서 entries가 있는 경우
+    return menuObj.slice(0, 2).map((menu, index) => {
+        // menu가 배열 형태인 경우 ([key, value])
+        if (Array.isArray(menu)) {
+            const [key, value] = menu;
+            return (
+                <div key={`menu-${index}`}>
+                    {renderPriceInfo(
+                        `${Number(value || 0).toLocaleString()}원`,
+                        `${key}${index === 0 ? '초' : '분'}`
+                    )}
+                </div>
+            );
+        }
+        
+        // menu가 객체 형태인 경우
+        if (menu && typeof menu === 'object') {
+            return (
+                <div key={`menu-${index}`}>
+                    {renderPriceInfo(
+                        `${Number(menu.price || 0).toLocaleString()}원`,
+                        `${menu.duration || 30}${index === 0 ? '초' : '분'}`
+                    )}
+                </div>
+            );
+        }
+
+        return null;
+    });
   };
 
   return (

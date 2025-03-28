@@ -1,4 +1,7 @@
-interface InputProps {
+import React, { ChangeEvent } from 'react'
+import clsx from 'clsx'
+
+export interface InputProps {
   placeholder?: string
   name?: string
   value: string
@@ -16,6 +19,11 @@ interface InputProps {
   onKeyDown?: (
     e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void
+  className?: string
+  onBlur?: (e: any) => void
+  min?: number
+  max?: number
+  step?: number
 }
 
 export default function Input({
@@ -32,7 +40,25 @@ export default function Input({
   onKeyDown,
   type,
   error,
+  className,
+  onBlur,
+  min,
+  max,
+  step,
 }: InputProps) {
+  const props = {
+    placeholder,
+    name,
+    value,
+    onChange,
+    onKeyDown,
+    type,
+    onBlur,
+    min,
+    max,
+    step,
+  }
+
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex ">
       {name && (
@@ -40,34 +66,31 @@ export default function Input({
           {name}
         </div>
       )}
-      <div className="self-stretch justify-start items-start gap-3 inline-flex">
-        <div className="grow p-4 rounded-xl border border-zinc-400 justify-start items-center gap-3 flex">
+      <div className="self-stretch flex flex-col sm:flex-row gap-3">
+        <div className="w-full p-4 rounded-xl border border-zinc-400 justify-start items-center gap-3 flex">
           {textarea ? (
             <textarea
-              className="grow self-stretch text-base   no-underline bg-transparent"
-              style={{
-                border: 'none',
-                outline: 'none',
-                resize: 'none',
-                height: `${(lines ?? 1) * 1.5}rem`,
-              }}
-              placeholder={placeholder}
-              value={value}
-              onChange={onChange}
-              onKeyDown={onKeyDown}
+              {...props}
+              className={clsx(
+                'w-full outline-none placeholder:text-zinc-400',
+                className
+              )}
             />
           ) : (
             <input
-              className="grow self-stretch text-base   no-underline bg-transparent"
+              {...props}
+              className={clsx(
+                'w-full outline-none placeholder:text-zinc-400',
+                '[&::-webkit-inner-spin-button]:w-6',
+                '[&::-webkit-inner-spin-button]:h-6',
+                '[&::-webkit-inner-spin-button]:opacity-100',
+                '[&::-webkit-inner-spin-button]:m-0',
+                '[&::-webkit-inner-spin-button]:cursor-pointer',
+                className
+              )}
               style={{
-                border: 'none',
-                outline: 'none',
+                WebkitAppearance: props.type === 'number' ? 'inner-spin-button' : 'none'
               }}
-              type={type}
-              placeholder={placeholder}
-              value={value}
-              onChange={onChange}
-              onKeyDown={onKeyDown}
             />
           )}
         </div>

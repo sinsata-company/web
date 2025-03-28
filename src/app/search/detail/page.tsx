@@ -18,9 +18,10 @@ interface TeacherResponse {
 
 export default function SearchPage() {
     const [recentSearches, setRecentSearches] = useState<string[]>([])
-    const [popularSearches, setPopularSearches] = useState<TeacherDto[]>([])
+    const [popularSearches, setPopularSearches] = useState<Array<any>>([])
     const router = useRouter()
     const [name, setName] = useState<string>('')
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchTopTeachers = async () => {
@@ -121,15 +122,25 @@ export default function SearchPage() {
                 <div>
                     <h2 className="font-bold mb-2">인기 검색어</h2>
                     <div className="space-y-2">
-                        {popularSearches.map((item) => (
-                            <div 
-                                key={item.id}
-                                className="flex items-center gap-4 p-2 hover:bg-gray-50 cursor-pointer"
-                                onClick={() => handleSearch(item?.name)}
-                            >
-                                <span className="font-bold text-gray-500">{item?.name}</span>
+                        {isLoading ? (
+                            <div className="text-gray-500 text-center py-4">
+                                로딩 중...
                             </div>
-                        ))}
+                        ) : popularSearches && popularSearches.length > 0 ? (
+                            popularSearches.map((item, index) => (
+                                <div 
+                                    key={`search-item-${index}`}
+                                    className="flex items-center gap-4 p-2 hover:bg-gray-50 cursor-pointer"
+                                    onClick={() => handleSearch(item?.name)}
+                                >
+                                    <span className="font-bold text-gray-500">{item?.name || ''}</span>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-gray-500 text-center py-4">
+                                검색 결과가 없습니다.
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
