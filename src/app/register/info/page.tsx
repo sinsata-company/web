@@ -107,8 +107,6 @@ const Body = () => {
         email: email,
         code: verificationCode
       });
-
-      console.log('response', response)
       
       if (response?.verified) {
         setIsVerified(true);
