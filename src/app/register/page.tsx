@@ -85,7 +85,7 @@ export default function RegisterPage() {
     // 환경에 따른 클라이언트 ID 설정
     //const clientId = isIOS 
 
-    const clientId = 'com.sst.sinsataCs'
+    const clientId = 'sinsataCs.ssst.com'
     const redirectUri = BASE_WEB + '/register/oauth/apple'
     const appleAuthUrl =
       `https://appleid.apple.com/auth/authorize?` +
