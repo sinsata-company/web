@@ -14,6 +14,7 @@ import { getPayURL } from '@/app/api/http/mtn'
 import { cashDto } from '@/types/cashTables'
 import { BASE_URL } from '@/api/base'
 import { basicPost } from '@/app/api/base';
+import router from 'next/router';
 
 
 declare global {
@@ -34,6 +35,7 @@ function BillingContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'terms' | 'product' | 'refund'>('terms');
   const [totalPrice, setTotalPrice] = useState(vaInfo?.price);
+  const [isProcessing, setIsProcessing] = useState(false);
   
 
   const getModalContent = (type: 'terms' | 'product' | 'refund') => {
@@ -90,6 +92,22 @@ function BillingContent() {
   })
 
   useEffect(() => {
+    // 브로드캐스트 채널 생성
+    const channel = new BroadcastChannel('payment_channel');
+    
+    // 메시지 수신 리스너
+    channel.onmessage = (event) => {
+      if (event.data.type === 'PAYMENT_COMPLETE') {
+        handlePaymentComplete(event.data.payload);
+      }
+    };
+
+    return () => {  
+      channel.close();
+    };
+  }, []);
+
+  useEffect(() => {
     // Daum 우편번호 스크립트 동적 로드
     const script = document.createElement('script')
     script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
@@ -112,6 +130,76 @@ function BillingContent() {
       setVaInfo(decodedVa)
     }
   }, [searchParams])
+
+  
+
+  const handlePaymentComplete = async (payload: any) => {
+    try {
+      setIsProcessing(true);
+      console.log('Payment completed:', payload);
+      
+      if (payload.status === 'SUCCESS') {
+        // 성공 시 처리
+        alert('결제가 완료되었습니다.');
+        window.location.href = '/my/menus/valueAdded/billing/success';
+      } else {
+        // 실패 시 처리
+        alert(`결제 처리 중 오류가 발생했습니다: ${payload.message}`);
+      }
+    } catch (error) {
+      console.error('Payment completion error:', error);
+      alert('결제 완료 처리 중 오류가 발생했습니다.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const startPayment = async (cash: number, vaInfo: VaCustomerDto) => {
+    try {
+      setIsProcessing(true);
+      const timestamp = new Date().getTime().toString();
+
+       // 브로드캐스트 채널 생성
+      const channel = new BroadcastChannel('payment_channel');
+      channel.onmessage = (event) => {
+        console.log('Payment message received:', event.data);
+        // 결제 결과에 따른 처리
+        if (event.data.status === 'success') {
+          // 결제 성공 처리
+          alert('결제가 완료되었습니다.');
+        } else if (event.data.status === 'fail') {
+          // 결제 실패 처리
+          alert('결제에 실패했습니다.');
+        }
+        router.push('/chats/inquiry/list');
+        // 채널 닫기
+        channel.close();
+      };
+     
+      // 결제 URL에서 formurl을 프론트엔드 도메인으로 변경
+      console.log(vaInfo)
+      
+      const paymentUrl = await getPayURL(vaInfo.price, timestamp);
+      const encodedPaymensUrl = encodeURIComponent(paymentUrl);
+
+      console.log(vaInfo);
+    
+      // 백엔드에 결제 요청만 전송
+      await basicPost('/mtn/payment/request', {
+        paymentUrl:encodedPaymensUrl
+      });
+    
+      // 백엔드의 payment/request 엔드포인트 호출
+    window.open(`${paymentUrl}`, 'payment', 'width=500,height=700');
+    } catch (error) {
+      console.error('결제 시도 중 오류:', error);
+      alert('결제 시도 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsProcessing(false);
+    }
+  }
+       
+  
 
   const handleAllCheck = (checked: boolean) => {
     setAgreements({
@@ -152,35 +240,7 @@ function BillingContent() {
     }
   };
 
-  // 결제하기 > 엠투넷 이동
-  const onClickCharge = async (cash: number, vaInfo: VaCustomerDto) => {
-    try {
-      // 결제 시도 전 주문 정보를 먼저 저장
-      const orderData = {
-        vaInfo,
-        timestamp: new Date().getTime().toString(),
-        amount: cash,
-        status: 'PENDING' // 결제 대기 상태
-      };
-
-      // 주문 정보 저장
-      const savedOrder = await basicPost(`/users/va/purchase`, vaInfo);
-
-      // if (!savedOrder.ok) {
-      //   throw new Error('주문 정보 저장 실패');
-      // }
-
-      // 결제 페이지로 이동
-      const time = new Date().getTime().toString();
-      requestPayment(cash, time);
-
-      const url = await getPayURL(cash, time);
-      window.location.href = url;
-    } catch (error) {
-      console.error('결제 시도 중 오류:', error);
-      alert('결제 시도 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
-  }
+  
 
   // 모든 필수 정보가 입력되었는지 확인하는 함수
   const isAllRequiredFieldsFilled = () => {
@@ -468,7 +528,7 @@ function BillingContent() {
             buttonType={isAllRequiredFieldsFilled() ? BUTTON_TYPE.primary : BUTTON_TYPE.inactive}
             onClick={() => {
               if (isAllRequiredFieldsFilled() && vaInfo) {  // vaInfo null 체크 추가
-                onClickCharge(
+                startPayment(
                   Math.floor(vaInfo.price * 1.1), // 부가세 10% 포함, 소수점 버림
                   vaInfo
                 )
@@ -476,7 +536,9 @@ function BillingContent() {
             }}
             className="w-64"
             disabled={!isAllRequiredFieldsFilled()}
-          />
+          >
+            {isProcessing ? '처리중...' : '결제하기'}
+          </Button>
         </div>
       </div>
 

@@ -102,23 +102,15 @@ export const getKeyByEmail = async (
   act: string,
   provider: string
 ) => {
-  const response = await axios.post(
-    BASE_URL + '/users/key',
-    {
-      name: name,
-      loginType: provider,
-      accessToken: act,
-      deviceId: getMachineId(),
+  const response = await basicPost('/users/key', {
+    name: name,
+    loginType: provider,
+    accessToken: act,
+    deviceId: getMachineId(),
       deviceInfo: 'Chrome',
       deviceType: isMobileDevice() ? 'Mobile' : 'Web',
-      loginKey: name,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+    loginKey: name,
+  })
   return response.data
 }
 export const loginByEmail = async (
