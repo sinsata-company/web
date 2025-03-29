@@ -24,7 +24,8 @@ export default function AppleRedirect() {
     const fetchToken = async () => {
       const code = new URL(window.location.href).searchParams.get('code')
       try {
-        const response = await basicPost('/users/key',
+        const response = await basicPost(
+'/users/key',
           {
             loginType: 'APPLE',
             accessToken: code,
@@ -33,6 +34,7 @@ export default function AppleRedirect() {
             deviceType: 'Android',
           }
         )
+        console.log("response", response)
         if (response && response?.isRegistered) {
           await login(response)
           router.push('/home')
