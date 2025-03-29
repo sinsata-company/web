@@ -78,7 +78,14 @@ export default function RegisterPage() {
   }
 
   const loginWithApple = () => {
-    const clientId = 'com.sst.signin'
+    const isBrowser = typeof window !== 'undefined'
+    const userAgent = isBrowser ? window.navigator.userAgent : ''
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent)
+
+    // 환경에 따른 클라이언트 ID 설정
+    const clientId = isIOS 
+
+    //const clientId = 'com.sst.signin'
     const redirectUri = BASE_WEB + '/register/oauth/apple'
     const appleAuthUrl =
       `https://appleid.apple.com/auth/authorize?` +
