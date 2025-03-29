@@ -1,6 +1,7 @@
 'use client'
 
 import { BASE_URL } from '@/api/base'
+import { basicPost } from '@/app/api/base'
 import { login } from '@/app/api/user'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
@@ -24,21 +25,13 @@ export default function KakaoRedirect() {
       const code = new URL(window.location.href).searchParams.get('code')
 
       try {
-        const response = await axios.post(
-          BASE_URL + '/users/key',
-          {
+        const response = await basicPost('/users/key', {
             loginType: 'KAKAO',
             accessToken: code,
             deviceId: getMachineId(),
             deviceInfo: 'Chrome',
             deviceType: 'Android',
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        })
         if (response.data && response.data.isRegistered) {
           await login(response.data)
           router.push('/home')

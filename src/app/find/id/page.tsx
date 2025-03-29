@@ -20,6 +20,9 @@ export default function FindId() {
   const [isVerifying, setIsVerifying] = useState(false)
   const [foundId, setFoundId] = useState('')
   const [showResultModal, setShowResultModal] = useState(false)
+  const [email, setEmail] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [isVerified, setIsVerified] = useState(false)
 
   const sendVerificationCode = async () => {
     if (!name || !phoneNum) {
@@ -28,20 +31,49 @@ export default function FindId() {
       return;
     }
     
-    // try {
-    //   const response = await axios.post('/api/auth/send-verification', {
-    //     phoneNum,
-    //     name,
-    //     type: 'ID'
-    //   });
-      
-    //   if (response.data.success) {
-    //     setIsVerifying(true);
-    //     alert('인증번호가 발송되었습니다.');
-    //   }
-    // } catch (error) {
-    //   setPhoneNumError('등록되지 않은 정보입니다.');
-    // }
+    try {
+      const response = await basicPost<UserDto>('/users/find-email', {
+        name: name.trim(),
+        phoneNum: phoneNum.trim(),
+      });
+
+      if (response) {
+        setIsVerified(true);
+        alert('인증되었습니다. 이메일을 입력해주세요.');
+      }
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        alert('등록된 사용자를 찾을 수 없습니다.');
+        setNameError('');
+        setPhoneNumError('');
+        setName('');
+        setPhoneNum('');
+      } else {
+        setVerificationError('인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.');
+      }
+    }
+  };
+
+  const sendEmailInfo = async () => {
+    if (!email.trim()) {
+      setEmailError('이메일을 입력해주세요');
+      return;
+    }
+
+    try {
+      const response = await basicPost('/users/send-email', {
+        name: name.trim(),
+        phoneNum: phoneNum.trim(),
+        email: email.trim()
+      });
+
+      if (response) {
+        alert('이메일 전송이 되었습니다.');
+        router.push('/register/oauth/email'); // 로그인 페이지로 이동
+      }
+    } catch (error: any) {
+      setEmailError('이메일 등록 중 오류가 발생했습니다.');
+    }
   };
 
   const verifyAndFind = async () => {
@@ -58,10 +90,11 @@ export default function FindId() {
       });
 
       if (response) {
-        alert('이메일이 발송되었습니다.');
+        setIsVerified(true);
+        alert('사용자 확인이 완료되었습니다. 이메일을 입력해주세요.');
       }
     } catch (error: any) {
-      if (error.response?.status === 404) {
+      if (error.response?.status === 400) {
         alert('등록된 사용자를 찾을 수 없습니다.');
         setNameError('');
         setPhoneNumError('');
@@ -117,24 +150,32 @@ export default function FindId() {
           </div>
         </div>
 
-        {isVerifying && (
+        {isVerified && (
+          <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <div className="text-xl font-medium text-gray-700 mb-1">이메일</div>
+            </div>
+            <div className="w-24" /> {/* 버튼 영역만큼 공간 확보 */}
+          </div>
           <div className="flex gap-2">
             <div className="flex-1">
               <Input
-                name="인증번호"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                placeholder="인증번호를 입력해주세요"
-                error={verificationError}
+                placeholder="이메일을 입력해주세요"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={emailError}
               />
             </div>
             <div className="w-24">
               <Button
-                label="확인"
-                buttonType={BUTTON_TYPE.primary}
-                onClick={verifyAndFind}
+                label="보내기"
+                buttonType={email.trim() ? BUTTON_TYPE.primary : BUTTON_TYPE.inactive}
+                onClick={sendEmailInfo}
+                disabled={!email.trim()}
               />
             </div>
+          </div>
           </div>
         )}
       </div>

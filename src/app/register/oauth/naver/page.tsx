@@ -1,8 +1,7 @@
 'use client'
 
-import { BASE_URL } from '@/api/base'
+import { basicPost } from '@/app/api/base'
 import { login } from '@/app/api/user'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
 import { useEffect } from 'react'
@@ -28,21 +27,13 @@ export default function NaverRedirect() {
       try {
         // google 에서 id token 을 받아서 서버로 전송
 
-        const response = await axios.post(
-          BASE_URL + '/users/key',
-          {
-            loginType: 'NAVER',
-            accessToken: code,
-            deviceId: getMachineId(),
-            deviceInfo: 'Chrome',
-            deviceType: 'Android',
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const response = await basicPost('/users/key', {
+          loginType: 'NAVER',
+          accessToken: code,
+          deviceId: getMachineId(),
+          deviceInfo: 'Chrome',
+          deviceType: 'Android',
+        })
         if (response.data && response.data.isRegistered) {
           await login(response.data)
           router.push('/home')

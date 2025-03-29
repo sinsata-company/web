@@ -24,6 +24,7 @@ export default function FindPassword() {
   const [showResultModal, setShowResultModal] = useState(false)
   const [showToken, setShowToken] = useState(false)
   const [socialToken, setSocialToken] = useState('')
+  const [isVerified, setIsVerified] = useState(true)
 
   const sendVerificationCode = async () => {
     if (!name || !phoneNum || !email) {
@@ -59,6 +60,7 @@ export default function FindPassword() {
       
       if (response) {
         alert('이메일이 발송되었습니다.');
+        router.push('/register/oauth/email'); // 로그인 페
       }
     } catch (error: any) {
       if (error.response?.status === 404) {
@@ -68,6 +70,7 @@ export default function FindPassword() {
         setName('');
         setPhoneNum('');
         setEmail('');
+        setIsVerified(false);
       } else {
         alert('인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.');
       }
@@ -84,15 +87,17 @@ export default function FindPassword() {
         </div>
 
         
-        <Input
-          name="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="이메일을 입력해주세요"
-          error={emailError}
-        />
+        {isVerified && (
+          <Input
+            name="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="이메일을 입력해주세요"
+            error={emailError}
+          />
+        )}
 
-<Input
+        <Input
           name="이름"
           value={name}
           onChange={(e) => setName(e.target.value)}
