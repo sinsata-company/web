@@ -34,11 +34,11 @@ export default function NaverRedirect() {
           deviceInfo: 'Chrome',
           deviceType: 'Android',
         })
-        if (response.data && response.data.isRegistered) {
-          await login(response.data)
+        if (response && response?.isRegistered) {
+          await login(response)
           router.push('/home')
         } else {
-          router.push(`/register/info?key=${JSON.stringify(response.data)}`)
+          router.push(`/register/info?key=${JSON.stringify(response)}`)
         }
       } catch (error) {
         console.error('Error fetching token:', error)

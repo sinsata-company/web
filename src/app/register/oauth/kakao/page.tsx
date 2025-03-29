@@ -23,7 +23,7 @@ export default function KakaoRedirect() {
   useEffect(() => {
     const fetchToken = async () => {
       const code = new URL(window.location.href).searchParams.get('code')
-
+      console.log("code", code)
       try {
         const response = await basicPost('/users/key', {
             loginType: 'KAKAO',
@@ -32,11 +32,12 @@ export default function KakaoRedirect() {
             deviceInfo: 'Chrome',
             deviceType: 'Android',
         })
-        if (response.data && response.data.isRegistered) {
-          await login(response.data)
+
+        if (response && response?.isRegistered) {
+          await login(response)
           router.push('/home')
         } else {
-          router.push(`/register/info?key=${JSON.stringify(response.data)}`)
+          router.push(`/register/info?key=${JSON.stringify(response)}`)
         }
       } catch (error) {
         console.error('Error fetching token:', error)

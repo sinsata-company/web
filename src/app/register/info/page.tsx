@@ -7,8 +7,16 @@ import LogoAppbar from '@/components/common/LogoAppbar'
 import Modal from '@/components/common/Modal'
 import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense, useState } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import EmailVerification from '@/app/register/components/EmailVerification'
+
+interface OauthDTO {
+  name: string;
+  token: string;
+  loginType: 'KAKAO' | 'APPLE' | 'EMAIL' | 'NAVER';
+  email: string;
+  isRegistered: boolean;
+}
 
 export default function Page() {
   return (
@@ -34,11 +42,31 @@ const Body = () => {
       message: ''
   });
   const [isEmailVerified, setIsEmailVerified] = useState(false)
+  const [oauthData, setOauthData] = useState<OauthDTO | null>(null)
 
   const query = useSearchParams()
-  const key = query.get('key')
-  const oauth = JSON.parse(key ?? '')
   const router = useRouter()
+
+  useEffect(() => {
+    const key = query.get('key')
+    if (key) {
+      try {
+        const parsed = JSON.parse(key) as OauthDTO
+        setOauthData(parsed)
+        
+        // name과 email 상태 업데이트
+        if (parsed.name) setName(parsed.name)
+        if (parsed.email) setEmail(parsed.email)
+        
+        // isRegistered가 true인 경우 홈으로 리다이렉트
+        if (parsed.isRegistered) {
+          router.push('/home')
+        }
+      } catch (error) {
+        console.error('Error parsing oauth data:', error)
+      }
+    }
+  }, [query, router]) // query와 router만 의존성으로 설정
 
   const generateVerificationCode = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -208,7 +236,7 @@ const Body = () => {
               const response = await axios.post(
                 BASE_URL + '/users/join',
                 {
-                  ...oauth,
+                  ...oauthData,
                   name: name,
                   email: email,
                   phoneNum: phone,
