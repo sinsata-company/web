@@ -84,6 +84,9 @@ export default function PrivateChatPage() {
         if (client.current) {
             client.current?.publish({
                 destination: `/pub/message/group`,
+                headers: {
+                    userId: myId
+                },
                 body: JSON.stringify({
                     roomId: roomId,
                     authorId: myId,
@@ -142,6 +145,7 @@ export default function PrivateChatPage() {
     }, [])
 
     useEffect(() => {
+        if (!user) return;
         const disconnect = () => {
             client.current?.deactivate()
             console.log('Disconnected')
@@ -210,7 +214,9 @@ export default function PrivateChatPage() {
             console.log('Connecting...')
             client.current = new StompJs.Client({
                 brokerURL: BASE_WS,
-
+                connectHeaders: {
+                    userId: user.userId,
+                },
                 reconnectDelay: 200,
                 onConnect: () => {
                     console.log('connected')
@@ -234,12 +240,15 @@ export default function PrivateChatPage() {
             disconnect();
             readPrivateChat();
         }
-    }, [])
+    }, [user])
 
     const sendEndMessage = () => {
         if (client.current) {
             client.current?.publish({
                 destination: `/pub/message/group/end`,
+                headers: {
+                    userId: myId
+                },
                 body: JSON.stringify({
                     roomId: roomId,
                     authorId: myId,

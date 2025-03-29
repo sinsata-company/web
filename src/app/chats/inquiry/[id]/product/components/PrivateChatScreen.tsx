@@ -15,11 +15,13 @@ export default function PrivateChatScreen({
   myId,
   user,
   chat,
+  flip
 }: {
   messages: IMessage[]
   myId: string
   user: UserDto | null
   chat: ChatDto | null
+  flip?: boolean
 }) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +50,7 @@ export default function PrivateChatScreen({
             {...item}
             user={user}
             isContinued={idx > 0 && messages[idx - 1].authorId == myId}
+            flip={flip}
           />
         ) : (
           <TeacherChat

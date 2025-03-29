@@ -50,12 +50,16 @@ export default function Page() {
                 isTeacher: true,
                 roomId: roomId,
                 authorId: myId,
+                type: 'INQUIRY',
                 message: message,
                 level: user?.level,
                 nickname: `선생님 ${user?.nickname}`,
             };
             client.current?.publish({
                 destination: `/pub/message/group`,
+                headers: {
+                    userId: myId
+                },
                 body: JSON.stringify(bodyData),
             });
         }
@@ -63,6 +67,7 @@ export default function Page() {
     }
 
     useEffect(() => {
+        if (!user?.userId) return;
         const disconnect = () => {
             client.current?.deactivate()
             console.log('Disconnected')
@@ -103,11 +108,15 @@ export default function Page() {
             )
         }
 
+        console.log({ webConnectUserId: user?.userId })
+
         const connect = () => {
             console.log('Connecting...')
             client.current = new StompJs.Client({
                 brokerURL: BASE_WS,
-
+                connectHeaders: {
+                    userId: user?.userId,
+                },
                 reconnectDelay: 200,
                 onConnect: () => {
                     console.log('connected')
@@ -131,7 +140,7 @@ export default function Page() {
             readPrivateChat();
             disconnect();
         }
-    }, [])
+    }, [user]);
 
     return (
         <div className="w-full h-full relative">

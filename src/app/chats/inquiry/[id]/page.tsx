@@ -62,10 +62,14 @@ export default function Page() {
         if (client.current) {
             client.current?.publish({
                 destination: `/pub/message/group`,
+                headers: {
+                    userId: myId
+                },
                 body: JSON.stringify({
                     roomId: roomId,
                     authorId: myId,
                     message: message,
+                    type: 'INQUIRY',
                     level: user?.level,
                     nickname: user?.nickname,
                 }),
@@ -81,6 +85,9 @@ export default function Page() {
         if (client.current) {
             client.current?.publish({
                 destination: `/pub/message/group/end`,
+                headers: {
+                    userId: myId
+                },
                 body: JSON.stringify({
                     roomId: roomId,
                     authorId: myId,
@@ -95,6 +102,7 @@ export default function Page() {
     }
 
     useEffect(() => {
+        if (!myId) return
 
         const disconnect = () => {
             client.current?.deactivate()
@@ -136,7 +144,9 @@ export default function Page() {
             console.log('Connecting...')
             client.current = new StompJs.Client({
                 brokerURL: BASE_WS,
-
+                connectHeaders: {
+                    userId: myId,
+                },
                 reconnectDelay: 200,
                 onConnect: () => {
                     console.log('connected')
@@ -155,10 +165,17 @@ export default function Page() {
             client.current.activate()
         }
         connect()
-    }, [])
+
+        return () => {
+            disconnect()
+        };
+    }, [myId])
 
     // 해야될 것. 채팅 시작되지 않았을 때, 채팅 종료되었을 때 타이핑 막기 & 안내 문구 띄우기
     //
+
+    console.log({ user });
+    if (!user) return null;
     return (
         <div className="w-full h-full relative">
             <BackAppbar/>
@@ -166,11 +183,12 @@ export default function Page() {
                 chat={chat} 
                 sendEndMessage={sendEndMessage}
             />
-            <PrivateChatScreen
+            <PrivateChatScreen 
                 chat={chat}
                 user={user}
                 messages={receivedMessages}
                 myId={myId}
+                flip
             />
             <ChatWriter
                 disabled={chat?.status == 'REQUEST' || chat?.status == 'END'}

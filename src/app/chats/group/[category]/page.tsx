@@ -105,7 +105,7 @@ export default function GroupChat() {
       client.current.activate()
     }
     connect()
-  }, [])
+  }, [user])
 
   return (
     <div className="w-full h-full relative">

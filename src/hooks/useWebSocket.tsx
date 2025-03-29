@@ -15,6 +15,7 @@ export function useWebSocket<T>({
   channelUrl,
   errorUrl = '/user/queue/errors',
   onMessage,
+  connectHeaders,
   enabled = true
 }: UseWebSocketOptions<T>) {
   const client = useRef<StompJs.Client | null>(null);
@@ -54,12 +55,13 @@ export function useWebSocket<T>({
           }
         );
       }
-    };
+    };  
 
     const connect = () => {
       console.log('Connecting to WebSocket...');
       client.current = new StompJs.Client({
         brokerURL: BASE_WS,
+        connectHeaders,
         reconnectDelay: 200,
         onConnect: () => {
           console.log('WebSocket connected');
@@ -83,7 +85,7 @@ export function useWebSocket<T>({
     return () => {
       disconnect();
     };
-  }, [channelUrl, errorUrl, onMessage, enabled]);
+  }, [channelUrl, errorUrl, onMessage, connectHeaders, enabled]);
 
   return { client };
 }
