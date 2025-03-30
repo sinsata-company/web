@@ -1,11 +1,14 @@
 import { getMyInfo } from '../user'
+import { isMobileDevice } from '@/utils/device'
 
 export const getPayURL = async (
   amount: number,
   timestamp: string
 ): Promise<string> => {
   const user = await getMyInfo()
-  const mtonetUrl = `https://passcall.co.kr:32837/cptl/gnrc-mob/pay
+  const mtonetUrl = `https://passcall.co.kr:32837/cptl/gnrc-${
+    isMobileDevice() ? 'mob' : 'pc'
+  }/pay
           ?membid=${user?.mtnId}
           &cpid=0035
           &coinamt=${amount}
