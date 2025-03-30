@@ -76,13 +76,16 @@ function InquiryListContent() {
 
   return (
     <div className="h-screen bg-white">
-      <div className="bg-blue-400 text-white p-4 flex items-center">
-        <button onClick={() => router.back()} className="mr-4">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-        <h1 className="text-lg">1:1 문의하기</h1>
+      <MainAppbar />
+      <div className="bg-blue-400 text-white p-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <button onClick={() => router.push('/')} className="mr-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <h1 className="text-lg">1:1 문의하기</h1>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
