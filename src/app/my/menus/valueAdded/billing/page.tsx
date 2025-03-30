@@ -171,8 +171,12 @@ function BillingContent() {
         channel.close();
       };
 
+      // 부가세 10% 계산
+      const vatAmount = Math.floor(vaInfo.price * 0.1)  // 부가세 계산 (소수점 버림)
+      const totalAmount = vaInfo.price + vatAmount      // 총 결제 금액
+
       // 결제 URL 생성
-      const paymentUrl = await getPayURL(vaInfo.price, vaInfo.memberId);
+      const paymentUrl = await getPayURL(totalAmount, vaInfo?.memberId);
       
       // 백엔드로 결제 요청 전송
       const response = await axios.post('/api/v1/payment/request', 
