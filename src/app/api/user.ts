@@ -111,7 +111,7 @@ export const getKeyByEmail = async (
       deviceType: isMobileDevice() ? 'Mobile' : 'Web',
     loginKey: name,
   })
-  return response.data
+  return response
 }
 export const loginByEmail = async (
   name: string,

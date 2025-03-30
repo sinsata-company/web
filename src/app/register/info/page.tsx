@@ -43,15 +43,17 @@ const Body = () => {
   });
   const [isEmailVerified, setIsEmailVerified] = useState(false)
   const [oauthData, setOauthData] = useState<OauthDTO | null>(null)
-
+  const [loginType, setLoginType] = useState('EMAIL')
+  const [token, setToken] = useState('')
   const query = useSearchParams()
   const router = useRouter()
 
   useEffect(() => {
     const key = query.get('key')
-    if (key) {
+    const parsed = JSON.parse(key? key : '{}') as OauthDTO
+    setToken(parsed?.token || '')
+    if (parsed?.loginType !== 'EMAIL') {
       try {
-        const parsed = JSON.parse(key) as OauthDTO
         setOauthData(parsed)
         
         // name과 email 상태 업데이트
@@ -212,6 +214,8 @@ const Body = () => {
             setNameError('');
             setEmailError('');
             setPhoneError('');
+            setToken(oauthData?.token || '');
+            setLoginType(oauthData?.loginType || 'EMAIL');
 
             if (name === '') {
               setNameError('이름을 입력해주세요');
@@ -238,6 +242,9 @@ const Body = () => {
                   name: name,
                   email: email,
                   phoneNum: phone,
+                  loginType: loginType,
+                  token: token,
+
                 },
                 {
                   headers: {
@@ -247,7 +254,6 @@ const Body = () => {
               );
 
               const data = response.data;
-              console.log(data)
               if (data?.userId) {
                 const header = response.headers;
                 const accessToken = header['sst-access-token']

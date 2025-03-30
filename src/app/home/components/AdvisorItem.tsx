@@ -57,7 +57,7 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         const isConsulting = advisor?.status === 'CONN';
         const isAvailable = advisor?.status === 'IDLE';
 
-        //console.log('advisor', advisor);
+        console.log('advisor', advisor);
         //console.log('menuObj', menuObj);
         //console.log('prepayInfo', prepayInfo);
 
@@ -100,6 +100,8 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
             } else {
                 setMenuObj([]);
             }
+
+            console.log('menuObj', menuObj);
         }, [advisor?.menu]);
 
         const handleClick = () => {
@@ -179,23 +181,24 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                                         )}
                                     </div>
                                     
-                                    {menuObj.slice(1, 2).map((data, index) => {
+                                    {(() => {
+                                        const chatMenu = menuObj.filter(menu => menu.type === 'chat')[0];
+                                        const defaultMenu = menuObj[1]; // 기존 [1] 데이터
 
-                                        
-                                        if (typeof data === 'object' && data !== null) {
-                                            // 채팅 메뉴 중 첫 번째 항목 찾기
-                                            const chatMenu = menuObj.find(menu => menu.type === 'chat');
+                                        const menuToUse = chatMenu || defaultMenu;
+
+                                        if (typeof menuToUse === 'object' && menuToUse !== null) {
                                             return (
-                                                <div key={`menu-${data.id || index}`} className="">
+                                                <div key={`menu-${menuToUse.id}`} className="">
                                                     {renderPriceInfo(
-                                                        `${Number(chatMenu?.price || 0).toLocaleString()}원`,
-                                                        '30초'
+                                                        `${Number(menuToUse.price || 0).toLocaleString()}원`,
+                                                        `${menuToUse.minute}분`
                                                     )}
                                                 </div>
                                             );
                                         }
                                         return null;
-                                    })}
+                                    })()}
                                 </div>
                                 
                                 {isAbse && !isConsulting && (

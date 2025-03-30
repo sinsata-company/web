@@ -44,8 +44,7 @@ export default function Page() {
       if (!canUse?.status) {
         setNameError('')
         const data = await getKeyByEmail(name, password, 'EMAIL')
-        console.log(data)
-        if (data?.isRegistered) {
+        if (data) {
           const isSuccess = await login(data)
           if (isSuccess) {
             nav.push('/home')
@@ -67,7 +66,6 @@ export default function Page() {
       }
       if (validate() && name && canUse?.status && password) {
         const data = await getKeyByEmail(name, password, 'EMAIL')
-        console.log(data)
         nav.push(`/register/info?key=${JSON.stringify(data)}`)
         // if (data.isRegistered) {
         //   await login(data)

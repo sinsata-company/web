@@ -135,22 +135,22 @@ export default function TimeTabs() {
       <div className="w-full flex-col justify-start items-start gap-4 inline-flex mb-12">
         {tab === 0 && (
           <>
-<TimeProductItem
-  type="chat"
-  minute={30}
-  method="cash"
-  price={prepay.chat}
-  id={11}
-  unit="second"  // 명확히 초 단위로 지정!
-  onClick={() => setShowPrepay(true)}
-/>
+            <TimeProductItem
+              type="chat"
+              minute={30}
+              method="cash"
+              price={prepay.chat}
+              id={11}
+              unit="second"  // 명확히 초 단위로 지정!
+              onClick={() => setShowPrepay(true)}
+            />
             <GreyDivider />
 
             {/* 나머지 채팅 상담 메뉴 (기존) */}
             {menu.map((m) => {
               if (m.type === 'chat') {
                 return (
-                  <TimeProductItem key={m.id} {...m} onClick={onClickMenu} />
+                  <TimeProductItem key={m.id} {...m} onClick={onClickMenu} unit="minute" />
                 )
               }
             })}

@@ -91,7 +91,7 @@ export default function RegisterPage() {
       `https://appleid.apple.com/auth/authorize?` +
       `response_type=code` +
       `&client_id=${clientId}` +
-      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+      `&redirect_uri=${redirectUri}` +
       // `&scope=name email` + // 사용자 이름, 이메일 요청
       `&response_mode=query` + // POST 방식으로 응답 받기 (권장)
       `&state=STATE_STRING`
