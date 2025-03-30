@@ -11,10 +11,10 @@ export const getPayURL = async (
           &coinamt=${amount}
           &amount=${amount}
           &telno=${user?.phoneNum}
-          &membnm=${user?.name}
-          &item=신사타 코인 ${amount}원
+          &membnm=${encodeURIComponent(user?.name)}
+          &item=${encodeURIComponent(`신사타 코인 ${amount}원`)}
           &oid=${timestamp}
-          &returnurl=https://api.sinsata.co.kr/api/v1/mtn/payment-complete
-          &formurl=https://api.sinsata.co.kr/api/v1/mtn/payment/request`
+          &returnurl=${encodeURIComponent('https://demo.apple-login-test.app:8080/api/v1/mtn/payment/request')}
+          &formurl=${encodeURIComponent('https://demo.apple-login-test.app:8080/api/v1/mtn/payment/payment-complete')}`
   return mtonetUrl.replace(/\s/g, '')
 }

@@ -15,6 +15,8 @@ import { cashDto } from '@/types/cashTables'
 import { BASE_URL } from '@/api/base'
 import { basicPost } from '@/app/api/base';
 import router from 'next/router';
+import { PaymentButton } from '@/components/payment/PaymentButton';
+import axios from 'axios';
 
 
 declare global {
@@ -157,47 +159,49 @@ function BillingContent() {
   const startPayment = async (cash: number, vaInfo: VaCustomerDto) => {
     try {
       setIsProcessing(true);
-      const timestamp = new Date().getTime().toString();
 
-       // 브로드캐스트 채널 생성
+      // 브로드캐스트 채널 생성
       const channel = new BroadcastChannel('payment_channel');
       channel.onmessage = (event) => {
         console.log('Payment message received:', event.data);
-        // 결제 결과에 따른 처리
         if (event.data.status === 'success') {
-          // 결제 성공 처리
           alert('결제가 완료되었습니다.');
-        } else if (event.data.status === 'fail') {
-          // 결제 실패 처리
-          alert('결제에 실패했습니다.');
+          router.push('/chats/inquiry/list');
         }
-        router.push('/chats/inquiry/list');
-        // 채널 닫기
         channel.close();
       };
-     
-      // 결제 URL에서 formurl을 프론트엔드 도메인으로 변경
-      console.log(vaInfo)
-      
-      const paymentUrl = await getPayURL(vaInfo.price, timestamp);
-      const encodedPaymensUrl = encodeURIComponent(paymentUrl);
 
-      console.log(vaInfo);
-    
-      // 백엔드에 결제 요청만 전송
-      await basicPost('/mtn/payment/request', {
-        paymentUrl:encodedPaymensUrl
-      });
-    
-      // 백엔드의 payment/request 엔드포인트 호출
-    window.open(`${paymentUrl}`, 'payment', 'width=500,height=700');
+      // 결제 URL 생성
+      const paymentUrl = await getPayURL(vaInfo.price, vaInfo.memberId);
+      
+      // 백엔드로 결제 요청 전송
+      const response = await axios.post('/api/v1/payment/request', 
+        { paymentUrl: encodeURIComponent(paymentUrl) },
+        { 
+          headers: { 'Content-Type': 'application/json' },
+          responseType: 'text'
+        }
+      );
+
+      // 결제 중개 팝업 열기
+      const popupWidth = 500;
+      const popupHeight = 700;
+      const left = (window.screen.width - popupWidth) / 2;
+      const top = (window.screen.height - popupHeight) / 2;
+
+      window.open(
+        '/api/v1/payment/request',
+        'paymentMediator',
+        `width=${popupWidth},height=${popupHeight},left=${left},top=${top}`
+      );
+
     } catch (error) {
-      console.error('결제 시도 중 오류:', error);
-      alert('결제 시도 중 오류가 발생했습니다. 다시 시도해주세요.');
+      console.error('결제 요청 실패:', error);
+      alert('결제 시도 중 오류가 발생했습니다.');
     } finally {
       setIsProcessing(false);
     }
-  }
+  };
        
   
 
@@ -523,22 +527,12 @@ function BillingContent() {
           <span className="text-xl font-bold">{formatNumberWithCommas(vaInfo?.price || 0)}원</span>
         </div>
         <div className="flex justify-center max-w-3xl mx-auto">
-          <Button
-            label="결제하기"
-            buttonType={isAllRequiredFieldsFilled() ? BUTTON_TYPE.primary : BUTTON_TYPE.inactive}
-            onClick={() => {
-              if (isAllRequiredFieldsFilled() && vaInfo) {  // vaInfo null 체크 추가
-                startPayment(
-                  Math.floor(vaInfo.price * 1.1), // 부가세 10% 포함, 소수점 버림
-                  vaInfo
-                )
-              }
-            }}
-            className="w-64"
+          <PaymentButton
+            vaInfo={vaInfo!}
+            isProcessing={isProcessing}
+            setIsProcessing={setIsProcessing}
             disabled={!isAllRequiredFieldsFilled()}
-          >
-            {isProcessing ? '처리중...' : '결제하기'}
-          </Button>
+          />
         </div>
       </div>
 
