@@ -26,7 +26,9 @@ export default function AdvisorContainer({ path }: { path?: string }) {
     const [page, setPage] = useState<number>(0)
     const [sort, setSort] = useState<SearchType>(SearchType.NEW)
     const [hasMore, setHasMore] = useState(true)
+    const [isAdvisorSortVisible, setIsAdvisorSortVisible] = useState(true)
     const observer = useRef<IntersectionObserver | null>(null)
+    const advisorSortRef = useRef<HTMLDivElement>(null)
     const {searchTerm} = useSearch();
 
     const changeLiked = (id: string) => {
@@ -84,6 +86,26 @@ export default function AdvisorContainer({ path }: { path?: string }) {
         }
     }, [])
 
+    // 어드바이저 정렬 컴포넌트 가시성 감지를 위한 IntersectionObserver 설정
+    useEffect(() => {
+        if (!advisorSortRef.current) return;
+        
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsAdvisorSortVisible(entry.isIntersecting);
+            },
+            { threshold: 0 }
+        );
+        
+        observer.observe(advisorSortRef.current);
+        
+        return () => {
+            if (advisorSortRef.current) {
+                observer.unobserve(advisorSortRef.current);
+            }
+        };
+    }, []);
+
     // Ensure data fetching only happens on client
     useEffect(() => {
         getTeachers(SearchType.NEW, page)
@@ -91,7 +113,12 @@ export default function AdvisorContainer({ path }: { path?: string }) {
 
     return (
         <div>
-            <div className="px-5">
+            {!isAdvisorSortVisible && (
+                <div className="sticky top-0 z-10 w-full">
+                    <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white to-transparent"></div>
+                </div>
+            )}
+            <div className="px-5" ref={advisorSortRef}>
                 <AdvisorSort 
                     getTeachers={async (sort, page) => {
                         setPage(0)

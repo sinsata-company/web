@@ -9,7 +9,11 @@ const ReserveSummary = ({ detail }: { detail: TeacherReserveHistoryDto | undefin
   moment.locale('ko')
   const router = useRouter();
   const endTime = detail?.consultationEndTime ? moment(detail?.consultationEndTime).format('a hh시 mm분') : null;
-  const isReservActivation = detail?.status === 'ACTIVE' && endTime !== null;
+  const isReservActivation = (() => {
+    const after = moment().isAfter(detail?.consultationStartTime);
+    if (after) return false;
+    return detail?.status === 'ACTIVE' && endTime !== null;
+  })();
   
   const onCancelReservation = async () => { 
     try {
