@@ -57,9 +57,6 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
         const isConsulting = advisor?.status === 'CONN';
         const isAvailable = advisor?.status === 'IDLE';
 
-        console.log('advisor', advisor);
-        //console.log('menuObj', menuObj);
-        //console.log('prepayInfo', prepayInfo);
 
         const tags = (() => {
             if (!advisor?.hashtag) return [] as string[];
@@ -101,7 +98,6 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
                 setMenuObj([]);
             }
 
-            console.log('menuObj', menuObj);
         }, [advisor?.menu]);
 
         const handleClick = () => {

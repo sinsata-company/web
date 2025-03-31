@@ -7,11 +7,10 @@ import { SearchProvider } from '@/components/common/SearchContext'
 import dynamic from 'next/dynamic'
 import { getMyLikeTeachers } from '@/app/api/teacher'
 import { TeacherListDto } from '@/app/api/data'
-import RecentAdvisorContainer from './components/RecentAdvisorContainer'
 import { useSearchParams } from 'next/navigation'
 
-const AdvisorContainer = dynamic(
-  () => import('@/app/heart/components/AdvisorContainer'),
+const RecentAdvisorContainer = dynamic(
+  () => import('@/app/recent/components/RecentAdvisorContainer'),
   {
     ssr: false,
   }
@@ -34,7 +33,7 @@ function RecentPageContent() {
       <div className="p-4">
         <p>검색어: {searchQuery}</p>
       </div>
-      <RecentAdvisorContainer searchQuery={searchQuery}/>
+      <RecentAdvisorContainer params={{ searchQuery }}/>
       <BTB />
     </div>
   )

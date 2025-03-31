@@ -25,6 +25,7 @@ export default function SearchPage() {
 
     useEffect(() => {
         const fetchTopTeachers = async () => {
+            setIsLoading(true);  // 로딩 시작
             try {
                 const response = await basicGet<TeacherResponse>('/teachers/top-liked');
                 console.log(response)
@@ -44,6 +45,8 @@ export default function SearchPage() {
                     { id: 2, nickname: '허준', name: '허준' },
                     { id: 3, nickname: '하울', name: '하울' },
                 ]);
+            } finally {
+                setIsLoading(false);  // 로딩 완료
             }
         };
     

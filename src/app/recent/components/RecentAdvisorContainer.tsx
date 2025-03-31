@@ -61,7 +61,7 @@ export default function AdvisorContainer({params}: {params: {searchQuery: string
         try {
             const response = await basicGet<{content: TeacherListDto[]}>(`/teachers/search?searchType=${searchType}&searchQuery=${urlSearchQuery}&page=${currentPage}`);
             
-            console.log(response)
+            //console.log(response)
             if (response && response.content) {
                 setAdvisorList(currentPage === 0 ? response.content : [...advisorList, ...response.content]);
             } else {
