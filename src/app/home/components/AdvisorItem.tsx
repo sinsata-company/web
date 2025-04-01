@@ -263,13 +263,13 @@ export const AdvisorItem = forwardRef<HTMLDivElement, AdvisorItemProps>(
 
                 {/* 하단 영역 - 해시태그와 별점 */}
                 <div className="flex items-center relative w-full h-[40px] gap-x-5">
-                    <div className="flex w-[173.33px] w-max-[173.33px] overflow-x-hidden whitespace-nowrap relative">
+                    <div className="flex w-[173.33px] w-max-[173.33px] overflow-hidden whitespace-nowrap relative">
                         {tags.map((tag: string) => (
-                            <div key={tag} className="text-slate-400 text-sm font-bold leading-tight">
-                                #{tag}
+                            <div key={tag} className="overflow-y-hidden text-slate-400 text-sm font-bold leading-tight">
+                                {tag.includes('#') ? tag : `#${tag}`}
                             </div>
                         ))}
-                        <div className="absolute top-0 right-0 h-8 bg-gradient-to-l from-white to-transparent w-[20px]"></div>
+                        <div className="overflow-y-hidden absolute top-0 right-0 h-8 bg-gradient-to-l from-white to-transparent w-[20px]"></div>
                     </div>
 
                     <div className="flex items-center shrink-0 flex-1">
