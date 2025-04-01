@@ -153,8 +153,9 @@ export default function TeacherReservePage() {
       
       setReserveComplete(true)
     } catch (error: unknown) {
-      console.error('Error making reservation:', error)
-      alert(error instanceof Error ? error.message : '예약 실패');
+      console.error('Error making reservation:', error);
+      const message = error?.response?.data.message;
+      alert(message);
     }
   }
 
