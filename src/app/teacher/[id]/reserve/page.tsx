@@ -148,7 +148,7 @@ export default function TeacherReservePage() {
         reserveDate: selectedDate.format('YYYY-MM-DD'),
         reserveTime: `${selectedDate.format('YYYY-MM-DD')} ${selectedTime}:00`,
         reserveMinutes: selectedHour,
-        reserveType: type === '전화' ? 'phone' : 'chat',
+        reserveType: type === '전화' ? 'CALL' : 'CHAT',
       }, teacherId)
       
       setReserveComplete(true)
